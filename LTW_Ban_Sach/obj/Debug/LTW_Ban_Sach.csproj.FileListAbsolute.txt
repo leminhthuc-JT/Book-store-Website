@@ -124,3 +124,4 @@ D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.AddTab
 D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.TranslateDataType.resources
 D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.UpdateTable.resources
 D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.AddColumnMainImage.resources
+D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.AddCart.resources

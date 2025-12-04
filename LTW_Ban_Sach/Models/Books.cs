@@ -28,5 +28,6 @@ namespace LTW_Ban_Sach.Models
         public virtual Categories Categories { get; set; }
         public virtual ICollection<DetailBills> DetailBills { get; set; }
         public virtual ICollection<ImagesBook> ImagesBooks { get; set; }
+        public virtual ICollection<Cart> Carts { get; set; }
     }
 }

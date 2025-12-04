@@ -3,32 +3,62 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
+<div style="margin-top: 80px; margin-bottom: 20px;" class="p-3">
+    <div class="container d-flex" style="width: 100%; ">
 
-<div class="d-flex" style="width: 100%; ">
 
-    <hr style="width: calc(100% - 400px); margin-top:25px;" />
-    <div style="background-image: var(--gradient-tech); border-radius: 10px; width: 400px; height: 50px;">
-        <h2 style="text-align: center; color: white; line-height: 50px;">Book List</h2>
+        <div style="background-image: var(--gradient-tech); border-radius: 10px; width: 400px; height: 50px;">
+            <h2 style="text-align: center; color: white; line-height: 50px;">BOOK LIST</h2>
+        </div>
+        <hr style="width: calc(100% - 800px); margin-top:25px;" />
+        <div>
+            <form class="d-flex" action="/Products/Index" method="get">
+                <input type="hidden" id="id" name="id"/>
+                <input  type="text" id="search" name="search" class="form-control" placeholder="Search..." style="width: 300px; height: 50px; border-radius: 10px 0 0 10px;" />
+                <button type="submit" style="width: 100px; height: 50px; background-image: var(--gradient-tech); color: white; border: none; border-radius: 0 10px 10px 0;"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
     </div>
-</div>
-<div class="row row-cols-5 row-gap-4 mt-4 align-items-center">
-    @foreach (var b in Model)
-    {
-        <div class="items">
-            <div class="position-relative"
-                 style="width: 100%;
-                height: 380px;
-                margin-right: 20px;
-                background-color: white;
-                border-radius: 10px;
-                box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
-                <img style="width: 100%; height: 280px; border-radius: 10px 10px 0 0;" src="~/Content/Image/@b.mainImage" />
-                <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;">
-                    @b.BookName
-                </p>
-                <p style="color: red; text-align: center; margin-top: -10px">@b.Price VND</p>
+    <div class="container">
+        
+    </div>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-2">
+                <ul style="list-style-type: none; width: 100%; background-color: rgba(10,25,47, 0.9); padding: 0" class="sidebarcate">
+                    @foreach (var cate in ViewBag.Cate)
+                    {
+                        <li style = "border-bottom: 1px solid white; padding: 5px 0px 5px 20px"><a href="/Products/Index/@cate.CateId" class="text-light" style="text-decoration: none; ">@cate.CateName</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="col-10">
+                <div class="row row-cols-4 row-gap-4 align-items-center">
+                    @foreach (var b in Model)
+                    {
+                        <a href="/Products/Detail?id=@b.BookId&cateid=@b.CateId" style="text-decoration:none">
+                            <div class="items">
+                                <div class="position-relative"
+                                     style="width: 100%;
+                                            height: 300px;
+                                            margin-right: 20px;
+                                            background-color: white;
+                                            border-radius: 10px;
+                                            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
+                                    <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="~/Content/Image/@b.mainImage" />
+                                    <div style="padding: 0px 10px;">
+                                        <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                                            @b.BookName
+                                        </p>
+                                        <p style="color: red; text-align: center; margin-top: -10px">@b.Price VND</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+
+                </div>
             </div>
         </div>
-    }
-
+    </div>
 </div>

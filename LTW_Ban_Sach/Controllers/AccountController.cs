@@ -43,7 +43,9 @@ namespace LTW_Ban_Sach.Controllers
                 return RedirectToAction("Login", "Account");
 
             }
-            else { return View(); }
+            else { 
+                return View(); 
+            }
         }
         public ActionResult Login()
         {

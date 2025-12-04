@@ -11,6 +11,7 @@ namespace LTW_Ban_Sach.Models
     {
         [Key]
         public int BillId { get; set; }
+        public string Id { get; set; }
         public DateTime CreateDate { get; set; }
         public decimal TotalAmount { get; set; }
         public int VoucherId { get; set; }
