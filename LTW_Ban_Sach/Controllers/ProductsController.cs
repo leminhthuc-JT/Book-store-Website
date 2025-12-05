@@ -11,27 +11,144 @@ namespace LTW_Ban_Sach.Controllers
     {
         // GET: Products
         private DBContext db = new DBContext();
-        public ActionResult Index(int id = 0, string search = "")
+        public ActionResult Index(int id = 0, string search = "", int page = 1, int date = 0, int price = 0, int quantity = 0)
         {
-            List<Books> books;
+            List<Books> books = new List<Books>();
             if (id != 0)
             {
                 books = db.Books.Where(x => x.CateId == id).ToList();
-            }
-            else
-            {
                 if (!string.IsNullOrEmpty(search))
                 {
-                    books = db.Books.Where(x => x.BookName.Contains(search)).ToList();
+                    books = books.Where(x => x.BookName.ToLower().Contains(search.ToLower()) || x.Categories.CateName.ToLower().Contains(search.ToLower())).ToList();
+                    if (price == 1)
+                    {
+                        books = books.OrderBy(x => x.Price).ToList();
+                    }
+                    else if (price == -1)
+                    {
+                        books = books.OrderByDescending(x => x.Price).ToList();
+                    }
+                    if (date == 1)
+                    {
+                        books = books.OrderBy(x => x.PublicationYear).ToList();
+                    }
+                    else if (date == -1)
+                    {
+                        books = books.OrderByDescending(x => x.PublicationYear).ToList();
+                    }
+                    if (quantity == 1)
+                    {
+                        books = books.OrderBy(x => x.LuotMua).ToList();
+                    }
+                    else if (quantity == -1)
+                    {
+                        books = books.OrderByDescending(x => x.LuotMua).ToList();
+                    }
+                    
                 }
                 else
                 {
-                    books = db.Books.ToList();
+                    if (price == 1)
+                    {
+                        books = books.OrderBy(x => x.Price).ToList();
+                    }
+                    else if (price == -1)
+                    {
+                        books = books.OrderByDescending(x => x.Price).ToList();
+                    }
+                    if (date == 1)
+                    {
+                        books = books.OrderBy(x => x.PublicationYear).ToList();
+                    }
+                    else if (date == -1)
+                    {
+                        books = books.OrderByDescending(x => x.PublicationYear).ToList();
+                    }
+                    if (quantity == 1)
+                    {
+                        books = books.OrderBy(x => x.LuotMua).ToList();
+                    }
+                    else if (quantity == -1)
+                    {
+                        books = books.OrderByDescending(x => x.LuotMua).ToList();
+                    }
                 }
             }
+            else
+            {
+                books = db.Books.ToList();
+                if (!string.IsNullOrEmpty(search))
+                {
+                    books = books.Where(x => x.BookName.ToLower().Contains(search.ToLower()) || x.Categories.CateName.ToLower().Contains(search.ToLower())).ToList();
+                    if (price == 1)
+                    {
+                        books = books.OrderBy(x => x.Price).ToList();
+                    }
+                    else if (price == -1)
+                    {
+                        books = books.OrderByDescending(x => x.Price).ToList();
+                    }
+                    if (date == 1)
+                    {
+                        books = books.OrderBy(x => x.PublicationYear).ToList();
+                    }
+                    else if (date == -1)
+                    {
+                        books = books.OrderByDescending(x => x.PublicationYear).ToList();
+                    }
+                    if (quantity == 1)
+                    {
+                        books = books.OrderBy(x => x.LuotMua).ToList();
+                    }
+                    else if (quantity == -1)
+                    {
+                        books = books.OrderByDescending(x => x.LuotMua).ToList();
+                    }
+                }
+                else
+                {
+                    if (date != 0 || price != 0 || quantity != 0)
+                    {
+                        if (price == 1)
+                        {
+                            books = books.OrderBy(x => x.Price).ToList();
+                        }
+                        else if (price == -1)
+                        {
+                            books = books.OrderByDescending(x => x.Price).ToList();
+                        }
+                        if (date == 1)
+                        {
+                            books = books.OrderBy(x => x.PublicationYear).ToList();
+                        }
+                        else if (date == -1)
+                        {
+                            books = books.OrderByDescending(x => x.PublicationYear).ToList();
+                        }
+                        if (quantity == 1)
+                        {
+                            books = books.OrderBy(x => x.LuotMua).ToList();
+                        }
+                        else if (quantity == -1)
+                        {
+                            books = books.OrderByDescending(x => x.LuotMua).ToList();
+                        }
+                    }
+                }
+            }
+            int temp = 20;
+            int pageNumber = (int)Math.Ceiling(((double)books.Count() / temp));
+            books = books.Skip((page - 1) * temp).Take(temp).ToList();
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.Page = page;
 
             List<Categories> cates = db.Categories.ToList();
             ViewBag.Cate = cates;
+            ViewBag.Search = search;
+            ViewBag.CateId = id;
+            ViewBag.Date = date;
+            ViewBag.Price = price;
+            ViewBag.Quantity = quantity;
 
             return View(books);
         }

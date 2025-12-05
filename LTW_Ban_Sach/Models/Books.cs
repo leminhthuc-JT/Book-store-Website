@@ -23,6 +23,7 @@ namespace LTW_Ban_Sach.Models
         public DateTime PublicationYear { get; set; }
         public string Publisher { get; set; }
         public string Description { get; set; }
+        public int LuotMua { get; set; }
         public int CateId { get; set; }
         public string mainImage { get; set; }
         public virtual Categories Categories { get; set; }

@@ -242,6 +242,10 @@
     <Compile Include="Migrations\202512031255367_AddCart.Designer.cs">
       <DependentUpon>202512031255367_AddCart.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202512050817322_Addluotmua.cs" />
+    <Compile Include="Migrations\202512050817322_Addluotmua.Designer.cs">
+      <DependentUpon>202512050817322_Addluotmua.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Bills.cs" />
     <Compile Include="Models\Books.cs" />
@@ -339,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202512031255367_AddCart.resx">
       <DependentUpon>202512031255367_AddCart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202512050817322_Addluotmua.resx">
+      <DependentUpon>202512050817322_Addluotmua.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
