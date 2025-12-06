@@ -76,17 +76,17 @@
                     <p><strong>Ngày xuất bản: </strong>@Model.PublicationYear</p>
 
                     <div>
-                        <form action="~/Carts/Add" method="post">
+                        <form>
                             @{
-                                string name = "";
+                                string userId = "";
                                 if (User.Identity.IsAuthenticated)
                                 {
-                                    name = User.Identity.Name;
+                                    userId = ViewBag.UserId;
                                 }
                             }
 
                             <input type="hidden" name="bookId" id="bookId" value="@Model.BookId" />
-                            <input type="hidden" name="name" id="name" value="@name" />
+                            <input type="hidden" name="userId" id="userId" value="@userId" />
                             <input type="hidden" name="CateId" id="CateId" value="@Model.CateId" />
                             <div class="d-flex g-3 justify-content-start">
                                 <button type="button" class="btn me-2" id="dec" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 50px; line-height: 20px;">-</button>
@@ -96,8 +96,8 @@
 
 
                             <div class="d-flex justify-content-center gap-3 mt-3">
-                                <button type="submit" class="btn mt-3" style="border-radius: 5px; border: 1px solid rgba(10,25,47, 1); width: 250px;">Thêm giỏ hàng</button>
-                                <a href="/Paying/Index?bookId=@Model.BookId&&name=@name" class="btn mt-3" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 250px;">Mua ngay</a>
+                                <button formmethod="post" formaction="/Carts/Add" type="submit" class="btn mt-3" style="border-radius: 5px; border: 1px solid rgba(10,25,47, 1); width: 250px;">Thêm giỏ hàng</button>
+                                <button formmethod="get" type="submit" formaction="/Paying/Index" class="btn mt-3" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 250px;">Mua ngay</button>
 
                             </div>
                         </form>

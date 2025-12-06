@@ -247,11 +247,16 @@
     <Compile Include="Migrations\202512050817322_Addluotmua.Designer.cs">
       <DependentUpon>202512050817322_Addluotmua.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202512061324598_AddDanhGia.cs" />
+    <Compile Include="Migrations\202512061324598_AddDanhGia.Designer.cs">
+      <DependentUpon>202512061324598_AddDanhGia.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Bills.cs" />
     <Compile Include="Models\Books.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\Categories.cs" />
+    <Compile Include="Models\DanhGia.cs" />
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Models\DetailBills.cs" />
     <Compile Include="Models\Events.cs" />
@@ -349,6 +354,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202512050817322_Addluotmua.resx">
       <DependentUpon>202512050817322_Addluotmua.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202512061324598_AddDanhGia.resx">
+      <DependentUpon>202512061324598_AddDanhGia.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

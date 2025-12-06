@@ -93,20 +93,21 @@ namespace LTW_Ban_Sach.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        public ActionResult ProFile(string name = "")
+        public ActionResult ProFile(string userId = "")
         {
             AppDbContext profile = new AppDbContext();
-            AppUser user = profile.Users.Where(r => r.UserName == name).FirstOrDefault();
+            AppUser user = profile.Users.Where(r => r.Id == userId).FirstOrDefault();
             if (user == null)
                 return HttpNotFound("User not found.");
             return View(user);
         }
 
-        public ActionResult EditProfile( string name = "")
+        public ActionResult EditProfile( string userId = "")
         {
             ViewBag.PreUrl = Request.UrlReferrer?.ToString();
             AppDbContext profile = new AppDbContext();
-            AppUser user = profile.Users.Where(r => r.UserName == name).FirstOrDefault();
+            AppUser user = profile.Users.Where(r => r.Id == userId).FirstOrDefault();
+            ViewBag.UserId = user.Id;
             if (user == null)
                 return HttpNotFound("User not found.");
             return View(user);
@@ -115,7 +116,7 @@ namespace LTW_Ban_Sach.Controllers
         public ActionResult EditProfile(AppUser user, string preURL = "")
         {
             AppDbContext profile = new AppDbContext();
-            AppUser NewUser = profile.Users.Where(r => r.UserName == user.UserName).FirstOrDefault();
+            AppUser NewUser = profile.Users.Where(r => r.Id == user.Id).FirstOrDefault();
             if (NewUser == null)
                 return HttpNotFound("User not found.");
 

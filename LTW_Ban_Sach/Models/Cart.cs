@@ -13,7 +13,7 @@ namespace LTW_Ban_Sach.Models
         [Key, Column(Order = 0)]
         public int BookId { get; set; }
         [Key, Column(Order = 1)]
-        public string Id { get; set; }
+        public string Id { get; set; } //Này để liên kết với User không dùng ràng buộc khóa ngoại
         public int Quantity { get; set; }
         public virtual Books Book { get; set; }
     }

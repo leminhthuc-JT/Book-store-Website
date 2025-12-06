@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
+using LTW_Ban_Sach.Identity;
 
 namespace LTW_Ban_Sach.Controllers
 {
@@ -168,6 +169,10 @@ namespace LTW_Ban_Sach.Controllers
 
             ViewBag.BookList = books;
             ViewBag.img = imgB;
+
+            AppDbContext user = new AppDbContext();
+            AppUser u = user.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+            ViewBag.UserId = u.Id;
 
             ViewBag.CateId = Session["CateId"];
             ViewBag.Search = Session["Search"];

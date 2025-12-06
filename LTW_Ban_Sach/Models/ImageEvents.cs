@@ -12,6 +12,7 @@ namespace LTW_Ban_Sach.Models
         [Key, Column(Order = 0)]
         public int EventId { get; set; }
         [Key, Column(Order = 1)]
+        [Required]
         public string ImageEvent { get; set; }
         public string Description { get; set; }
         public virtual Events Events { get; set; }

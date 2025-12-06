@@ -30,5 +30,6 @@ namespace LTW_Ban_Sach.Models
         public virtual ICollection<DetailBills> DetailBills { get; set; }
         public virtual ICollection<ImagesBook> ImagesBooks { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }
+        public virtual ICollection<DanhGia> DanhGias { get; set; }
     }
 }

@@ -18,7 +18,7 @@
 
     <div class="container">
 
-        <div class="col-2" style="width: 200px; height:200px; border-radius: 100px; background: url('/Content/Image/avatarDefault.png'); background-size: cover; float: left"></div>
+        <div class="col-2" style="width: 200px; height:200px; border-radius: 100px; background: url('/Content/Image/@Model.Avatar'); background-size: cover; float: left"></div>
         <div class="col-10 mt-5 mb-5" style="padding-left: 200px; float: right; width: calc(100% - 200px)">
             <p><strong>Username:</strong> @Model.UserName</p>
             <p><strong>Email:</strong> @Model.Email</p>
@@ -26,7 +26,7 @@
             <p><strong>Address:</strong> @Model.Address</p>
         </div>
         <div class="d-flex" style="clear: both">
-            <div class="me-3"><a href="/Account/EditProfile?name=@Model.UserName" class="btn" id="LogOutButton" style="background-color: rgba(80, 193, 120, 0.4);  width: 200px;" onclick="LogOut">Change Information</a></div>
+            <div class="me-3"><a href="/Account/EditProfile?userId=@Model.Id" class="btn" id="LogOutButton" style="background-color: rgba(80, 193, 120, 0.4);  width: 200px;" onclick="LogOut">Change Information</a></div>
             <div class="me-3"><button class="btn" id="LogOutButton" style="background-color: rgba(80, 193, 120, 0.4);  width: 200px;" onclick="LogOut">Change Password</button></div>
             <div class="me-3"><a class="btn" id="LogOutButton" style="background-color: rgba(80, 193, 120, 0.4);  width: 200px; " onclick="LogOut" href="/Account/Logout">Log out</a></div>
         </div>

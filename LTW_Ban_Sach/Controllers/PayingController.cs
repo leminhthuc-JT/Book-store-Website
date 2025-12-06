@@ -14,13 +14,21 @@ namespace LTW_Ban_Sach.Controllers
         // GET: Paying
         private DBContext db = new DBContext();
         private AppDbContext appDb = new AppDbContext();
-        public ActionResult Index(int bookId = 0, string name = "")
+        
+        public ActionResult Index(int bookId = 0, string userId = "", int quantity = 0)
         {
-            Cart cart = db.Carts.Where(x => x.BookId == bookId && x.Id == name).FirstOrDefault();
+            Books cart = db.Books.Where(x => x.BookId == bookId).FirstOrDefault();
 
 
             //Books b = db.Books.Where(x => x.BookId == bookId).FirstOrDefault();
-            AppUser user = appDb.Users.Where(x => x.UserName == name).FirstOrDefault();
+            AppUser user = appDb.Users.Where(x => x.Id == userId).FirstOrDefault();
+
+            if (quantity == 0)
+            {
+                quantity = cart.Carts.Where(x => x.Id == userId).FirstOrDefault().Quantity;
+            }
+            ViewBag.Quantity = quantity;
+
             ViewBag.User = user;
             return View(cart);
         }
