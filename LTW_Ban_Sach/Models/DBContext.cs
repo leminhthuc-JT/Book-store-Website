@@ -18,5 +18,6 @@ namespace LTW_Ban_Sach.Models
         public DbSet<ImageEvents> ImageEvents { get; set; }
         public DbSet<Vouchers> Vouchers { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<DanhGia> DanhGias { get; set; }
     }
 }

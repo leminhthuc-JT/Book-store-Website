@@ -12,7 +12,7 @@ namespace LTW_Ban_Sach.Models
         [Key, Column(Order = 0)]
         public int BillId { get; set; }
         [Key, Column(Order = 1)]
-        public string BookId { get; set; }
+        public int BookId { get; set; }
         public int Quantity { get; set; }
         public virtual Bills Bills { get; set; }
         public virtual Books Books { get; set; }

@@ -21,6 +21,7 @@
     @using (Html.BeginForm("EditProfile", "Account", FormMethod.Post))
             {
         <input type="hidden" name="preURL" value="@ViewBag.PreUrl" />
+        <input type="hidden" name="Id" value="@ViewBag.UserId" />
                <div class="" style="padding: 20px; background-color: aliceblue; border-radius: 10px; margin-bottom: 50px;">
                    <table class="table" style="border-radius: 10px;">
                        <tr>
@@ -28,13 +29,14 @@
                                <div>
                                    @Html.LabelFor(r => r.UserName, "Name: ", new {@style = "font-weight: 500"})
                                    @Html.TextBoxFor(r => r.UserName, new { @class = "form-control", @value = Model.UserName})
+                                   @Html.ValidationMessageFor(r=>r.UserName, "", new {@class = "text-danger", @style = "font-size: 12px;"} )
                                </div>
                            </td>
                            <td>
                                <div>
                                    @Html.LabelFor(r => r.PhoneNumber, "Phone: ", new { @style = "font-weight: 500" })
-                                   @Html.TextBoxFor(r => r.PhoneNumber, new { @class = " form-control", @value = Model.PhoneNumber})
-
+                                   @Html.TextBoxFor(r => r.PhoneNumber, new { @class = " form-control", @value = Model.PhoneNumber })
+                                   @Html.ValidationMessageFor(r => r.PhoneNumber, "", new { @class = "text-danger", @style = "font-size: 12px;" })
                                </div>
                            </td>
                        </tr>
@@ -43,6 +45,7 @@
                                <div>
                                    @Html.LabelFor(r => r.Email, "Email: ", new { @style = "font-weight: 500" })
                                    @Html.TextBoxFor(r => r.Email, new { @class = " form-control", @value = Model.Email })
+                                   @Html.ValidationMessageFor(r => r.Email, "", new { @class = "text-danger", @style = "font-size: 12px;" })
                                </div>
                            </td>
                        </tr>
@@ -51,6 +54,7 @@
                                <div>
                                    @Html.LabelFor(r => r.Address, "Address: ", new { @style = "font-weight: 500" })
                                    @Html.TextBoxFor(r => r.Address, new { @class = " form-control", @value = Model.Address })
+                                   @Html.ValidationMessageFor(r => r.Address, "", new { @class = "text-danger", @style = "font-size: 12px;" })
                                </div>
                            </td>
                        </tr>

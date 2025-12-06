@@ -13,22 +13,25 @@ namespace LTW_Ban_Sach.Controllers
     {
         // GET: Carts
         private DBContext db = new DBContext();
-        public ActionResult Index(string name)
+        public ActionResult Index(string userId = "")
         {
             List<Cart> carts = new List<Cart>();
-            if (name != null)
+            if (userId != null)
             {
-                carts = db.Carts.Where(x=> x.Id == name).ToList();
+                carts = db.Carts.Where(x=> x.Id == userId).ToList();
                 
             }
+
+            ViewBag.UserId = userId;
+
             decimal tongTien = carts.Sum(x => x.Quantity * x.Book.Price);
             ViewBag.TongTien = tongTien;
             return View(carts);
         }
         [HttpPost]
-        public ActionResult Add(int bookId = 0, string name = "", int quantity = 0, int CateId = 0)
+        public ActionResult Add(int bookId = 0, string userId = "", int quantity = 0, int CateId = 0)
         {
-            if(bookId != 0 && name != "")
+            if(bookId != 0 && userId != "")
             {
                 Cart cartitem = db.Carts.Where(x => x.BookId == bookId).FirstOrDefault();
                 if(cartitem != null)
@@ -41,7 +44,7 @@ namespace LTW_Ban_Sach.Controllers
                 {
                     Cart cart = new Cart();
                     cart.BookId = bookId;
-                    cart.Id = name;
+                    cart.Id = userId;
                     cart.Quantity = quantity;
                     db.Carts.Add(cart);
                 }
@@ -49,21 +52,21 @@ namespace LTW_Ban_Sach.Controllers
             }
             return RedirectToAction("Detail", "Products", new { id = bookId, cateid = CateId });
         }
-        public ActionResult DeleteCart(int bookId = 0, string name = "")
+        public ActionResult DeleteCart(int bookId = 0, string userId = "")
         {
-            Cart cartitem = db.Carts.Where(x => x.BookId == bookId && x.Id == name).FirstOrDefault();
+            Cart cartitem = db.Carts.Where(x => x.BookId == bookId && x.Id == userId).FirstOrDefault();
             db.Carts.Remove(cartitem);
             db.SaveChanges();
 
-            return RedirectToAction("Index", "Carts", new { name = name});
+            return RedirectToAction("Index", "Carts", new { userId = userId});
         }
         [HttpPost]
-        public ActionResult UpdateQuantity (int bookId = 0, string name = "", int quantity = 0)
+        public ActionResult UpdateQuantity (int bookId = 0, string userId = "", int quantity = 0)
         {
-            Cart cartItem = db.Carts.Where(x => x.BookId == bookId && x.Id == name).FirstOrDefault();
+            Cart cartItem = db.Carts.Where(x => x.BookId == bookId && x.Id == userId).FirstOrDefault();
             cartItem.Quantity = quantity;
             db.SaveChanges();
-            return RedirectToAction("Index", "Carts", new { name = name });
+            return RedirectToAction("Index", "Carts", new { userId = userId });
         }
     }
 }
