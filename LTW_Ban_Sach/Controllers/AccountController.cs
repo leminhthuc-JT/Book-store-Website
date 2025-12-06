@@ -1,4 +1,5 @@
 ﻿using LTW_Ban_Sach.Identity;
+using LTW_Ban_Sach.ViewModel;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
-using LTW_Ban_Sach.ViewModel;
+using System.Xml.Linq;
 
 
 namespace LTW_Ban_Sach.Controllers
@@ -91,6 +92,40 @@ namespace LTW_Ban_Sach.Controllers
             authenManager.SignOut();
 
             return RedirectToAction("Index", "Home");
+        }
+        public ActionResult ProFile(string name = "")
+        {
+            AppDbContext profile = new AppDbContext();
+            AppUser user = profile.Users.Where(r => r.UserName == name).FirstOrDefault();
+            if (user == null)
+                return HttpNotFound("User not found.");
+            return View(user);
+        }
+
+        public ActionResult EditProfile( string name = "")
+        {
+            ViewBag.PreUrl = Request.UrlReferrer?.ToString();
+            AppDbContext profile = new AppDbContext();
+            AppUser user = profile.Users.Where(r => r.UserName == name).FirstOrDefault();
+            if (user == null)
+                return HttpNotFound("User not found.");
+            return View(user);
+        }
+        [HttpPost]
+        public ActionResult EditProfile(AppUser user, string preURL = "")
+        {
+            AppDbContext profile = new AppDbContext();
+            AppUser NewUser = profile.Users.Where(r => r.UserName == user.UserName).FirstOrDefault();
+            if (NewUser == null)
+                return HttpNotFound("User not found.");
+
+            NewUser.Address = user.Address;
+            NewUser.PhoneNumber = user.PhoneNumber;
+            NewUser.UserName = user.UserName;
+            NewUser.Email = user.Email;
+            profile.SaveChanges();
+
+            return Redirect(preURL);
         }
     }
 }

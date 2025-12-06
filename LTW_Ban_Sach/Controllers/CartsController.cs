@@ -21,6 +21,8 @@ namespace LTW_Ban_Sach.Controllers
                 carts = db.Carts.Where(x=> x.Id == name).ToList();
                 
             }
+            decimal tongTien = carts.Sum(x => x.Quantity * x.Book.Price);
+            ViewBag.TongTien = tongTien;
             return View(carts);
         }
         [HttpPost]
@@ -31,7 +33,7 @@ namespace LTW_Ban_Sach.Controllers
                 Cart cartitem = db.Carts.Where(x => x.BookId == bookId).FirstOrDefault();
                 if(cartitem != null)
                 {
-                    cartitem.Quantity += 1;
+                    cartitem.Quantity += quantity;
 
                    
                 }
@@ -47,6 +49,21 @@ namespace LTW_Ban_Sach.Controllers
             }
             return RedirectToAction("Detail", "Products", new { id = bookId, cateid = CateId });
         }
+        public ActionResult DeleteCart(int bookId = 0, string name = "")
+        {
+            Cart cartitem = db.Carts.Where(x => x.BookId == bookId && x.Id == name).FirstOrDefault();
+            db.Carts.Remove(cartitem);
+            db.SaveChanges();
 
+            return RedirectToAction("Index", "Carts", new { name = name});
+        }
+        [HttpPost]
+        public ActionResult UpdateQuantity (int bookId = 0, string name = "", int quantity = 0)
+        {
+            Cart cartItem = db.Carts.Where(x => x.BookId == bookId && x.Id == name).FirstOrDefault();
+            cartItem.Quantity = quantity;
+            db.SaveChanges();
+            return RedirectToAction("Index", "Carts", new { name = name });
+        }
     }
 }

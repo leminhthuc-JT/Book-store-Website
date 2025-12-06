@@ -50,14 +50,14 @@
                     {
 
                         <div class="d-flex me-5">
-                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=-1&&date=@ViewBag.Date&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Lượt bán</a>
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=1&&date=@ViewBag.Date&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Lượt bán</a>
                             <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-angle-up"></i>
                         </div>
                     }
                     else
                     {
                         <div class="d-flex me-5">
-                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=1&&date=@ViewBag.Date&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Lượt bán</a>
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=-1&&date=@ViewBag.Date&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Lượt bán</a>
                             <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-down-left-and-up-right-to-center"></i>
                         </div>
                     }
@@ -72,14 +72,14 @@
                     else if (ViewBag.Date == 1)
                     {
                         <div class="d-flex me-5">
-                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=-1&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Mới nhất</a>
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=1&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Mới nhất</a>
                             <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-angle-up"></i>
                         </div>
                     }
                     else
                     {
                         <div class="d-flex me-5">
-                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=1&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Mới nhất</a>
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=-1&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Mới nhất</a>
                             <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-down-left-and-up-right-to-center"></i>
                         </div>
                     }
@@ -106,6 +106,7 @@
                         </div>
                     }
                 </div>
+                <!--Detail Books-->
                 <div class="row row-cols-4 row-gap-4 align-items-center">
                     @foreach (var b in Model)
                     {
@@ -132,7 +133,7 @@
 
                 </div>
                 <div>
-                    
+                    <!--Phân trang-->
 
                     <div class="d-flex justify-content-center">
                         @{ int pagepre = ViewBag.Page;

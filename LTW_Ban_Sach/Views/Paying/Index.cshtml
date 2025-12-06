@@ -1,0 +1,53 @@
+﻿@model LTW_Ban_Sach.Models.Cart
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<div style="margin-top: 50px; margin-bottom: 20px;" class="p-3">
+    <div class="container-fluid d-flex justify-content-between">
+        <div class="" style="width: 50px;">
+            <a style="line-height: 100px;" href="javascript:history.back()"><i class="fa-solid fa-arrow-left" style="font-size: 25px;color: rgb(10,25,47); line-height: 30px;"></i></a>
+        </div>
+        <div style="width: calc(100% - 50px)">
+            <hr />
+            <div class="container"><h3>Paying page</h3></div>
+            <hr />
+        </div>
+
+    </div>
+</div>
+<div class="container">
+    <table class="table">
+        <tr>
+            <td>
+                <div style="text-align: center">
+                    <img src="~/Content/Image/@Model.Book.mainImage" style="width: 200px;" />
+                </div>
+            </td>
+            <td>
+                <div style="margin-top: 30px;">
+                    <p><strong>Tên sản phẩm: </strong>@Model.Book.BookName</p>
+                    <p><strong>Tác giả: </strong>@Model.Book.Author</p>
+                    <p><strong>Số lượng: </strong>@Model.Quantity</p>
+                    <p><strong>Đơn giá: </strong>@Model.Book.Price VNĐ</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="d-flex justify-content-between p-4">
+                    <div>
+                        <h4>Thông tin khách hàng:</h4>
+                        <p><strong>Tên người nhận: </strong>@ViewBag.User.UserName</p>
+                        <p><strong>Số điện thoại: </strong>@ViewBag.User.PhoneNumber</p>
+                        <p><strong>Địa chỉ: </strong>@ViewBag.User.Address</p>
+                    </div>
+                    <div><a href="/Account/EditProfile?name=@ViewBag.User.UserName" class="btn btn-success" style="line-height: 20px;">Đổi thông tin</a></div>
+                </div>
+            </td>
+            
+        </tr>
+    </table>
+
+
+</div>

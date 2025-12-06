@@ -28,7 +28,7 @@
 <div style="margin-top: 80px; margin-bottom: 20px;" class="p-3">
 <div class="container-fluid d-flex justify-content-between">
     <div class="">
-        <a href="/Products/Index"><i class="fa-solid fa-arrow-left" style="font-size: 25px;color: rgb(10,25,47); line-height: 30px;"></i></a>
+        <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=@ViewBag.Price"><i class="fa-solid fa-arrow-left" style="font-size: 25px;color: rgb(10,25,47); line-height: 30px;"></i></a>
     </div>
     <div>
         <div>
@@ -97,7 +97,7 @@
 
                             <div class="d-flex justify-content-center gap-3 mt-3">
                                 <button type="submit" class="btn mt-3" style="border-radius: 5px; border: 1px solid rgba(10,25,47, 1); width: 250px;">Thêm giỏ hàng</button>
-                                <button class="btn mt-3" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 250px;">Mua ngay</button>
+                                <a href="/Paying/Index?bookId=@Model.BookId&&name=@name" class="btn mt-3" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 250px;">Mua ngay</a>
 
                             </div>
                         </form>

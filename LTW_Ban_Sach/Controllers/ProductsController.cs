@@ -1,9 +1,11 @@
-﻿using System;
+﻿using LTW_Ban_Sach.Models;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
-using LTW_Ban_Sach.Models;
 
 namespace LTW_Ban_Sach.Controllers
 {
@@ -150,6 +152,12 @@ namespace LTW_Ban_Sach.Controllers
             ViewBag.Price = price;
             ViewBag.Quantity = quantity;
 
+            Session["CateId"] = id;
+            Session["Search"] = search;
+            Session["Date"] = date;
+            Session["Price"] = price;
+            Session["Quantity"] = quantity;
+            Session["Page"] = page;
             return View(books);
         }
         public ActionResult Detail (int id, int cateid)
@@ -157,8 +165,17 @@ namespace LTW_Ban_Sach.Controllers
             Books b = db.Books.Where(x => x.BookId == id).FirstOrDefault();
             List<ImagesBook> imgB = db.ImagesBooks.Where(x=>x.BookId == id).ToList();
             List<Books> books = db.Books.Where(x => x.CateId == cateid && x.BookId != id).ToList();
+
             ViewBag.BookList = books;
             ViewBag.img = imgB;
+
+            ViewBag.CateId = Session["CateId"];
+            ViewBag.Search = Session["Search"];
+            ViewBag.Date = Session["Date"];
+            ViewBag.Price = Session["Price"];
+            ViewBag.Quantity = Session["Quantity"];
+            ViewBag.Page = Session["Page"];
+
             return View(b);
         }
 

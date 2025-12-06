@@ -17,12 +17,7 @@ namespace LTW_Ban_Sach.Controllers
             List<Books> bs = db.Books.ToList();
             return View(bs);
         }
-        public ActionResult ProFile(string Name = "")
-        {
-            AppDbContext profile = new AppDbContext();
-            AppUser user = profile.Users.SingleOrDefault(r => r.UserName == Name);
-            return View(user);
-        }
+        
     }
 
 

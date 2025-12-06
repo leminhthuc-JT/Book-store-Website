@@ -1,0 +1,65 @@
+﻿@model LTW_Ban_Sach.Identity.AppUser
+@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div style="margin-top: 50px; margin-bottom: 20px;" class="p-3">
+    <div class="container-fluid d-flex justify-content-between">
+        <div class="" style="width: 50px;">
+            <a style="line-height: 100px;" href="javascript:history.back()"><i class="fa-solid fa-arrow-left" style="font-size: 25px;color: rgb(10,25,47); line-height: 30px;"></i></a>
+        </div>
+        <div style="width: calc(100% - 50px)">
+            <hr />
+            <div class="container"><h3>Update profile</h3></div>
+            <hr />
+        </div>
+
+    </div>
+</div>
+<div class="container">
+    @using (Html.BeginForm("EditProfile", "Account", FormMethod.Post))
+            {
+        <input type="hidden" name="preURL" value="@ViewBag.PreUrl" />
+               <div class="" style="padding: 20px; background-color: aliceblue; border-radius: 10px; margin-bottom: 50px;">
+                   <table class="table" style="border-radius: 10px;">
+                       <tr>
+                           <td>
+                               <div>
+                                   @Html.LabelFor(r => r.UserName, "Name: ", new {@style = "font-weight: 500"})
+                                   @Html.TextBoxFor(r => r.UserName, new { @class = "form-control", @value = Model.UserName})
+                               </div>
+                           </td>
+                           <td>
+                               <div>
+                                   @Html.LabelFor(r => r.PhoneNumber, "Phone: ", new { @style = "font-weight: 500" })
+                                   @Html.TextBoxFor(r => r.PhoneNumber, new { @class = " form-control", @value = Model.PhoneNumber})
+
+                               </div>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td colspan="2">
+                               <div>
+                                   @Html.LabelFor(r => r.Email, "Email: ", new { @style = "font-weight: 500" })
+                                   @Html.TextBoxFor(r => r.Email, new { @class = " form-control", @value = Model.Email })
+                               </div>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td colspan="2">
+                               <div>
+                                   @Html.LabelFor(r => r.Address, "Address: ", new { @style = "font-weight: 500" })
+                                   @Html.TextBoxFor(r => r.Address, new { @class = " form-control", @value = Model.Address })
+                               </div>
+                           </td>
+                       </tr>
+                   </table>
+                   <div class="d-flex justify-content-center">
+                       <button type="submit" class="btn btn-primary">Update</button>
+                   </div>
+               </div>
+              
+                }
+
+</div>
