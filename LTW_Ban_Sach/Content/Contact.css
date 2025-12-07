@@ -1,0 +1,218 @@
+﻿body {
+}
+/* Contact Page Styles */
+:root {
+    --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+    --gradient-tech-f: linear-gradient(270deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+}
+.contact-section {
+    padding: 100px 0 50px 0;
+    min-height: 100vh;
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+    .contact-header h1 {
+        font-size: 42px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .contact-header p {
+        font-size: 18px;
+        color: #666;
+    }
+
+.contact-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    padding: 40px;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+
+    .contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+.contact-info-item {
+    display: flex;
+    align-items: start;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+    .contact-info-item:hover {
+        background: var(--gradient-tech); /* Đổi màu tím cũ thành Tech */
+        color: white;
+        box-shadow: 0 5px 15px rgba(0, 77, 77, 0.3); /* Bóng đổ màu xanh rêu */
+    }
+
+        .contact-info-item:hover .contact-icon {
+            background: white;
+            color: #004d4d; /* Màu trích xuất từ gradient (xanh rêu đậm) */
+            transform: scale(1.1); /* Phóng to nhẹ icon */
+        }
+
+.contact-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-tech);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-right: 20px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.contact-info-content h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.contact-info-content p {
+    margin: 0;
+    font-size: 15px;
+}
+
+.contact-form {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    padding: 40px;
+}
+
+    .contact-form h3 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+.form-control, .form-select {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.btn-send {
+    background-image: var(--gradient-tech);
+    border: none;
+    padding: 12px 40px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.5s ease;
+    width: 100%;
+    background-size: 200% auto;
+    color: white;
+}
+
+    .btn-send:hover {
+        background-position: right center; /* Hiệu ứng trượt màu */
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 25, 47, 0.4); /* Bóng đổ màu tối */
+    }
+
+.map-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-top: 30px;
+    overflow: hidden;
+}
+
+    .map-container h3 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .map-container iframe {
+        border-radius: 10px;
+        border: none;
+    }
+
+.branch-list {
+    list-style: none;
+    padding: 0;
+}
+
+.branch-item {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #004d4d; /* Đổi viền trái sang màu Tech */
+}
+
+    .branch-item h5 {
+        font-weight: bold;
+        color: #004d4d; /* Đổi tiêu đề chi nhánh sang màu Tech */
+        margin-bottom: 5px;
+    }
+
+    .branch-item p {
+        margin: 0;
+        color: #666;
+    }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-header h1 {
+        font-size: 32px;
+    }
+
+    .contact-card,
+    .contact-form {
+        padding: 25px;
+    }
+
+    .contact-info-item {
+        padding: 15px;
+    }
+
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        margin-right: 15px;
+    }
+
+    .contact-info-content h4 {
+        font-size: 16px;
+    }
+
+    .contact-info-content p {
+        font-size: 14px;
+    }
+}
