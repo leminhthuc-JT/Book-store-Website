@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace LTW_Ban_Sach.Controllers
 {
@@ -14,6 +15,29 @@ namespace LTW_Ban_Sach.Controllers
         private DBContext db = new DBContext();
         public ActionResult Index()
         {
+            DateTime fromDate = DateTime.Now.AddMonths(-2);
+
+
+            List<Books> newb = db.Books
+                .Where(r => r.PublicationYear >= fromDate)
+                .ToList();
+            ViewBag.NewList = newb;
+
+
+            List<Books> hotb = db.Books.OrderBy(r => r.LuotMua).Take(10).ToList();
+            ViewBag.HotList = hotb;
+
+
+            List<Books> sale = db.Books.Where(r => r.Discount > 0).ToList();
+            foreach (var item in sale)
+            {
+                item.PriceSale = item.Price - (item.Price * (decimal)(item.Discount / 100));
+            }
+            db.SaveChanges();
+            ViewBag.SaleList = sale;
+
+
+
             List<Books> bs = db.Books.ToList();
             return View(bs);
         }

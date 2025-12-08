@@ -119,17 +119,42 @@
                                             background-color: white;
                                             border-radius: 10px;
                                             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
-                                    <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="~/Content/Image/@b.mainImage" />
-                                    <div style="padding: 0px 10px;">
-                                        <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
-                                            @b.BookName
-                                        </p>
-                                        <p style="color: red; text-align: center; margin-top: -10px">@b.Price VND</p>
-                                    </div>
+
+                                    <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="/Content/Image/@b.mainImage" />
+                                    @if (@b.Discount != 0)
+                                    {
+
+                                        <div style="width: 100%; padding: 5px;">
+                                            <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                                                @b.BookName
+                                            </p>
+                                        </div>
+                                        <div class="d-flex justify-content-center" style="margin-top: -15px;">
+
+                                            <div>
+                                                <p style="color: grey; text-align: center; font-size: 10px; text-decoration: line-through">@b.Price VND</p>
+                                            </div>
+                                            <div style="width: 30px; height: 15px; background-color: var(--red-color); color: white; text-align: center; font-size: 10px; ">
+                                                @b.Discount%
+                                            </div>
+                                        </div>
+                                        <p style="color: red; text-align: center; margin-top: -20px">@b.PriceSale VND</p>
+                                    }
+                                    else
+                                    {
+                                        <div style="width: 100%; padding: 5px;">
+                                            <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                                                @b.BookName
+                                            </p>
+                                        </div>
+                                        <p style="color: red; text-align: center; margin-top: -10px">100.000 VND</p>
+                                    }
+
                                 </div>
                             </div>
                         </a>
                     }
+
 
                 </div>
                 <div>

@@ -18,6 +18,9 @@ namespace LTW_Ban_Sach.Models
         public string Author { get; set; }
         [Required(ErrorMessage = "Không được để trống")]
         public decimal Price { get; set; }
+        [Required(ErrorMessage = "Không được để trống")]
+        public float Discount { get; set; }
+        public decimal PriceSale { get; set; }
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime PublicationYear { get; set; }

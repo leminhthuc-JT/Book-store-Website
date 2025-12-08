@@ -259,6 +259,10 @@
     <Compile Include="Migrations\202512061324598_AddDanhGia.Designer.cs">
       <DependentUpon>202512061324598_AddDanhGia.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202512080933478_AddBook.cs" />
+    <Compile Include="Migrations\202512080933478_AddBook.Designer.cs">
+      <DependentUpon>202512080933478_AddBook.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Bills.cs" />
     <Compile Include="Models\Books.cs" />
@@ -374,6 +378,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202512061324598_AddDanhGia.resx">
       <DependentUpon>202512061324598_AddDanhGia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202512080933478_AddBook.resx">
+      <DependentUpon>202512080933478_AddBook.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

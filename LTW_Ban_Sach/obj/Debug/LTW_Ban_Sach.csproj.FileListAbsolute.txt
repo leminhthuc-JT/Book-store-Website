@@ -256,3 +256,4 @@ D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\bin\Microsoft.CodeDom.Providers.DotNetCo
 D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_.4CD17E78.Up2Date
 D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.dll
 D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.pdb
+D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.AddBook.resources
