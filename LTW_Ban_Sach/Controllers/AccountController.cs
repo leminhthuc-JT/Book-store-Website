@@ -8,12 +8,14 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Xml.Linq;
-
+using System.IO;
+using LTW_Ban_Sach.Models;
 
 namespace LTW_Ban_Sach.Controllers
 {
     public class AccountController : Controller
     {
+        private AppDbContext db = new AppDbContext();
         // GET: Account
         public ActionResult Regester()
         {
@@ -127,6 +129,74 @@ namespace LTW_Ban_Sach.Controllers
             profile.SaveChanges();
 
             return Redirect(preURL);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateAvatar(HttpPostedFileBase avatar, string userId)
+        {
+            try
+            {
+                if (avatar == null || avatar.ContentLength == 0)
+                {
+                    TempData["ErrorMessage"] = "Vui lòng chọn ảnh!";
+                    return RedirectToAction("ProFile", new { userId = userId });
+                }
+
+                // Kiểm tra định dạng file
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                var extension = Path.GetExtension(avatar.FileName).ToLower();
+
+                if (!allowedExtensions.Contains(extension))
+                {
+                    TempData["ErrorMessage"] = "Chỉ chấp nhận file ảnh (.jpg, .jpeg, .png, .gif)!";
+                    return RedirectToAction("ProFile", new { userId = userId });
+                }
+
+                // Kiểm tra kích thước file (max 5MB)
+                if (avatar.ContentLength > 5 * 1024 * 1024)
+                {
+                    TempData["ErrorMessage"] = "Kích thước ảnh không được vượt quá 5MB!";
+                    return RedirectToAction("ProFile", new { userId = userId });
+                }
+
+                // Tạo tên file unique
+                var fileName = Guid.NewGuid().ToString() + extension;
+                var path = Path.Combine(Server.MapPath("~/Content/Image"), fileName);
+
+                // Lưu file
+                avatar.SaveAs(path);
+
+                // Cập nhật database
+                var user = db.Users.Find(userId); // Thay db bằng DbContext của bạn
+                if (user != null)
+                {
+                    // Xóa ảnh cũ nếu không phải ảnh mặc định
+                    if (!string.IsNullOrEmpty(user.Avatar) && user.Avatar != "default-avatar.png")
+                    {
+                        var oldImagePath = Path.Combine(Server.MapPath("~/Content/Image"), user.Avatar);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    // Cập nhật avatar mới
+                    user.Avatar = fileName;
+                    db.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Cập nhật avatar thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy người dùng!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Có lỗi xảy ra: " + ex.Message;
+            }
+
+            return RedirectToAction("ProFile", new { userId = userId });
         }
     }
 }
