@@ -3,35 +3,103 @@
     ViewBag.Title = "ProFile";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
-<div style="margin-top: 80px; margin-bottom: 20px;" class="p-3">
 
-    <div class="container">
-        <div class="row mb-5" style="border-top: 1px solid rgb(10,25,47); border-bottom: 1px solid rgb(10,25,47); padding: 10px;">
-            <div class="col-2">
-                <a href="/Home/Index"><i class="fa-solid fa-arrow-left" style="font-size: 25px;color: rgb(10,25,47); line-height: 30px;"></i></a>
-            </div>
-            <div class="col-10" style="padding-left: 200px;">
-                <h2 style="font-size: 40px; line-height:30px; color: rgba(10,25,47, 0.9)">My Profile</h2>
-            </div>
-        </div>
+<link rel="stylesheet" href="~/Content/Profile.css" />
+
+<div class="profile-container">
+    <div class="profile-header">
+        <a href="/Home/Index" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h2>MY PROFILE</h2>
     </div>
 
-    <div class="container">
+    <div class="profile-body">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                <i class="fa-solid fa-check-circle"></i> @TempData["SuccessMessage"]
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                <i class="fa-solid fa-exclamation-circle"></i> @TempData["ErrorMessage"]
+            </div>
+        }
 
-        <div class="col-2" style="width: 200px; height:200px; border-radius: 100px; background: url('/Content/Image/@Model.Avatar'); background-size: cover; float: left"></div>
-        <div class="col-10 mt-5 mb-5" style="padding-left: 200px; float: right; width: calc(100% - 200px)">
-            <p><strong>Username:</strong> @Model.UserName</p>
-            <p><strong>Email:</strong> @Model.Email</p>
-            <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
-            <p><strong>Address:</strong> @Model.Address</p>
-        </div>
-        <div class="d-flex" style="clear: both">
-            <div class="me-3"><a href="/Account/EditProfile?userId=@Model.Id" class="btn" id="LogOutButton" style="background-color: rgba(80, 193, 120, 0.4);  width: 200px;" onclick="LogOut">Change Information</a></div>
-            <div class="me-3"><button class="btn" id="LogOutButton" style="background-color: rgba(80, 193, 120, 0.4);  width: 200px;" onclick="LogOut">Change Password</button></div>
-            <div class="me-3"><a class="btn" id="LogOutButton" style="background-color: rgba(80, 193, 120, 0.4);  width: 200px; " onclick="LogOut" href="/Account/Logout">Log out</a></div>
+        <div class="profile-content">
+            <div class="profile-avatar">
+                <div class="avatar-wrapper">
+                    <img src="/Content/Image/@Model.Avatar" alt="Avatar" onerror="this.src='/Content/Image/default-avatar.png'" />
+                    <div class="avatar-overlay">
+                        <i class="fa-solid fa-camera"></i>
+                        <div style="font-size: 12px; margin-top: 5px;">Đổi ảnh</div>
+                    </div>
+                </div>
+
+                @using (Html.BeginForm("UpdateAvatar", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("userId", Model.Id)
+
+                    <label for="avatarInput" class="btn-change-avatar">
+                        <i class="fa-solid fa-camera"></i> Chọn ảnh mới
+                    </label>
+                    <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;" onchange="this.form.submit()" />
+                }
+            </div>
+
+            <div class="profile-info">
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Tên đăng nhập</span>
+                    </div>
+                    <div class="info-value">@Model.UserName</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Email</span>
+                    </div>
+                    <div class="info-value">@Model.Email</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>Số điện thoại</span>
+                    </div>
+                    <div class="info-value">@Model.PhoneNumber</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Địa chỉ</span>
+                    </div>
+                    <div class="info-value">@Model.Address</div>
+                </div>
+            </div>
         </div>
 
+        <div class="profile-actions">
+            <a href="/Account/EditProfile?userId=@Model.Id" class="profile-btn btn-edit">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Chỉnh sửa thông tin
+            </a>
+
+            <a href="/Account/ChangePassword?userId=@Model.Id" class="profile-btn btn-password">
+                <i class="fa-solid fa-key"></i>
+                Đổi mật khẩu
+            </a>
+
+            <a href="/Account/Logout" class="profile-btn btn-logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Đăng xuất
+            </a>
+        </div>
     </div>
-
-
 </div>

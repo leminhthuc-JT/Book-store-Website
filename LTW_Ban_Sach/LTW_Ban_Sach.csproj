@@ -178,8 +178,11 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Contact.css" />
+    <Content Include="Content\EditProfile.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Login.css" />
+    <Content Include="Content\Profile.css" />
     <Content Include="Content\Style.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
@@ -189,7 +192,6 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\Contact.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -205,7 +207,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EmailService.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="IdentityMigrations\202511161436163_init.cs" />
     <Compile Include="IdentityMigrations\202511161436163_init.Designer.cs">
       <DependentUpon>202511161436163_init.cs</DependentUpon>

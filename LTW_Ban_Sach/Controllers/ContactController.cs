@@ -14,9 +14,11 @@ namespace LTW_Ban_Sach.Controllers
         {
             return View();
         }
+
         // POST: Contact/SendMessage
         [HttpPost]
-        public JsonResult SendMessage(string fullName, string email, string phone, string subject, string message)
+        [ValidateAntiForgeryToken]
+        public ActionResult SendMessage(string fullName, string email, string phone, string subject, string message)
         {
             try
             {
@@ -27,54 +29,45 @@ namespace LTW_Ban_Sach.Controllers
                     string.IsNullOrWhiteSpace(subject) ||
                     string.IsNullOrWhiteSpace(message))
                 {
-                    return Json(new
-                    {
-                        success = false,
-                        message = "Vui lòng điền đầy đủ thông tin!"
-                    });
+                    TempData["Error"] = "Vui lòng điền đầy đủ thông tin!";
+                    return RedirectToAction("Index");
                 }
 
-                // Lấy username nếu user đã đăng nhập
-                string username = User.Identity.IsAuthenticated ? User.Identity.Name : "Khách";
+                // Lấy Username từ người đăng nhập
+                string username = "Khách"; // Mặc định
 
-                // Gửi email
-                bool emailSent = EmailService.SendContactEmail(
+                if (User.Identity.IsAuthenticated)
+                {
+                    // Nếu đã đăng nhập, lấy UserName
+                    username = User.Identity.Name;
+                }
+
+                // Gửi email (gồm: fullName, email, phone, subject, message, username)
+                bool emailSent = EmailHelper.SendContactEmail(
                     fullName,
                     email,
                     phone,
                     subject,
-                    username,
-                    message
+                    message,
+                    username  // Truyền thêm username
                 );
 
                 if (emailSent)
                 {
-                    return Json(new
-                    {
-                        success = true,
-                        message = "Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất."
-                    });
+                    TempData["Success"] = "✅ Gửi tin nhắn thành công! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.";
                 }
                 else
                 {
-                    return Json(new
-                    {
-                        success = false,
-                        message = "Có lỗi xảy ra khi gửi email. Vui lòng thử lại sau!"
-                    });
+                    TempData["Error"] = "❌ Có lỗi xảy ra khi gửi email. Vui lòng thử lại sau!";
                 }
             }
             catch (Exception ex)
             {
-                // Log lỗi
                 System.Diagnostics.Debug.WriteLine($"❌ Lỗi SendMessage: {ex.Message}");
-
-                return Json(new
-                {
-                    success = false,
-                    message = "Có lỗi xảy ra. Vui lòng thử lại sau!"
-                });
+                TempData["Error"] = "❌ Có lỗi xảy ra. Vui lòng thử lại sau!";
             }
+
+            return RedirectToAction("Index");
         }
     }
 }

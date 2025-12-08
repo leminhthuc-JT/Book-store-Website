@@ -13,15 +13,33 @@
             <p>Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn</p>
         </div>
 
+        @* Hiển thị thông báo *@
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fa-solid fa-circle-check me-2"></i>
+                <strong>@TempData["Success"]</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fa-solid fa-circle-exclamation me-2"></i>
+                <strong>@TempData["Error"]</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
         <div class="row">
             <!-- Contact Information -->
             <div class="col-lg-4 col-md-12 mb-4">
                 <div class="contact-card">
-                    <h3 class="mb-4" style="font-weight: bold; color: #;">Thông Tin Liên Hệ</h3>
+                    <h3 class="mb-4" style="font-weight: bold;">Thông Tin Liên Hệ</h3>
 
                     <div class="contact-info-item">
                         <div class="contact-icon">
-                            <i class="fa-solid fa-location-dot" ></i>
+                            <i class="fa-solid fa-location-dot"></i>
                         </div>
                         <div class="contact-info-content">
                             <h4>Địa Chỉ</h4>
@@ -80,7 +98,10 @@
             <div class="col-lg-8 col-md-12">
                 <div class="contact-form">
                     <h3>Gửi Tin Nhắn Cho Chúng Tôi</h3>
-                    <form id="contactForm">
+
+                    @using (Html.BeginForm("SendMessage", "Contact", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="fullName" class="form-label">Họ và Tên <span class="text-danger">*</span></label>
@@ -118,7 +139,7 @@
                         <button type="submit" class="btn btn-primary btn-send">
                             <i class="fa-solid fa-paper-plane me-2"></i>Gửi Tin Nhắn
                         </button>
-                    </form>
+                    }
                 </div>
 
                 <!-- Map -->
@@ -137,4 +158,20 @@
     </div>
 </div>
 
-<script src="~/Scripts/Contact.js"></script>
+<style>
+    .alert {
+        animation: slideDown 0.5s ease;
+    }
+
+    @@keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

@@ -253,6 +253,6 @@ D:\Study\Web\Web\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrati
 D:\Study\Web\Web\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.AddDanhGia.resources
 D:\Study\Web\Web\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.csproj.GenerateResource.cache
 D:\Study\Web\Web\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.csproj.CoreCompileInputs.cache
-D:\Study\Web\Web\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.csproj.CopyComplete
 D:\Study\Web\Web\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.dll
 D:\Study\Web\Web\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.pdb
+D:\Study\Web\Web\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.csproj.CopyComplete

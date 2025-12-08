@@ -1,0 +1,230 @@
+﻿/* PROFILE PAGE STYLES */
+
+.profile-container {
+    margin-top: 100px;
+    margin-bottom: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}
+
+
+/* PROFILE HEADER */
+.profile-header {
+    background: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,25,47,1));
+    border-radius: 15px 15px 0 0;
+    padding: 30px;
+    color: white;
+    position: relative;
+}
+
+    .profile-header .back-btn {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        color: white;
+        font-size: 24px;
+        text-decoration: none;
+        transition: transform 0.3s ease;
+    }
+
+        .profile-header .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+    .profile-header h2 {
+        text-align: center;
+        font-size: 36px;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: 1px;
+    }
+
+
+/* PROFILE BODY */
+.profile-body {
+    background: white;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+}
+
+.profile-content {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+
+/* AVATAR SECTION */
+.profile-avatar {
+    flex-shrink: 0;
+}
+
+.avatar-wrapper {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid rgba(0,77,77,0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+    .avatar-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+/* INFO SECTION */
+.profile-info {
+    flex: 1;
+    padding-top: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+
+.info-label {
+    display: flex;
+    align-items: center;
+    min-width: 180px;
+    font-weight: 600;
+    color: rgba(0,25,47,1);
+    font-size: 15px;
+}
+
+    .info-label i {
+        width: 25px;
+        margin-right: 10px;
+        color: rgba(0,77,77,1);
+        font-size: 18px;
+    }
+
+.info-value {
+    color: #555;
+    font-size: 15px;
+    flex: 1;
+}
+
+
+/* ACTION BUTTONS */
+.profile-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.profile-btn {
+    flex: 1;
+    min-width: 200px;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, rgba(0,77,77,1), rgba(0,77,77,0.8));
+    color: white;
+}
+
+    .btn-edit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,77,77,0.3);
+        color: white;
+    }
+
+.btn-password {
+    background: linear-gradient(135deg, rgba(0,25,47,1), rgba(0,25,47,0.8));
+    color: white;
+}
+
+    .btn-password:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,25,47,0.3);
+        color: white;
+    }
+
+.btn-logout {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+    .btn-logout:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+        color: white;
+    }
+
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .profile-container {
+        margin-top: 80px;
+    }
+
+    .profile-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-info {
+        width: 100%;
+        padding-top: 0;
+    }
+
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .info-label {
+        min-width: auto;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+    }
+
+    .profile-btn {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .profile-header h2 {
+        font-size: 28px;
+    }
+
+    .profile-header .back-btn {
+        font-size: 20px;
+        top: 25px;
+        left: 20px;
+    }
+
+    .profile-body {
+        padding: 30px 20px;
+    }
+}
