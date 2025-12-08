@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using System.ComponentModel.DataAnnotations;
 
 namespace LTW_Ban_Sach.ViewModel
 {
-    public class Login
+    public class LoginModel
     {
         [Required(ErrorMessage = "Không được để trống")]
         public string UserName { get; set; }

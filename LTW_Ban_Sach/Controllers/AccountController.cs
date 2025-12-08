@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using System.IO;
 using LTW_Ban_Sach.Models;
+using System.Web.UI.WebControls;
 
 namespace LTW_Ban_Sach.Controllers
 {
@@ -55,7 +56,7 @@ namespace LTW_Ban_Sach.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Login(Login lg)
+        public ActionResult Login(LoginModel lg)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +80,7 @@ namespace LTW_Ban_Sach.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid username or password.");
+                    ModelState.AddModelError("", "Tên hoặc mật khẩu không đúng.");
                     return View();
                 }
             }
@@ -198,5 +199,55 @@ namespace LTW_Ban_Sach.Controllers
 
             return RedirectToAction("ProFile", new { userId = userId });
         }
+
+        public ActionResult ChangePassWord(string userId = "")
+        {
+            ViewBag.UserId = userId;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePassWord(ChangePasswordModel cpw)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            string userId = User.Identity.GetUserId();
+
+            var appDBContext = new AppDbContext();
+            var userStore = new AppUserStore(appDBContext);
+            var userManager = new AppUserManager(userStore);
+
+            var user = userManager.FindById(userId);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Không tìm thấy user!");
+                return View();
+            }
+
+            // Kiểm tra mật khẩu cũ
+            if (!userManager.CheckPassword(user, cpw.CurrentPassword))
+            {
+                ModelState.AddModelError("CurrentPassword", "Mật khẩu hiện tại không đúng.");
+                return View();
+            }
+
+            // Hash đúng chuẩn
+            var passwordHasher = new PasswordHasher();
+            user.PasswordHash = passwordHasher.HashPassword(cpw.NewPassword);
+
+            // Lưu user
+            IdentityResult result = userManager.Update(user);
+
+            // BẮT BUỘC phải check lỗi
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", result.Errors.FirstOrDefault());
+                return View();
+            }
+
+            TempData["SuccessMessage"] = "Đổi mật khẩu thành công!";
+            return RedirectToAction("Login", "Account");
+        }
+
     }
 }

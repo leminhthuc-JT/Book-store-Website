@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using LTW_Ban_Sach.Identity;
+using Microsoft.AspNet.Identity;
 
 namespace LTW_Ban_Sach.Controllers
 {
@@ -170,8 +171,9 @@ namespace LTW_Ban_Sach.Controllers
             ViewBag.BookList = books;
             ViewBag.img = imgB;
 
+            string userId = User.Identity.GetUserId();
             AppDbContext user = new AppDbContext();
-            AppUser u = user.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
+            AppUser u = user.Users.Where(x => x.Id == userId).FirstOrDefault();
             ViewBag.UserId = u.Id;
 
             ViewBag.CateId = Session["CateId"];

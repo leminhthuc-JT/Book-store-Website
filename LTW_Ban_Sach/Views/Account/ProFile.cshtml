@@ -17,16 +17,17 @@
     <div class="profile-body">
         @if (TempData["SuccessMessage"] != null)
         {
-            <div class="alert alert-success">
+            <div id="alertSuccess" class="alert alert-success">
                 <i class="fa-solid fa-check-circle"></i> @TempData["SuccessMessage"]
             </div>
         }
         @if (TempData["ErrorMessage"] != null)
         {
-            <div class="alert alert-danger">
+            <div id="alertError" class="alert alert-danger">
                 <i class="fa-solid fa-exclamation-circle"></i> @TempData["ErrorMessage"]
             </div>
         }
+
 
         <div class="profile-content">
             <div class="profile-avatar">
@@ -91,7 +92,7 @@
                 Chỉnh sửa thông tin
             </a>
 
-            <a href="/Account/ChangePassword?userId=@Model.Id" class="profile-btn btn-password">
+            <a href="/Account/ChangePassWord?userId=@Model.Id" class="profile-btn btn-password">
                 <i class="fa-solid fa-key"></i>
                 Đổi mật khẩu
             </a>
@@ -103,3 +104,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    setTimeout(function () {
+        var alertBox = document.getElementById("alertSuccess");
+        if (alertBox) {
+            alertBox.style.transition = "opacity 0.5s";
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 500);
+        }
+    }, 3000);
+    setTimeout(function () {
+        var alertBox = document.getElementById("alertError");
+        if (alertBox) {
+            alertBox.style.transition = "opacity 0.5s";
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 500);
+        }
+    }, 3000);
+</script>

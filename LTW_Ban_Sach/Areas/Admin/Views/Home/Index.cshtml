@@ -1,9 +1,88 @@
-﻿
+﻿@model List<LTW_Ban_Sach.Models.Bills>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Index</h2>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biểu đồ doanh thu tháng</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+
+        .chart-container {
+            width: 60%;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <td style="vertical-align: top; text-align: left;">
+
+                <div style="width: 500px;">
+                    <h2 style="text-align:left;">Doanh thu theo tháng</h2>
+
+                    <div class="chart-container" style="width: 600px; height: 400px;">
+                        <canvas id="monthlyRevenueChart"></canvas>
+                    </div>
+                </div>
+
+                <script>
+                    const revenueData = @Html.Raw(Json.Encode(ViewBag.DonHang));
+                    const ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
+                    const monthlyRevenueChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+                                "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+                            datasets: [{
+                                label: "Doanh thu (triệu VNĐ)",
+                                data: revenueData,
+
+                                backgroundColor: "rgba(75, 192, 192, 0.6)",
+                                borderColor: "rgba(75, 192, 192, 1)",
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: { display: true, text: "Triệu VNĐ" }
+                                }
+                            }
+                        }
+                    });
+                </script>
+                <h3>Tổng đơn hàng tháng này: @ViewBag.TongDonHang</h3>
+            </td>
+
+            <td>
+                @*<div class="card">
+                        <h3>Thống kê hệ thống</h3>
+                        <p>Tổng số sách: <b></b></p>
+                        <p>Tổng số người dùng: <b>@Model.TotalUsers</b></p>
+                        <p>Đơn hàng hôm nay: <b>@Model.TodayOrders</b></p>
+                        <p>Doanh thu hôm nay: <b>@Model.TodayRevenue VNĐ</b></p>
+                    </div>*@
+            </td>
+        </tr>
+    </table>
+
+
+
+</body>
+</html>
 
 

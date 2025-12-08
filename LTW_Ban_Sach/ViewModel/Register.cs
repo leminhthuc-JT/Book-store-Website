@@ -15,6 +15,8 @@ namespace LTW_Ban_Sach.ViewModel
 
 
         [Required(ErrorMessage = "Không được để trống")]
+        [RegularExpression("^[a-zA-Z0-9]+$",
+        ErrorMessage = "Username chỉ được chứa chữ thường, chữ hoa và số (không dấu, không khoảng trắng, không ký tự đặc biệt).")]
         public string UserName { get; set; }
 
 
