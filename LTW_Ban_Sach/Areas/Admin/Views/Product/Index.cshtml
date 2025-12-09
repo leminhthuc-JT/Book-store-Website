@@ -11,88 +11,89 @@
     <br />
     @Html.ActionLink("Create Product", "Create")
 </p>
-@*<button type="button" id=" btnGetBooks">Get Books</button>*@
-<table class="table bookTable" >
-    <tr>
+
+<button type="button" id="btnGetBooks">Get Books</button>
+<table class="table bookTable">
+    <tr class="table-success" style="text-align:center">
         <th>
-            @Html.DisplayNameFor(model => model.Categories.CateName)
+            Ảnh
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BookName)
+            Thể loại
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Author)
+            Tên sách
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Price)
+            Tác giả
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PublicationYear)
+            Giá
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Publisher)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.mainImage)
-        </th>
+
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Categories.CateName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublicationYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Publisher)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>*@
-            <td>
-               <img style="width:100px" src="@Url.Content("~/Content/Image/" + item.mainImage)" />
-                
-            </td>
-            <td>
-                
-                @Html.ActionLink("Edit", "Edit", new { id = item.BookId })
-                @Html.ActionLink("Details", "Details", new { id = item.BookId })
-                @Html.ActionLink("Delete", "Delete", new { id = item.BookId })
-            </td>
-        </tr>
-    }
+    @*@foreach (var item in Model)
+        {
+            <tr style="text-align:center">
+                <td style="text-align: center">
+                    <img style="width:100px" src="@Url.Content("~/Content/Image/" + item.mainImage)" />
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categories.CateName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+
+                <td>
+                </td>
+            </tr>
+            @Html.ActionLink("Edit", "Edit", new { id = item.BookId })
+            @Html.ActionLink("Details", "Details", new { id = item.BookId })
+            @Html.ActionLink("Delete", "Delete", new { id = item.BookId })
+        }*@
 
 </table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-@*<script>
-    $('.btnGetBooks').click(() => {
-        $.ajax({
-            type: 'GET',
-            url: '/api/Books',
-            success: (responses) => {
-                for (var i = 0; i <= responses.length; i++) {
-                    const bookRow = responses[i];
-                    const strHTML = '<tr><td>' + bookRow.BookID + '</tr><td>' + bookRow.BookName + '</td></tr>';
-                    $('.bookTable').append(strHTML);
-                }
-            },
-            error: (err) => { console.log(err); }
-        })
+<script>
+    $(document).ready(function () {
+
+        console.log("Script loaded OK!");
+
+        $('#btnGetBooks').click(() => {
+            console.log("Button clicked!");
+            $.ajax({
+                type: 'GET',
+                url: '/api/Books',
+                success: (responses) => {
+
+                    for (var i = 0; i < responses.length; i++) {
+
+                        const bookRow = responses[i];
+
+
+                        const strHTML = '<tr><td>' + bookRow.BookName + '</td><td>' + bookRow.CateId + '</td><td>' + bookRow.BookName + '</td><td>' + bookRow.Author + '</td><td>' + bookRow.Price + '</td></tr>';
+
+                        $('.bookTable').append(strHTML);
+                    }
+                },
+                error: (err) => { console.log(err); }
+            });
+        });
+
     });
-</script>*@
+</script>
+

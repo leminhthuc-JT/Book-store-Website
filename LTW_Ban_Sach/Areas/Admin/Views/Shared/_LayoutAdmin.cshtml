@@ -10,6 +10,7 @@
     <script src="~/Scripts/jquery-3.7.1.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>@ViewBag.Title</title>
 </head>
 <body style="background-color: var(--bg-color)">
@@ -65,42 +66,21 @@
                                 USERS
                             </a>
                         </li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item m-3 line">
-                                <a class="nav-link" href="/Home/ProFile?Name=@User.Identity.Name" style="font-size: 18px; font-weight: 300;"> Profile of @User.Identity.Name </a>
-                            </li>
-                            <li class="nav-item m-3 line">
-                                <a class="nav-link" href="#"><i class="fa-solid fa-cart-arrow-down" style="font-size: 18px; font-weight: 300; "></i></a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item dropdown_list m-3">
-                                <a class="nav-link"
-                                   href="#"
-                                   style="font-size: 18px; font-weight: 300;"
-                                   role="button"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                    ACCOUNT
-                                </a>
-                                <ul class="dropdown_menu">
-                                    <li>
-                                        <a class="dropdown_item"
-                                           href="/Account/Regester">
-                                            Register
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown_item"
-                                           href="/Account/Login">
-                                            Login
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
+                        <li class="nav-item m-3"
+                            style="margin-right: 30px;">
+                            <a class="nav-link"
+                               href="@Url.Action("Logout","Users")"
+                               style="font-size: 18px; font-weight: 300;">
+                                LOG OUT
+                            </a>
+                        </li>
+                        <li class="nav-item m-3"
+                            style="margin-right: 30px;">
+                            <a class="nav-link disabled text-light"
+                               style="font-size: 18px; font-weight: 300; text-shadow: 0px 0px 10px white">
+                                Hi ADMIN <i class="fa-solid fa-face-smile"></i>
+                            </a>
+                        </li>
 
                     </ul>
                 </div>

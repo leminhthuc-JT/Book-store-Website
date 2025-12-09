@@ -5,44 +5,124 @@
 }
 
 
-<br />
-<h2>Create</h2>
+<link rel="stylesheet" href="~/Content/EditProfile.css" />
 
-@using (Html.BeginForm("Create", "Users", FormMethod.Post))
-{
+<div class="edit-profile-container">
+    <div class="edit-profile-header">
+        <a href="javascript:history.back()" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h2>TẠO TÀI KHOẢN</h2>
+    </div>
 
-    <div>
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger", style = "font-size: 12px;" })
-    </div>
-    <div>
-        @Html.LabelFor(m => m.Email)
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger", style = "font-size: 12px;" })
-    </div>
-    <div>
-        @Html.LabelFor(m => m.Password)
-        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger", style = "font-size: 12px;" })
-    </div>
-    <div>
-        @Html.LabelFor(m => m.ConfirmPassword)
-        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+    <div class="edit-profile-body">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                <i class="fa-solid fa-check-circle"></i> @TempData["SuccessMessage"]
+            </div>
+        }
+
+
+        @using (Html.BeginForm("Create", "Users", new { area = "Admin" }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="userId" value="@ViewBag.UserId" />
+
+            <div class="form-section">
+                <label>
+                    <i class="fa-solid fa-person"></i>
+                    Tên tài khoản:
+                </label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-person"></i>
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Nhập tên tài khoản" })
+
+                </div>
+                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger", style = "font-size: 12px;" })
+            </div>
+            <div class="form-section">
+                <label>
+                    <i class="fa-solid fa-envelope"></i>
+                    Email:
+                </label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" , @placeholder = "Nhập email" })
+
+                </div>
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger", style = "font-size: 12px;" })
+            </div>
+            <div class="form-section">
+                <label>
+                    <i class="fa-solid fa-key"></i>
+                    Mật khẩu:
+                </label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-key"></i>
+
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" , @placeholder = "Nhập mật khẩu"})
+
+                </div>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger", style = "font-size: 12px;" })
+            </div>
+            <!---->
+    <div class="form-section">
+        <label>
+            <i class="fa-solid fa-key"></i>
+            Nhập lại mật khẩu:
+        </label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-key"></i>
+
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Nhập lại mật khẩu" })
+
+        </div>
         @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger", style = "font-size: 12px;" })
+
     </div>
-    <div>
-        @Html.LabelFor(m => m.PhoneNumber)
-        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+    <div class="form-section">
+        <label>
+            <i class="fa-solid fa-mobile"></i>
+            Số điện thoại:
+        </label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-mobile"></i>
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Số điện thoại" })
+
+
+        </div>
         @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger", style = "font-size: 12px;" })
     </div>
-    <div>
-        @Html.LabelFor(m => m.Address)
-        @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+    <div class="form-section">
+        <label>
+            <i class="fa-solid fa-location-crosshairs"></i>
+            Địa chỉ:
+        </label>
+        <div class="input-wrapper">
+            <i class="fa-solid fa-location-crosshairs"></i>
+
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" , @placeholder = "Địa chỉ" })
+
+
+        </div>
         @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger", style = "font-size: 12px;" })
     </div>
+            <div class="form-section">
 
-    <div style="margin-top: 10px;">
-        <button type="submit" class="btn btn-success">Create</button>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Lưu thay đổi
+                </button>
+                <a href="javascript:history.back()" class="btn-cancel">
+                    <i class="fa-solid fa-xmark"></i>
+                    Hủy bỏ
+                </a>
+            </div>
+        }
     </div>
-}
+</div>

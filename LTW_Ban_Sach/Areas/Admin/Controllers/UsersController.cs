@@ -1,7 +1,8 @@
 ﻿using LTW_Ban_Sach.Identity;
+using LTW_Ban_Sach.Models;
 using LTW_Ban_Sach.ViewModel;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,14 @@ namespace LTW_Ban_Sach.Areas.Admin.Controllers
         }
         // GET: Admin/Users
         // ---------------- DANH SÁCH ----------------
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
             var users = db.Users.ToList();
+            int temp = 10;
+            int pageNumber = (int)Math.Ceiling(((double)users.Count() / temp));
+            users = users.Skip((page - 1) * temp).Take(temp).ToList();
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.Page = page;
             return View(users);
         }
         
@@ -43,28 +49,35 @@ namespace LTW_Ban_Sach.Areas.Admin.Controllers
                 var appDBContext = new AppDbContext();
                 var userStore = new AppUserStore(appDBContext);
                 var userManager = new AppUserManager(userStore);
-                //var passHash = Crypto.HashPassword(re.Password);
+
+                // KHÔNG tự hash password
                 var user = new AppUser()
                 {
                     Email = re.Email,
                     UserName = re.UserName,
-                    //PasswordHash = passHash,
                     PhoneNumber = re.PhoneNumber,
                     Address = re.Address
                 };
+
+                // Identity sẽ tự hash password
                 IdentityResult identityResult = userManager.Create(user, re.Password);
 
                 if (identityResult.Succeeded)
                 {
                     userManager.AddToRole(user.Id, "Customer");
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
+                else
+                {
+                    // Hiển thị lỗi nếu tạo thất bại
+                    foreach (var error in identityResult.Errors)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+            }
 
-            }
-            else
-            {
-                return View();
-            }
+            return View(re);
         }
 
 
@@ -116,6 +129,13 @@ namespace LTW_Ban_Sach.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Logout()
+        {
+            HttpContext.GetOwinContext().Authentication
+                .SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            return RedirectToAction("Index", "Home", new { area = "" });
+        }
 
     }
 }
