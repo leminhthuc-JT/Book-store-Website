@@ -4,6 +4,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -11,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Biểu đồ doanh thu tháng</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,71 +20,103 @@
             background: #f9f9f9;
         }
 
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+        }
+
+        /* Cột trái */
+        .left {
+            width: 55%;
+        }
+
+        /* Cột phải */
+        .right {
+            width: 45%;
+            text-align: right;
+        }
+
         .chart-container {
-            width: 60%;
-            margin: auto;
+            width: 100%;
+            height: 400px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 250px;
+            border: 0;
+            border-radius: 6px;
         }
     </style>
 </head>
+
 <body>
-    <table>
-        <tr>
-            <td style="vertical-align: top; text-align: left;">
+    <br />
+    <br />
 
-                <div style="width: 500px;">
-                    <h2 style="text-align:left;">Doanh thu theo tháng</h2>
+    <div class="container">
 
-                    <div class="chart-container" style="width: 600px; height: 400px;">
-                        <canvas id="monthlyRevenueChart"></canvas>
-                    </div>
-                </div>
+        <!-- CỘT TRÁI (BIỂU ĐỒ) -->
+        <div class="left">
+            <br />
+            <h2>Doanh thu theo tháng</h2>
 
-                <script>
-                    const revenueData = @Html.Raw(Json.Encode(ViewBag.DonHang));
-                    const ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
-                    const monthlyRevenueChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-                                "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
-                            datasets: [{
-                                label: "Doanh thu (triệu VNĐ)",
-                                data: revenueData,
+            <div class="chart-container">
+                <canvas id="monthlyRevenueChart"></canvas>
+            </div>
 
-                                backgroundColor: "rgba(75, 192, 192, 0.6)",
-                                borderColor: "rgba(75, 192, 192, 1)",
-                                borderWidth: 2
-                            }]
-                        },
-                        options: {
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    title: { display: true, text: "Triệu VNĐ" }
-                                }
+            <h3 style="margin-top:15px;">Tổng đơn hàng tháng này: @ViewBag.TongDonHang</h3>
+
+            <script>
+                const revenueData = @Html.Raw(Json.Encode(ViewBag.DonHang));
+
+                const ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
+
+                const monthlyRevenueChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+                            "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+                        datasets: [{
+                            label: "Số lượng đơn",
+                            data: revenueData,
+                            backgroundColor: "rgba(75, 192, 192, 0.6)",
+                            borderColor: "rgba(75, 192, 192, 1)",
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: "Đơn" }
                             }
                         }
-                    });
-                </script>
-                <h3>Tổng đơn hàng tháng này: @ViewBag.TongDonHang</h3>
-            </td>
+                    }
+                });
+            </script>
+        </div>
 
-            <td>
-                @*<div class="card">
-                        <h3>Thống kê hệ thống</h3>
-                        <p>Tổng số sách: <b></b></p>
-                        <p>Tổng số người dùng: <b>@Model.TotalUsers</b></p>
-                        <p>Đơn hàng hôm nay: <b>@Model.TodayOrders</b></p>
-                        <p>Doanh thu hôm nay: <b>@Model.TodayRevenue VNĐ</b></p>
-                    </div>*@
-            </td>
-        </tr>
-    </table>
+        <!-- CỘT PHẢI (GOOGLE MAP) -->
+        <br />
+        <br />
+        <div class="right">
+            <br />
+            <h3> Vị trí cửa hàng </h3>
+            <br />
+            <h5> Địa chỉ: 140 Lê Trọng Tấn, phường Sơn Kỳ, Tân Phú, TPHCM</h5>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62708.14330838098!2d106.61924211079099!3d10.791467800000023!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be27d8b4f4d%3A0x92dcba2950430867!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBUaMawxqFuZyBUUC4gSOG7kyBDaMOtIE1pbmggKEhVSVQp!5e0!3m2!1svi!2s!4v1765205841016!5m2!1svi!2s"
+                    loading="lazy"
+                    allowfullscreen=""
+                    referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
 
-
+    </div>
 
 </body>
 </html>
-
 
