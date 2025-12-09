@@ -1,0 +1,46 @@
+﻿@model IEnumerable<LTW_Ban_Sach.Identity.AppUser>
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<h2>Quản lý tài khoản</h2>
+
+<br />
+<br />
+<p>
+    @*<a href="~/Areas/Admin/Controllers/UsersController.cs" class="btn btn-primary">+ Thêm User</a>*@
+    @Html.ActionLink("Thêm User ", "Create")
+</p>
+
+<table class="table table-bordered border-black">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Họ tên</th>
+            <th>SĐT</th>
+            <th>Địa chỉ</th>
+            <th>Ảnh đại diện </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.Email</td>
+                <td>@u.UserName</td>
+                <td>@u.PhoneNumber</td>
+                <td>@u.Address</td>
+                <td>@u.Avatar </td>
+                <td>
+                    <a class="btn btn-success"
+                       href="@Url.Action("Edit", "Users", new { id = u.Id })">Sửa</a>
+                    <a class="btn btn-danger"
+                       href="@Url.Action("Delete", "Users", new { id = u.Id })">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

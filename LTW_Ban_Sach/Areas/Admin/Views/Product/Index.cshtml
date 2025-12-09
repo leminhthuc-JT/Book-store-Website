@@ -11,7 +11,8 @@
     <br />
     @Html.ActionLink("Create Product", "Create")
 </p>
-<table class="table">
+@*<button type="button" id=" btnGetBooks">Get Books</button>*@
+<table class="table bookTable" >
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Categories.CateName)
@@ -31,9 +32,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Publisher)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.Description)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.mainImage)
         </th>
@@ -61,13 +62,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Publisher)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Description)
+            </td>*@
+            <td>
+               <img style="width:100px" src="@Url.Content("~/Content/Image/" + item.mainImage)" />
+                
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.mainImage)
-            </td>
-            <td>
+                
                 @Html.ActionLink("Edit", "Edit", new { id = item.BookId })
                 @Html.ActionLink("Details", "Details", new { id = item.BookId })
                 @Html.ActionLink("Delete", "Delete", new { id = item.BookId })
@@ -76,3 +79,20 @@
     }
 
 </table>
+
+@*<script>
+    $('.btnGetBooks').click(() => {
+        $.ajax({
+            type: 'GET',
+            url: '/api/Books',
+            success: (responses) => {
+                for (var i = 0; i <= responses.length; i++) {
+                    const bookRow = responses[i];
+                    const strHTML = '<tr><td>' + bookRow.BookID + '</tr><td>' + bookRow.BookName + '</td></tr>';
+                    $('.bookTable').append(strHTML);
+                }
+            },
+            error: (err) => { console.log(err); }
+        })
+    });
+</script>*@

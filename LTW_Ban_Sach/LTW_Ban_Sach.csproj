@@ -181,6 +181,13 @@
     <Content Include="Content\EditProfile.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Image\caong1.png" />
+    <Content Include="Content\Image\lung_tay_1.png" />
+    <Content Include="Content\Image\muado1.png" />
+    <Content Include="Content\Image\nong_truong_1.png" />
+    <Content Include="Content\Image\quai_vat_1.png" />
+    <Content Include="Content\Image\tuot_dot_1.png" />
+    <Content Include="Content\Image\vuong_quoc_sach_1.png" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\Profile.css" />
     <Content Include="Content\Style.css" />
@@ -195,11 +202,14 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllers\BooksController.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartsController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
@@ -313,6 +323,10 @@
     <Content Include="Areas\Admin\Views\Product\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Product\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Delete.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\_LayoutUser.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
@@ -343,7 +357,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Content\Image\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="IdentityMigrations\202511161436163_init.resx">

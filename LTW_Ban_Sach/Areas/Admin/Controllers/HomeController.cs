@@ -13,42 +13,32 @@ namespace LTW_Ban_Sach.Areas.Admin.Controllers
         // GET: Admin/Home
         public ActionResult Index()
         {
-            return View();
-        }
-        public ActionResult ThongKe()
-        {
             DBContext db = new DBContext();
-            List<Bills> bills = new List<Bills>();
             int month = DateTime.Now.Month;
             int year = DateTime.Now.Year;
-            foreach (Bills b in bills)
+            ViewBag.month = month;
+            ViewBag.year = year;
+            int tongDonHang = 0;
+            int DonHang = 0;
+            List<Bills> b = db.Bills.Where(r => r.CreateDate.Month == month && r.CreateDate.Year == year).ToList();
+            if (b != null)
             {
-                int tongDonHang = db.Bills
-                .Where(o => o.CreateDate.Month == month && o.CreateDate.Year == year)
-                .Count();
-                if (tongDonHang == 0 || tongDonHang == null)
-                    ViewBag.TongDonHang = 0;
-                else
-                    ViewBag.TongDonHang += tongDonHang;
+                tongDonHang = b.Count();
+            }
+            ViewBag.TongDonHang = tongDonHang;
+            List<int> SoLuongDon = new List<int>();
+            for (int i = 1; i <= 12; i++)
+            {
+                List<Bills> dsbills = db.Bills.Where(o => o.CreateDate.Month == i && o.CreateDate.Year == year).ToList();
+                if (b != null)
+                {
+                    DonHang = b.Count();
+                }
+                SoLuongDon.Add(DonHang);
+                ViewBag.SoLuongDon = SoLuongDon;
             }
 
-            return View();
-        }
-        public ActionResult BieuDo()
-        {
-            DBContext db = new DBContext();
-            List<Bills> bills = new List<Bills>();
-            List<int> DonHang = new List<int>();
-            int month = DateTime.Now.Month;
-            int year = DateTime.Now.Year;
-            foreach (Bills b in bills)
-            {
-                int Donhang = db.Bills
-               .Where(o => o.CreateDate.Month == month && o.CreateDate.Year == year)
-               .Count();
-                DonHang.Add(Donhang);
-            }
-            ViewBag.DonHang = DonHang;
+
             return View();
         }
 
