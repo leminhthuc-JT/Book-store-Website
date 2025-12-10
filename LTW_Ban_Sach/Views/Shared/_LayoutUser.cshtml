@@ -63,12 +63,17 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item m-3 line">
+                                <a class="nav-link" href="/Orders/Index?userId=@User.Identity.GetUserId()" style="font-size: 18px; font-weight: 300;"> MY ORDERS </a>
+                            </li>
+                            <li class="nav-item m-3 line">
                                 <a class="nav-link" href="/Account/ProFile?userId=@User.Identity.GetUserId()" style="font-size: 18px; font-weight: 300;"> Profile of @User.Identity.Name </a>
                             </li>
+
                             <li class="nav-item m-3 line">
                                 <a class="nav-link" href="/Carts/Index?userId=@User.Identity.GetUserId()"><i class="fa-solid fa-basket-shopping" style="font-size: 18px;"></i></a>
                             </li>
                         }
+
                         else
                         {
                             <li class="nav-item dropdown_list m-3">
@@ -96,7 +101,7 @@
                                 </ul>
                             </li>
                         }
-                        
+
                     </ul>
                 </div>
             </div>

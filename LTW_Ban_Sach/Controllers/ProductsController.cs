@@ -162,21 +162,54 @@ namespace LTW_Ban_Sach.Controllers
             Session["Page"] = page;
             return View(books);
         }
-        public ActionResult Detail (int id, int cateid)
+        public ActionResult Detail(int id, int cateid)
         {
-            
             Books b = db.Books.Where(x => x.BookId == id).FirstOrDefault();
-            List<ImagesBook> imgB = db.ImagesBooks.Where(x=>x.BookId == id).ToList();
+            List<ImagesBook> imgB = db.ImagesBooks.Where(x => x.BookId == id).ToList();
             List<Books> books = db.Books.Where(x => x.CateId == cateid && x.BookId != id).ToList();
+
+            // Lấy danh sách đánh giá
+            List<DanhGia> reviews = db.DanhGias.Where(x => x.BookId == id).OrderByDescending(x => x.ReviewDate).ToList();
+
+            // Tính điểm trung bình
+            double avgRating = 0;
+            if (reviews.Count > 0)
+            {
+                avgRating = reviews.Average(x => x.Rating);
+            }
+
+            // Tạo Dictionary để map userId với userName
+            AppDbContext userDb = new AppDbContext();
+            Dictionary<string, string> userNames = new Dictionary<string, string>();
+            foreach (var review in reviews)
+            {
+                if (!userNames.ContainsKey(review.Id))
+                {
+                    var user = userDb.Users.FirstOrDefault(x => x.Id == review.Id);
+                    userNames[review.Id] = user?.UserName ?? "User";
+                }
+            }
 
             ViewBag.BookList = books;
             ViewBag.img = imgB;
+            ViewBag.Reviews = reviews;
+            ViewBag.UserNames = userNames; // Thêm Dictionary này
+            ViewBag.AvgRating = Math.Round(avgRating, 1);
+            ViewBag.ReviewCount = reviews.Count;
 
             string userId = User.Identity.GetUserId();
-            AppDbContext user = new AppDbContext();
-            AppUser u = user.Users.Where(x => x.Id == userId).FirstOrDefault();
-            ViewBag.UserId = u.Id;
+            AppUser u = userDb.Users.Where(x => x.Id == userId).FirstOrDefault();
 
+            // Kiểm tra user đã đánh giá chưa
+            bool hasReviewed = false;
+            if (u != null)
+            {
+                hasReviewed = db.DanhGias.Any(x => x.BookId == id && x.Id == u.Id);
+            }
+
+            ViewBag.UserId = u?.Id;
+            ViewBag.UserName = u?.UserName;
+            ViewBag.HasReviewed = hasReviewed;
             ViewBag.CateId = Session["CateId"];
             ViewBag.Search = Session["Search"];
             ViewBag.Date = Session["Date"];
@@ -187,5 +220,63 @@ namespace LTW_Ban_Sach.Controllers
             return View(b);
         }
 
+        [HttpPost]
+        [Authorize]
+        public ActionResult AddReview(int bookId, string userId, int rating, string comment, HttpPostedFileBase imageFile)
+        {
+            try
+            {
+                // Kiểm tra user đã đánh giá chưa
+                var existingReview = db.DanhGias.FirstOrDefault(x => x.BookId == bookId && x.Id == userId);
+                if (existingReview != null)
+                {
+                    TempData["Error"] = "Bạn đã đánh giá sản phẩm này rồi!";
+                    return RedirectToAction("Detail", new { id = bookId, cateid = db.Books.Find(bookId).CateId });
+                }
+
+                string imageUrl = null;
+
+                // Xử lý upload ảnh nếu có
+                if (imageFile != null && imageFile.ContentLength > 0)
+                {
+                    string fileName = System.IO.Path.GetFileName(imageFile.FileName);
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
+                    string path = System.IO.Path.Combine(Server.MapPath("~/Content/Image/Reviews/"), uniqueFileName);
+
+                    // Tạo thư mục nếu chưa có
+                    string directory = System.IO.Path.GetDirectoryName(path);
+                    if (!System.IO.Directory.Exists(directory))
+                    {
+                        System.IO.Directory.CreateDirectory(directory);
+                    }
+
+                    imageFile.SaveAs(path);
+                    imageUrl = "Reviews/" + uniqueFileName;
+                }
+
+                // Tạo đánh giá mới
+                DanhGia review = new DanhGia
+                {
+                    BookId = bookId,
+                    Id = userId,
+                    Rating = rating,
+                    Comment = comment,
+                    ReviewDate = DateTime.Now,
+                    ImageUrl = imageUrl
+                };
+
+                db.DanhGias.Add(review);
+                db.SaveChanges();
+
+                TempData["Success"] = "Đánh giá của bạn đã được gửi thành công!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Có lỗi xảy ra: " + ex.Message;
+            }
+
+            var book = db.Books.Find(bookId);
+            return RedirectToAction("Detail", new { id = bookId, cateid = book.CateId });
+        }
     }
 }

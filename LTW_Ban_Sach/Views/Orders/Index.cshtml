@@ -1,0 +1,207 @@
+﻿@model List<LTW_Ban_Sach.Models.Bills>
+@{
+    ViewBag.Title = "Lịch sử đơn hàng";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<style>
+    .gradient-tech {
+        background: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,77,77,1), rgba(0,25,47,1), rgba(0,25,47,1), rgba(10,25,47,1));
+    }
+
+    .order-container {
+        margin-top: 100px;
+        padding: 20px;
+    }
+
+    .order-header {
+        background: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,77,77,1), rgba(0,25,47,1), rgba(0,25,47,1), rgba(10,25,47,1));
+        padding: 25px 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 25px rgba(0,77,77,0.25);
+    }
+
+    .order-header h2 {
+        color: white;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .empty-order {
+        text-align: center;
+        padding: 50px;
+        background: rgba(0,77,77,0.05);
+        border-radius: 12px;
+        color: #004d4d;
+        font-size: 1.1rem;
+    }
+
+    .order-table-wrapper {
+        background: white;
+        border-radius: 12px;
+        overflow: visible;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .order-table {
+        margin-bottom: 0;
+        width: 100%;
+        table-layout: auto;
+    }
+
+    .order-table thead {
+        background: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,77,77,1), rgba(0,25,47,1), rgba(0,25,47,1), rgba(10,25,47,1));
+    }
+
+    .order-table thead th {
+        color: white !important;
+        font-weight: 600;
+        padding: 16px;
+        border: none;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        background: transparent;
+    }
+
+    .order-table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(0,77,77,0.1);
+    }
+
+    .order-table tbody tr:hover {
+        background: rgba(0,77,77,0.05);
+        transform: translateX(3px);
+    }
+
+    .order-table tbody td {
+        padding: 18px 16px;
+        vertical-align: middle;
+        white-space: normal;
+        word-wrap: break-word;
+        color: #333;
+        background: white;
+    }
+
+    .order-id {
+        font-weight: 700;
+        color: #004d4d;
+        font-size: 1.05rem;
+    }
+
+    .payment-badge {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+
+    .payment-cod {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        color: white;
+    }
+
+    .payment-banking {
+        background: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,25,47,1));
+        color: white;
+    }
+
+    .total-price {
+        color: #d32f2f;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    .product-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .product-list li {
+        padding: 6px 0;
+        padding-left: 18px;
+        position: relative;
+        color: #555;
+    }
+
+    .product-list li:before {
+        content: "▸";
+        position: absolute;
+        left: 0;
+        color: #004d4d;
+        font-weight: bold;
+    }
+
+    .product-list li:not(:last-child) {
+        border-bottom: 1px dashed rgba(0,77,77,0.15);
+    }
+
+
+</style>
+
+<div class="container order-container">
+    <div class="order-header">
+        <h2>Lịch sử đơn hàng của bạn</h2>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="empty-order">
+            <p>Bạn chưa có đơn hàng nào.</p>
+        </div>
+    }
+    else
+    {
+        <div class="order-table-wrapper">
+            <table class="table table-hover order-table">
+                <thead>
+                    <tr>
+                        <th>Mã Đơn</th>
+                        <th>Ngày đặt</th>
+                        <th>Thanh toán</th>
+                        <th>Tổng tiền</th>
+                        <th>Chi tiết sản phẩm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var bill in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="order-id">#@bill.BillId</span>
+                            </td>
+                            <td>@bill.CreateDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                @if (bill.PaymentMethod == "COD")
+                                {
+                                    <span class="payment-badge payment-cod">Tiền mặt (COD)</span>
+                                }
+                                else if (bill.PaymentMethod == "Banking")
+                                {
+                                    <span class="payment-badge payment-banking">Chuyển khoản</span>
+                                }
+                                else
+                                {
+                                    <span class="payment-badge payment-cod">@bill.PaymentMethod</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="total-price">@bill.TotalAmount.ToString("N0") VNĐ</span>
+                            </td>
+                            <td>
+                                <ul class="product-list">
+                                    @foreach (var detail in bill.DetailBills)
+                                    {
+                                        <li>@detail.Books.BookName (x@detail.Quantity)</li>
+                                    }
+                                </ul>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

@@ -1,6 +1,6 @@
 ﻿@model List<LTW_Ban_Sach.Models.Bills>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản lý đơn hàng";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -30,19 +30,15 @@
         align-items: center;
     }
 
-    .page-header h2 {
-        margin: 0;
-        font-size: 32px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-top:35px;
-    }
-
-    .page-header h2 i {
-        font-size: 36px;
-    }
+        .page-header h2 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 35px;
+        }
 
     .header-stats {
         display: flex;
@@ -60,11 +56,6 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        
-    }
-
-    .stat-badge i {
-        font-size: 16px;
     }
 
     .orders-card {
@@ -86,46 +77,45 @@
         background: white;
     }
 
-    .modern-table thead {
-        background: var(--gradient-tech);
-        color: white;
-    }
+        .modern-table thead {
+            background: var(--gradient-tech);
+            color: white;
+        }
 
-    .modern-table thead th {
-        padding: 18px 20px;
-        text-align: left;
-        font-weight: 600;
-        font-size: 14px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        border: none;
-    }
+            .modern-table thead th {
+                padding: 18px 20px;
+                text-align: left;
+                font-weight: 600;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border: none;
+            }
 
-    .modern-table thead th:first-child {
-        border-radius: 10px 0 0 0;
-    }
+                .modern-table thead th:first-child {
+                    border-radius: 10px 0 0 0;
+                }
 
-    .modern-table thead th:last-child {
-        border-radius: 0 10px 0 0;
-    }
+                .modern-table thead th:last-child {
+                    border-radius: 0 10px 0 0;
+                }
 
-    .modern-table tbody tr {
-        transition: all 0.3s ease;
-        border-bottom: 1px solid #e0e0e0;
-    }
+        .modern-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #e0e0e0;
+        }
 
-    .modern-table tbody tr:hover {
-        background: rgba(0, 77, 77, 0.05);
-        transform: scale(1.01);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
+            .modern-table tbody tr:hover {
+                background: rgba(0, 77, 77, 0.05);
+                transform: scale(1.01);
+            }
 
-    .modern-table tbody td {
-        padding: 20px;
-        font-size: 15px;
-        color: #333;
-        vertical-align: middle;
-    }
+        .modern-table tbody td {
+            padding: 20px;
+            font-size: 15px;
+            color: #333;
+            vertical-align: middle;
+        }
 
     .bill-id {
         font-weight: 700;
@@ -136,10 +126,6 @@
         gap: 8px;
     }
 
-    .bill-id i {
-        color: var(--primary-color);
-    }
-
     .date-cell {
         display: flex;
         align-items: center;
@@ -147,11 +133,7 @@
         color: #555;
     }
 
-    .date-cell i {
-        color: var(--primary-color);
-        font-size: 18px;
-    }
-
+    /* Badge styles */
     .detail-badge {
         display: inline-block;
         padding: 6px 15px;
@@ -174,8 +156,32 @@
         box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
     }
 
-    .voucher-badge i {
-        margin-right: 5px;
+    /* --- STYLE MỚI CHO PAYMENT --- */
+    .payment-badge {
+        display: inline-block;
+        padding: 6px 15px;
+        border-radius: 15px;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        min-width: 80px;
+    }
+
+    .payment-cod {
+        background-color: #f1c40f; /* Màu vàng cam */
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(241, 196, 15, 0.3);
+    }
+
+    .payment-banking {
+        background-color: #2ecc71; /* Màu xanh lá */
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(46, 204, 113, 0.3);
+    }
+
+    .payment-other {
+        background-color: #95a5a6;
+        color: white;
     }
 
     .no-voucher {
@@ -184,86 +190,48 @@
         font-size: 13px;
     }
 
+    /* Button styles */
     .action-buttons {
         display: flex;
         gap: 10px;
+        justify-content: center;
     }
 
     .btn-action {
-        padding: 8px 16px;
+        width: 40px;
+        height: 40px;
         border-radius: 8px;
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 600;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
         transition: all 0.3s ease;
         border: none;
         cursor: pointer;
+        color: white !important;
     }
 
     .btn-view {
         background: var(--gradient-tech);
-        color: white;
-    }
-
-    .btn-view:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 77, 77, 0.3);
-        color: white;
-        text-decoration: none;
     }
 
     .btn-edit {
         background: #3498db;
-        color: white;
-    }
-
-    .btn-edit:hover {
-        background: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        color: white;
-        text-decoration: none;
     }
 
     .btn-delete {
         background: #e74c3c;
-        color: white;
     }
 
-    .btn-delete:hover {
-        background: #c0392b;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
-        color: white;
-        text-decoration: none;
-    }
+        .btn-view:hover, .btn-edit:hover, .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
 
     .empty-state {
         text-align: center;
         padding: 60px 20px;
         color: #999;
     }
-
-    .empty-state i {
-        font-size: 80px;
-        color: #ddd;
-        margin-bottom: 20px;
-    }
-
-    .empty-state h3 {
-        color: #666;
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
-
-    .empty-state p {
-        color: #999;
-        font-size: 16px;
-    }
-
 </style>
 
 <div class="orders-container">
@@ -287,8 +255,9 @@
                 <table class="modern-table">
                     <thead>
                         <tr>
-                            <th><i class="fa-solid fa-hashtag"></i> MÃ ĐƠN HÀNG</th>
+                            <th><i class="fa-solid fa-hashtag"></i> MÃ</th>
                             <th><i class="fa-solid fa-calendar-days"></i> NGÀY TẠO</th>
+                            <th><i class="fa-solid fa-credit-card"></i> THANH TOÁN</th>
                             <th><i class="fa-solid fa-money-bill-wave"></i> TỔNG TIỀN</th>
                             <th><i class="fa-solid fa-list-ul"></i> CHI TIẾT</th>
                             <th><i class="fa-solid fa-ticket"></i> VOUCHER</th>
@@ -300,10 +269,7 @@
                         {
                             <tr>
                                 <td>
-                                    <div class="bill-id">
-                                        <i class="fa-solid fa-file-invoice"></i>
-                                        #@bill.BillId
-                                    </div>
+                                    <div class="bill-id">#@bill.BillId</div>
                                 </td>
                                 <td>
                                     <div class="date-cell">
@@ -311,9 +277,32 @@
                                         @bill.CreateDate.ToString("dd/MM/yyyy HH:mm")
                                     </div>
                                 </td>
+
+                                <td>
+                                    @if (string.IsNullOrEmpty(bill.PaymentMethod))
+                                    {
+                                        <span class="payment-badge payment-other">Chưa rõ</span>
+                                    }
+                                    else if (bill.PaymentMethod == "COD")
+                                    {
+                                        <span class="payment-badge payment-cod">
+                                            <i class="fa-solid fa-truck"></i> COD
+                                        </span>
+                                    }
+                                    else if (bill.PaymentMethod == "Banking")
+                                    {
+                                        <span class="payment-badge payment-banking">
+                                            <i class="fa-solid fa-building-columns"></i> Banking
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="payment-badge payment-other">@bill.PaymentMethod</span>
+                                    }
+                                </td>
+
                                 <td>
                                     <div class="bill-id" style="color: #e74c3c;">
-                                        <i class="fa-solid fa-dollar-sign"></i>
                                         @bill.TotalAmount.ToString("N0") đ
                                     </div>
                                 </td>
@@ -321,33 +310,37 @@
                                     @if (bill.DetailBills != null && bill.DetailBills.Count > 0)
                                     {
                                         <span class="detail-badge">
-                                            <i class="fa-solid fa-box"></i>
-                                            @bill.DetailBills.Count sản phẩm
+                                            <i class="fa-solid fa-box"></i> @bill.DetailBills.Count SP
                                         </span>
                                     }
                                     else
                                     {
-                                        <span class="no-voucher">Không có chi tiết</span>
+                                        <span class="no-voucher">Trống</span>
                                     }
                                 </td>
                                 <td>
                                     @if (bill.Vouchers != null && !string.IsNullOrEmpty(bill.Vouchers.VoucherName))
                                     {
                                         <span class="voucher-badge">
-                                            <i class="fa-solid fa-tag"></i>
-                                            @bill.Vouchers.VoucherName
+                                            <i class="fa-solid fa-tag"></i> @bill.Vouchers.VoucherName
                                         </span>
                                     }
                                     else
                                     {
-                                        <span class="no-voucher">Không áp dụng</span>
+                                        <span class="no-voucher">---</span>
                                     }
                                 </td>
                                 <td style="text-align: center;">
                                     <div class="action-buttons">
-                                        @Html.ActionLink("", "Details", new { id = bill.BillId }, new { @class = "btn-action btn-view", title = "Xem chi tiết" })
-                                        @Html.ActionLink("", "Edit", new { id = bill.BillId }, new { @class = "btn-action btn-edit", title = "Chỉnh sửa" })
-                                        @Html.ActionLink("", "Delete", new { id = bill.BillId }, new { @class = "btn-action btn-delete", title = "Xóa", onclick = "return confirm('Bạn có chắc muốn xóa đơn hàng này?');" })
+                                        <a href='@Url.Action("Details", new { id = bill.BillId })' class="btn-action btn-view" title="Xem">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                        <a href='@Url.Action("Delete", new { id = bill.BillId })'
+                                           class="btn-action btn-delete"
+                                           title="Xóa"
+                                           onclick="return confirm('Bạn có chắc muốn xóa đơn này?');">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -358,9 +351,8 @@
             else
             {
                 <div class="empty-state">
-                    <i class="fa-solid fa-inbox"></i>
+                    <i class="fa-solid fa-inbox" style="font-size: 60px;"></i>
                     <h3>Chưa có đơn hàng nào</h3>
-                    <p>Danh sách đơn hàng đang trống. Đơn hàng sẽ xuất hiện ở đây khi có khách hàng đặt hàng.</p>
                 </div>
             }
         </div>
