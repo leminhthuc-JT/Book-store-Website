@@ -9,8 +9,8 @@ namespace LTW_Ban_Sach.Models
     public class DBContext:DbContext
     {
         public DBContext() : base("MyConnectionString") {
-            this.Configuration.LazyLoadingEnabled = false;
-            this.Configuration.ProxyCreationEnabled = false;
+            //this.Configuration.LazyLoadingEnabled = false;
+            //this.Configuration.ProxyCreationEnabled = false;
         }
         public DbSet<Books> Books { get; set; }
         public DbSet<Categories> Categories { get; set; }

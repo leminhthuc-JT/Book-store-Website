@@ -1,0 +1,311 @@
+﻿@model LTW_Ban_Sach.Models.Bills
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    :root {
+        /* Dải màu Tech Gradient đồng bộ */
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+        --primary-teal: rgba(0,77,77,1);
+        --text-dark: #2d3748;
+        --text-muted: #718096;
+    }
+
+    .page-header {
+        background: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-left: 5px solid var(--primary-teal);
+    }
+
+    .page-title {
+        margin: 0;
+        font-weight: 700;
+        color: white;
+        font-size: 24px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top:35px;
+    }
+
+    .btn-back {
+        background: #e2e8f0;
+        color: var(--text-dark);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s;
+        margin-top:35px;
+    }
+
+        .btn-back:hover {
+            background: #cbd5e0;
+            transform: translateX(-3px);
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+    /* Card Styling */
+    .custom-card {
+        background: white;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+    .card-header-tech {
+        background: var(--gradient-tech);
+        color: white;
+        padding: 15px 20px;
+        font-weight: 600;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Info List Styling */
+    .info-list {
+        list-style: none;
+        padding: 20px;
+        margin: 0;
+    }
+
+        .info-list li {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+            .info-list li:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+
+    .info-label {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        color: var(--text-dark);
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    /* Table Styling */
+    .table-custom thead {
+        background-color: #f7fafc;
+        color: var(--primary-teal);
+    }
+
+    .table-custom th {
+        font-weight: 700;
+        border-top: none;
+        padding: 15px;
+    }
+
+    .table-custom td {
+        vertical-align: middle;
+        padding: 15px;
+        border-bottom: 1px solid #edf2f7;
+    }
+
+    .product-img {
+        width: 50px;
+        height: 65px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Total Section */
+    .total-container {
+        background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+        padding: 20px;
+        text-align: center;
+        border-top: 2px solid #fc8181;
+    }
+
+    .total-price {
+        font-size: 28px;
+        font-weight: 800;
+        color: #e53e3e; /* Red for emphasis */
+        margin-top: 5px;
+    }
+
+    /* Badges */
+    .badge-custom {
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .badge-cod {
+        background-color: #feebc8;
+        color: #c05621;
+    }
+
+    .badge-banking {
+        background-color: #c6f6d5;
+        color: #276749;
+    }
+</style>
+
+<div class="container-fluid" style="max-width: 1400px; margin-top: 30px;">
+
+    <div class="page-header">
+        <h2 class="page-title">
+            <i class="fa-solid fa-file-invoice-dollar me-2"></i> Chi tiết đơn hàng #@Model.BillId
+        </h2>
+        <a href="@Url.Action("Index")" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="custom-card">
+                <div class="card-header-tech">
+                    <i class="fa-solid fa-user-circle"></i> Thông tin khách hàng
+                </div>
+                <ul class="info-list">
+                    <li>
+                        <span class="info-label">Mã khách hàng (ID)</span>
+                        <span class="info-value">#@Model.Id</span>
+                    </li>
+                    <li>
+                        <span class="info-label">Ngày đặt hàng</span>
+                        <span class="info-value">@Model.CreateDate.ToString("dd/MM/yyyy HH:mm:ss")</span>
+                    </li>
+                    <li>
+                        <span class="info-label">Phương thức thanh toán</span>
+                        <div class="mt-1">
+                            @if (Model.PaymentMethod == "COD")
+                            {
+                                <span class="badge badge-custom badge-cod">
+                                    <i class="fa-solid fa-truck"></i> Thanh toán khi nhận hàng
+                                </span>
+                            }
+                            else if (Model.PaymentMethod == "Banking")
+                            {
+                                <span class="badge badge-custom badge-banking">
+                                    <i class="fa-solid fa-building-columns"></i> Chuyển khoản ngân hàng
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-custom bg-secondary text-white">@Model.PaymentMethod</span>
+                            }
+                        </div>
+                    </li>
+                    <li>
+                        <span class="info-label">Voucher áp dụng</span>
+                        <span class="info-value text-primary">
+                            <i class="fa-solid fa-ticket"></i> @(Model.Vouchers != null ? Model.Vouchers.VoucherName : "Không sử dụng")
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="total-container">
+                    <div class="text-muted text-uppercase fw-bold" style="font-size: 12px;">Tổng thành tiền</div>
+                    <div class="total-price">@Model.TotalAmount.ToString("N0") <small>VNĐ</small></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="custom-card h-100">
+                <div class="card-header-tech">
+                    <i class="fa-solid fa-cart-shopping"></i> Danh sách sản phẩm (@(Model.DetailBills?.Count ?? 0))
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-custom table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 45%;">Sách / Sản phẩm</th>
+                                    <th class="text-center" style="width: 15%;">Số lượng</th>
+                                    <th class="text-end" style="width: 20%;">Đơn giá</th>
+                                    <th class="text-end" style="width: 20%;">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.DetailBills != null && Model.DetailBills.Count > 0)
+                                {
+                                    foreach (var item in Model.DetailBills)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    @if (item.Books != null)
+                                                    {
+                                                        <img src="~/Content/Image/@item.Books.mainImage" class="product-img me-3" alt="Book Image" />
+                                                        <div>
+                                                            <div class="fw-bold text-dark">@item.Books.BookName</div>
+                                                            <small class="text-muted">Mã sách: @item.Books.BookId</small>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> Sách đã bị xóa</span>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge bg-light text-dark border">x @item.Quantity</span>
+                                            </td>
+                                            <td class="text-end text-muted">
+                                                @((item.Books != null ? item.Books.Price : 0).ToString("N0")) ₫
+                                            </td>
+                                            <td class="text-end fw-bold text-primary">
+                                                @((item.Quantity * (item.Books != null ? item.Books.Price : 0)).ToString("N0")) ₫
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center py-5">
+                                            <img src="https://cdn-icons-png.flaticon.com/512/4076/4076432.png" width="80" style="opacity: 0.5; margin-bottom: 10px;" />
+                                            <p class="text-muted">Không tìm thấy chi tiết sản phẩm nào.</p>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot style="background: #f8fafc;">
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold pt-3">Tạm tính:</td>
+                                    <td class="text-end pt-3">@Model.TotalAmount.ToString("N0") ₫</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

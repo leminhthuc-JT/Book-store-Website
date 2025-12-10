@@ -214,6 +214,7 @@
     <Compile Include="Controllers\CartsController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\PayingController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -273,6 +274,14 @@
     <Compile Include="Migrations\202512080933478_AddBook.Designer.cs">
       <DependentUpon>202512080933478_AddBook.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202512101223138_MakeVoucherNullable.cs" />
+    <Compile Include="Migrations\202512101223138_MakeVoucherNullable.designer.cs">
+      <DependentUpon>202512101223138_MakeVoucherNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202512101235176_AddPaymentMethod.cs" />
+    <Compile Include="Migrations\202512101235176_AddPaymentMethod.designer.cs">
+      <DependentUpon>202512101235176_AddPaymentMethod.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Bills.cs" />
     <Compile Include="Models\Books.cs" />
@@ -327,6 +336,9 @@
     <Content Include="Areas\Admin\Views\Users\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Details.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\_LayoutUser.cshtml" />
     <Content Include="Scripts\bootstrap.min.js.map" />
@@ -347,6 +359,7 @@
     <Content Include="Views\Account\ProFile.cshtml" />
     <Content Include="Views\Contact\Index.cshtml" />
     <Content Include="Views\Account\ChangePassWord.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -357,6 +370,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Content\Image\Reviews\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="IdentityMigrations\202511161436163_init.resx">
@@ -394,6 +408,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202512080933478_AddBook.resx">
       <DependentUpon>202512080933478_AddBook.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202512101223138_MakeVoucherNullable.resx">
+      <DependentUpon>202512101223138_MakeVoucherNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202512101235176_AddPaymentMethod.resx">
+      <DependentUpon>202512101235176_AddPaymentMethod.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
