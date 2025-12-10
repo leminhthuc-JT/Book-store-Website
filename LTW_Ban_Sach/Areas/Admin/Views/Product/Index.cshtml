@@ -357,7 +357,8 @@
     }
 </style>
 
-<div class="books-container">
+<div class="books-container mt-3">
+    
     <div class="page-header">
         <h2>
             <i class="fa-solid fa-book"></i>
@@ -367,7 +368,7 @@
             @Html.ActionLink("Thêm Sách Mới", "Create", null, new { @class = "btn-create" })
             <button type="button" id="btnGetBooks" class="btn-refresh">
                 <i class="fa-solid fa-rotate"></i>
-                <span class="btn-text">Làm mới</span>
+                <span class="btn-text">Lấy danh sách</span>
             </button>
         </div>
     </div>
@@ -379,7 +380,15 @@
                 Danh sách sách
             </h3>
         </div>
-
+        <div>
+            <form class="d-flex" action="/Admin/Product/Index" method="get">
+                <input type="hidden" id="id" name="id" value="@ViewBag.CateId" />
+                <div class="input-group">
+                    <input value="@ViewBag.Search" type="text" name="search" class="form-control search-input" placeholder="Tìm kiếm sách..." style="width: 300px;">
+                    <button type="submit" class="btn search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </div>
         <div class="table-wrapper">
             <table class="table bookTable">
                 <thead>
@@ -393,27 +402,27 @@
                     </tr>
                 </thead>
                 <tbody id="bookTableBody">
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                <img class="book-image" src="@Url.Content("~/Content/Image/" + item.mainImage)" alt="@item.BookName" onerror="this.src='/Content/Image/default-book.png'" />
-                            </td>
-                            <td>
-                                <span class="book-category">@Html.DisplayFor(modelItem => item.Categories.CateName)</span>
-                            </td>
-                            <td class="book-title">@Html.DisplayFor(modelItem => item.BookName)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Author)</td>
-                            <td class="book-price">@Html.DisplayFor(modelItem => item.Price) đ</td>
-                            <td>
-                                <div class="action-buttons">
-                                    @Html.ActionLink("Sửa", "Edit", new { id = item.BookId }, new { @class = "btn-action btn-edit" })
-                                    @Html.ActionLink("Chi tiết", "Details", new { id = item.BookId }, new { @class = "btn-action btn-details" })
-                                    @Html.ActionLink("Xóa", "Delete", new { id = item.BookId }, new { @class = "btn-action btn-delete" })
-                                </div>
-                            </td>
-                        </tr>
-                    }
+                    @*@foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <img class="book-image" src="@Url.Content("~/Content/Image/" + item.mainImage)" alt="@item.BookName" onerror="this.src='/Content/Image/default-book.png'" />
+                                </td>
+                                <td>
+                                    <span class="book-category">@Html.DisplayFor(modelItem => item.Categories.CateName)</span>
+                                </td>
+                                <td class="book-title">@Html.DisplayFor(modelItem => item.BookName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Author)</td>
+                                <td class="book-price">@Html.DisplayFor(modelItem => item.Price) đ</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        @Html.ActionLink("Sửa", "Edit", new { id = item.BookId }, new { @class = "btn-action btn-edit" })
+                                        @Html.ActionLink("Chi tiết", "Details", new { id = item.BookId }, new { @class = "btn-action btn-details" })
+                                        @Html.ActionLink("Xóa", "Delete", new { id = item.BookId }, new { @class = "btn-action btn-delete" })
+                                    </div>
+                                </td>
+                            </tr>
+                        }*@
                 </tbody>
             </table>
         </div>
@@ -463,13 +472,13 @@
             // AJAX Call
             $.ajax({
                 type: 'GET',
-                url: '/api/Books', // Thay đổi URL này nếu cần
+                url: '/api/Books', 
                 dataType: 'json',
-                timeout: 10000, // 10 seconds timeout
+                timeout: 10000, 
                 success: function (response) {
                     console.log("Data received:", response);
+                   
 
-                    // Ẩn loading
                     $('#loadingOverlay').removeClass('active');
                     $btn.prop('disabled', false).removeClass('loading');
                     $btnText.text('Làm mới');

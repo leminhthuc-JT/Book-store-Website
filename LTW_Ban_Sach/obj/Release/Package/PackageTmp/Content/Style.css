@@ -1,0 +1,138 @@
+﻿body {
+}
+
+:root {
+    /*xanh dương*/
+    --blue-color: #3498db;
+    --light-blue-color: #e3f2fd;
+    --blue-color1: #2196f3;
+    --drak-blue-color: #0d47a1;
+    /*xanh lục*/
+    --green-color: #2ecc71;
+    --light-green-color: #d4edda;
+    --drak-green-color: #1b5e20;
+    /*đỏ*/
+    --light-red-color: #ffebee;
+    --red-color: #f44336;
+    --drak-red-color: #b71c1c;
+    /*cam*/
+    --light-orange-color: #ffe0b2;
+    --orange-color: #ffb444;
+    --drak-blue-color: #e65100;
+    /*hồng*/
+    --pink-light: #f8bbd0;
+    --pink: #e91e63;
+    --pink-dark: #880e4f;
+    /*vàng*/
+    --yellow-light: #fff9c4;
+    --yellow: #ffeb3b;
+    --yellow-dark: #fbc02d;
+    /*tím*/
+    --purple-light: #e1bee7;
+    --purple: #9c27b0;
+    --purple-dark: #4a148c;
+    /*màu gradient*/
+    --gradient-blue: linear-gradient(135deg, #2196f3, #21cbf3);
+    --gradient-pink: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    --gradient-purple: linear-gradient(135deg, #a18cd1, #fbc2eb);
+    --gradient-orange: linear-gradient(135deg, #f7971e, #ffd200);
+    --gradient-green: linear-gradient(135deg, #56ab2f, #a8e063);
+    --gradient-night: linear-gradient(135deg, #232526, #414345);
+    --gradient-fire: linear-gradient(90deg, #ff0000, #ff7a00, #ffdd00);
+    --gradient-knowledge: linear-gradient(90deg, #003973, #E5E5BE);
+    --gradient-nature: linear-gradient(90deg, #43cea2, #185a9d);
+    --gradient-classic: linear-gradient(270deg, #654321, #d9a760);
+    --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+    --gradient-tech-f: linear-gradient(270deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+    /*linh ta linh tinh khác*/
+    --bg-color: #e8e8e8;
+    --nav-color: #0e0e0e;
+}
+
+/*Dropdown*/
+.dropdown_list{
+    position: relative;
+}
+
+.dropdown_menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-image: var(--gradient-tech);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    min-width: 150px;
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.dropdown_list:hover .dropdown_menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dropdown_menu li a {
+    display: block;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.dropdown_menu li a:hover {
+    min-width: 150px;
+    border-radius: 5px;
+    background-color: #00385b;
+}
+
+
+/*Home User Index----------------------------------------------------------------------------------------*/
+/*Scroll box*/
+.scroll-box{
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+}
+
+.scroll-box::-webkit-scrollbar{
+    display: none;
+}
+
+.btn-tech {
+    font-weight: 350;
+    color: white;
+    transform: translate(80px, 130px);
+    width: 200px;
+    background-image: linear-gradient(90deg,rgba(0,77,77,1), rgba(0,75,77,1));
+    line-height: 40px;
+    font-size: 20px;
+    box-shadow: 0 4px 0 #003838, 0 6px 10px rgba(0, 0, 0, 0.4);
+    transition: 0.2s ease;
+}
+.btn-tech:hover {
+    color: white;
+}
+
+.btn-tech:active {
+    color: rgba(0,25,47, 1);
+    box-shadow: 0 1px 0 #003838;
+}
+
+.items:hover {
+    transform: scale(1.05);
+}
+/*Home Admin Index*----------------------------------------------------------------------------------------*/
+/*Producst Index*----------------------------------------------------------------------------------------*/
+
+.sidebarcate li:hover {
+    background-color: rgba(0,77,77,1);
+}
+
+
+
+

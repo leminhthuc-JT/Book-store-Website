@@ -1,0 +1,227 @@
+﻿@model LTW_Ban_Sach.Models.Books
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<style>
+    .desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: 0.3s ease;
+    }
+
+        .desc.expanded {
+            -webkit-line-clamp: unset;
+        }
+
+    .xemthem {
+        color: blue;
+        cursor: pointer;
+        user-select: none;
+        display: inline-block;
+        margin-top: 6px;
+    }
+</style>
+<div style="margin-top: 80px; margin-bottom: 20px;" class="p-3">
+<div class="container-fluid d-flex justify-content-between">
+    <div class="">
+        <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=@ViewBag.Price"><i class="fa-solid fa-arrow-left" style="font-size: 25px;color: rgb(10,25,47); line-height: 30px;"></i></a>
+    </div>
+    <div>
+        <div>
+            <form class="d-flex" action="/Products/Index" method="get">
+                <input type="hidden" id="id" name="id" value="@ViewBag.CateId" />
+                <input value="@ViewBag.Search" type="text" id="search" name="search" class="form-control" placeholder="Search..." style="width: 300px; height: 50px; border-radius: 10px 0 0 10px;" onchange="this.form.submit()" />
+                <button type="submit" style="width: 100px; height: 50px; background-image: var(--gradient-tech); color: white; border: none; border-radius: 0 10px 10px 0;"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
+    </div>
+
+</div>
+    <hr />
+    <div class="container"><h3>@Model.BookName</h3></div>
+    <hr />
+    <div class="container">
+        <!--Thông tin chi tiết-->
+        <div class="row">
+            <div class="col-4">
+                <img id="mainimg" style="width: 100%; height: 500px; border-radius: 10px; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)" src="~/Content/Image/@Model.mainImage" />
+
+                <div id="scroll_auto_box">
+                    <div class="d-flex overflow-auto flex-nowrap scroll-box " style="width: calc(100% - 20px); padding: 20px;" id="scroll-auto-content">
+                        @foreach (var img in ViewBag.img)
+                        {
+                            <img style="width: 50px; height: 50px; border-radius: 5px; margin: 5px 10px; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)" src="~/Content/Image/@img.ImageUrl" onclick="change('@img.ImageUrl')" />
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-8">
+                <div class="" style="padding: 0px 10px;padding: 20px;
+                                     width: 100%;
+                                     background-color: white;
+                                     border-radius: 10px;
+                                     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
+                    <h2 style="color: red; margin-top: -10px">@Model.Price VND</h2>
+
+                    <p><strong>Thể loại: </strong>@Model.Categories.CateName</p>
+                    <p><strong>Tác giả: </strong>@Model.Author</p>
+                    <p><strong>Lượt mua: </strong>@Model.LuotMua</p>
+
+                    <p><strong>Nhà xuất bản: </strong>@Model.Publisher</p>
+                    <p><strong>Ngày xuất bản: </strong>@Model.PublicationYear</p>
+
+                    <div>
+                        <form>
+                            @{
+                                string userId = "";
+                                if (User.Identity.IsAuthenticated)
+                                {
+                                    userId = ViewBag.UserId;
+                                }
+                            }
+
+                            <input type="hidden" name="bookId" id="bookId" value="@Model.BookId" />
+                            <input type="hidden" name="userId" id="userId" value="@userId" />
+                            <input type="hidden" name="CateId" id="CateId" value="@Model.CateId" />
+                            <div class="d-flex g-3 justify-content-start">
+                                <button type="button" class="btn me-2" id="dec" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 50px; line-height: 20px;">-</button>
+                                <input type="number" id="quantity" name="quantity" min="1" value="1" style="width: 50px;" />
+                                <button type="button" class="btn ms-2" id="inc" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 50px; line-height: 20px;">+</button>
+                            </div>
+
+
+                            <div class="d-flex justify-content-center gap-3 mt-3">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+
+
+                                    <button formmethod="post" formaction="/Carts/Add" type="submit" class="btn mt-3" style="border-radius: 5px; border: 1px solid rgba(10,25,47, 1); width: 250px;">Thêm giỏ hàng</button>
+
+
+                                    <button formmethod="get" type="submit" formaction="/Paying/Index" class="btn mt-3" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 250px;">Mua ngay</button>
+                                }
+                                else
+                                {
+                                    <a href="/Account/Login" class="btn mt-3" style="border-radius: 5px; border: 1px solid rgba(10,25,47, 1); width: 250px;">Thêm giỏ hàng</a>
+                                    <a href="/Account/Login" class="btn mt-3" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 250px;">Mua ngay</a>
+                                }
+
+
+                            </div>
+                        </form>
+                    </div>
+
+
+
+                </div>
+                <!--Đánh giá-->
+                <div class="mt-4" style="padding: 0px 10px;padding: 20px;
+               width: 100%;
+               background-color: white;
+               border-radius: 10px;
+               box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
+                    <div>
+                        <h4>Đánh giá</h4>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--Mô tả-->
+        <div class="mt-4" style="padding: 0px 10px;padding: 20px;
+               width: 100%;
+               background-color: white;
+               border-radius: 10px;
+               box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
+            <div>
+                <h4>Mô tả:</h4>
+                <p id="textdis" class="desc">
+                    @Model.Description
+                </p><span id="btnXem" class="xemthem">Xem thêm</span>
+
+            </div>
+
+        </div>
+        <!--Gợi ý liên quan-->
+        <div class="mt-4" style="padding: 0px 10px;padding: 20px;
+                      width: 100%;
+                      background-color: white;
+                      border-radius: 10px;
+                      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
+            <div>
+                <h4>Ấn phẩm liển quan</h4>
+            </div>
+            <div class="row row-cols-5 row-gap-4 align-items-center">
+                @foreach (var b in ViewBag.BookList)
+                {
+                    <a href="/Products/Detail?id=@b.BookId&&cateid=@b.CateId" style="text-decoration:none">
+                        <div class="items">
+                            <div class="position-relative"
+                                 style="width: 100%;
+                             height: 300px;
+                             margin-right: 20px;
+                             background-color: white;
+                             border-radius: 10px;
+                             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
+                                <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="~/Content/Image/@b.mainImage" />
+                                <div style="padding: 0px 10px;">
+                                    <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                                        @b.BookName
+                                    </p>
+                                    <p style="color: red; text-align: center; margin-top: -10px">@b.Price VND</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    //Đổi ảnh
+    function change(src) {
+        document.getElementById('mainimg').src = '/Content/Image/' + src;
+    }
+
+    //Hiển htij xem thêm
+    const text = document.getElementById("textdis");
+    const btn = document.getElementById("btnXem");
+
+    btn.onclick = () => {
+        text.classList.toggle("expanded");
+
+        if (text.classList.contains("expanded")) {
+            btn.textContent = "Thu gọn";
+        } else {
+            btn.textContent = "Xem thêm";
+        }
+    };
+    const val = document.getElementById('quantity');
+    
+    const decrease = document.getElementById('dec').addEventListener('click', () => {
+        let invalue = parseInt(val.value);
+        if (invalue <= 1) {
+            val.value = 1;
+        } else {
+            val.value = val.value - 1;
+        }
+    });
+    const increase = document.getElementById('inc').addEventListener('click', () => {
+        let invalue = parseInt(val.value);
+        val.value = invalue + 1;
+    });
+
+</script>
+    
+

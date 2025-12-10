@@ -15,11 +15,16 @@ namespace LTW_Ban_Sach.Areas.Admin.Controllers
         private DBContext db = new DBContext();
 
         // GET: Admin/Product
-        public ActionResult Index()
+        public ActionResult Index(int id = 0, string search = "")
         {
             
-            var books = db.Books.Include(b => b.Categories);
-            return View(books.ToList());
+            var books = db.Books.Include(b => b.Categories).ToList();
+            if(search != "")
+            {
+                books = books.Where(x => x.BookName.ToLower().Contains(search.ToLower()) || x.Categories.CateName.ToLower().Contains(search.ToLower())).ToList();
+            }
+            
+            return View(books);
         }
 
         // GET: Admin/Product/Details/5

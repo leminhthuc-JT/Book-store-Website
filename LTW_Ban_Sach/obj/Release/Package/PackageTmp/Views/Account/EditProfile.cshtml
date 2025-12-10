@@ -1,0 +1,99 @@
+﻿@model LTW_Ban_Sach.Identity.AppUser
+@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/EditProfile.css" />
+
+<div class="edit-profile-container">
+    <div class="edit-profile-header">
+        <a href="javascript:history.back()" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h2>CHỈNH SỬA THÔNG TIN</h2>
+    </div>
+
+    <div class="edit-profile-body">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                <i class="fa-solid fa-check-circle"></i> @TempData["SuccessMessage"]
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                <i class="fa-solid fa-exclamation-circle"></i> @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @using (Html.BeginForm("EditProfile", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("preURL", (object)ViewBag.PreUrl)
+            @Html.Hidden("Id", (object)ViewBag.UserId)
+
+            <div class="form-row">
+                <div class="form-section">
+                    <label>
+                        <i class="fa-solid fa-user"></i>
+                        Tên đăng nhập
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user"></i>
+                        @Html.TextBoxFor(r => r.UserName, new { @class = "form-control", placeholder = "Nhập tên đăng nhập" })
+                    </div>
+                    @Html.ValidationMessageFor(r => r.UserName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-section">
+                    <label>
+                        <i class="fa-solid fa-phone"></i>
+                        Số điện thoại
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone"></i>
+                        @Html.TextBoxFor(r => r.PhoneNumber, new { @class = "form-control", placeholder = "Nhập số điện thoại", type = "tel" })
+                    </div>
+                    @Html.ValidationMessageFor(r => r.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-section">
+                <label>
+                    <i class="fa-solid fa-envelope"></i>
+                    Email
+                </label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+                    @Html.TextBoxFor(r => r.Email, new { @class = "form-control", placeholder = "Nhập email", type = "email" })
+                </div>
+                @Html.ValidationMessageFor(r => r.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-section">
+                <label>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Địa chỉ
+                </label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-location-dot"></i>
+                    @Html.TextBoxFor(r => r.Address, new { @class = "form-control", placeholder = "Nhập địa chỉ" })
+                </div>
+                @Html.ValidationMessageFor(r => r.Address, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Lưu thay đổi
+                </button>
+                <a href="javascript:history.back()" class="btn-cancel">
+                    <i class="fa-solid fa-xmark"></i>
+                    Hủy bỏ
+                </a>
+            </div>
+        }
+    </div>
+</div>

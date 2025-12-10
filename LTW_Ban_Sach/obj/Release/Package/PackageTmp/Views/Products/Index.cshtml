@@ -1,0 +1,231 @@
+﻿@model List<LTW_Ban_Sach.Models.Books>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<div style="margin-top: 80px; margin-bottom: 20px;" class="p-3">
+    <div class="container d-flex" style="width: 100%; ">
+
+
+        <div style="background-image: var(--gradient-tech); border-radius: 10px; width: 400px; height: 50px;">
+            <h2 style="text-align: center; color: white; line-height: 50px;">BOOK LIST</h2>
+        </div>
+        <hr style="width: calc(100% - 800px); margin-top:25px;" />
+        <div>
+            <form class="d-flex" action="/Products/Index" method="get">
+                <input type="hidden" id="id" name="id" value="@ViewBag.CateId"/>
+                <input value="@ViewBag.Search"  type="text" id="search" name="search" class="form-control" placeholder="Search..." style="width: 300px; height: 50px; border-radius: 10px 0 0 10px;" onchange="this.form.submit()"/>
+                <button type="submit" style="width: 100px; height: 50px; background-image: var(--gradient-tech); color: white; border: none; border-radius: 0 10px 10px 0;"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        
+    </div>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-2">
+                <ul style="list-style-type: none; width: 100%; background-color: rgba(10,25,47, 0.9); padding: 0" class="sidebarcate">
+                    @foreach (var cate in ViewBag.Cate)
+                    {
+                        <li style = "border-bottom: 1px solid white; padding: 5px 0px 5px 20px"><a href="/Products/Index?id=@cate.CateId&&search=@ViewBag.Search" class="text-light" style="text-decoration: none; ">@cate.CateName</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="col-10">
+                <!--filter-->
+                <div class="d-flex" style="line-height: 20px;">
+                    <div class="d-flex me-5">
+                        <p style="color: rgba(10,25,47, 1)"><strong>Sắp xếp:</strong></p>
+                    </div>
+                    <!--Lượt bán-->
+                    @if (ViewBag.Quantity == -1)
+                    {
+                        <div class="d-flex me-5">
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=0&&date=@ViewBag.Date&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Lượt bán</a>
+                            <i style="font-size: 10px; line-height: 20px;" class="fa-solid fa-angle-down"></i>
+                        </div>
+                    }
+                    else if (ViewBag.Quantity == 1)
+                    {
+
+                        <div class="d-flex me-5">
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=-1&&date=@ViewBag.Date&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Lượt bán</a>
+                            <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-angle-up"></i>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex me-5">
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=1&&date=@ViewBag.Date&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Lượt bán</a>
+                            <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-down-left-and-up-right-to-center"></i>
+                        </div>
+                    }
+                    <!--Mới nhất-->
+                    @if (ViewBag.Date == -1)
+                    {
+                        <div class="d-flex me-5">
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=0&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Mới nhất</a>
+                            <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-angle-down"></i>
+                        </div>
+                    }
+                    else if (ViewBag.Date == 1)
+                    {
+                        <div class="d-flex me-5">
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=-1&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Mới nhất</a>
+                            <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-angle-up"></i>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex me-5">
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=1&&price=@ViewBag.Price" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Mới nhất</a>
+                            <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-down-left-and-up-right-to-center"></i>
+                        </div>
+                    }
+                    <!--Giá-->
+                    @if (ViewBag.Price == -1)
+                    {
+                        <div class="d-flex me-5">
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=0" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Giá</a>
+                            <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-angle-down"></i>
+                        </div>
+                    }
+                    else if (ViewBag.Price == 1)
+                    {
+                        <div class="d-flex me-5">
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=-1" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Giá</a>
+                            <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-angle-up"></i>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex me-5">
+                            <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=1" class=" me-2" style="text-decoration: none; color: rgba(10,25,47, 0.9)">Giá</a>
+                            <i style="font-size: 10px; line-height: 20px;"  class="fa-solid fa-down-left-and-up-right-to-center"></i>
+                        </div>
+                    }
+                </div>
+                <!--Detail Books-->
+                <div class="row row-cols-4 row-gap-4 align-items-center">
+                    @foreach (var b in Model)
+                    {
+                        <a href="/Products/Detail?id=@b.BookId&&cateid=@b.CateId" style="text-decoration:none">
+                            <div class="items">
+                                <div class="position-relative"
+                                     style="width: 100%;
+                                            height: 300px;
+                                            margin-right: 20px;
+                                            background-color: white;
+                                            border-radius: 10px;
+                                            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
+
+                                    <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="/Content/Image/@b.mainImage" />
+                                    @if (@b.Discount != 0)
+                                    {
+
+                                        <div style="width: 100%; padding: 5px;">
+                                            <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                                                @b.BookName
+                                            </p>
+                                        </div>
+                                        <div class="d-flex justify-content-center" style="margin-top: -15px;">
+
+                                            <div>
+                                                <p style="color: grey; text-align: center; font-size: 10px; text-decoration: line-through">@b.Price VND</p>
+                                            </div>
+                                            <div style="width: 30px; height: 15px; background-color: var(--red-color); color: white; text-align: center; font-size: 10px; ">
+                                                @b.Discount%
+                                            </div>
+                                        </div>
+                                        <p style="color: red; text-align: center; margin-top: -20px">@b.PriceSale VND</p>
+                                    }
+                                    else
+                                    {
+                                        <div style="width: 100%; padding: 5px;">
+                                            <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                                                @b.BookName
+                                            </p>
+                                        </div>
+                                        <p style="color: red; text-align: center; margin-top: -10px">100.000 VND</p>
+                                    }
+
+                                </div>
+                            </div>
+                        </a>
+                    }
+
+
+                </div>
+                <div>
+                    <!--Phân trang-->
+
+                    <div class="d-flex justify-content-center">
+                        @{ int pagepre = ViewBag.Page;
+                            if (pagepre <= 1)
+                            {
+                                <a style="text-decoration: none; color: white; text-align: center ">
+                                    <div style="width: 50px; line-height: 40px; margin: 20px 5px; background-color: rgba(0,77,77,1); border-radius: 10px; ">
+                                        <i class="fa-solid fa-arrow-left"></i>
+                                    </div>
+                                </a>
+
+                            }
+                            else
+                            {
+                                pagepre = pagepre - 1;
+                                <a href="/Products/Index?page=@pagepre&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=@ViewBag.Price" class="disabled" style="text-decoration: none; color: white; text-align: center ">
+                                    <div class="" style="width: 50px; line-height: 40px; margin: 20px 5px; background-image: var(--gradient-tech); border-radius: 10px;">
+                                        <i class="fa-solid fa-arrow-left"></i>
+                                    </div>
+                                </a>
+                            }
+                        }
+
+                        @for (int i = 1; i <= ViewBag.PageNumber; i++)
+                        {
+                            if (i == ViewBag.Page)
+                            {
+                                <a href="/Products/Index?page=@i&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=@ViewBag.Price" style="text-decoration: none; color: black">
+                                    <div class="" style="width: 40px; line-height: 40px; margin: 20px 5px; text-align: center; border: 1px solid rgba(10,25,47,0.9); background-color: rgba(0,77,77,0.3); border-radius: 10px;">
+                                        @i
+                                    </div>
+                                </a>
+                                
+                            }
+                            else
+                            {
+                    <a href="/Products/Index?page=@i&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=@ViewBag.Price" style="text-decoration: none; color: black">
+                        <div class="" style="width: 40px; line-height: 40px; margin: 20px 5px; text-align: center; border: 1px solid rgba(10,25,47,0.9); border-radius: 10px;">
+                            @i
+                        </div>
+                    </a>
+                            }
+
+                        }
+                        @{ int pagenext = ViewBag.Page;
+                            if (pagenext >= ViewBag.PageNumber)
+                            {
+                                <a style="text-decoration: none; color: white; text-align: center ">
+                                    <div style="width: 50px; line-height: 40px; margin: 20px 5px; border-radius: 10px; background-color: rgba(0,77,77,1) ">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </div>
+                                </a>
+
+                            }
+                            else
+                            {
+                                pagenext = pagenext + 1;
+                                <a href="/Products/Index?page=@pagenext&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=@ViewBag.Price" class="disabled" style="text-decoration: none; color: white; text-align: center ">
+                                    <div  style="width: 50px; line-height: 40px; margin: 20px 5px; background-image: var(--gradient-tech); border-radius: 10px;">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </div>
+                                </a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

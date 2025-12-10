@@ -1,0 +1,130 @@
+﻿@model List<LTW_Ban_Sach.Models.Cart>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<div style="margin-top: 80px; margin-bottom: 20px;" class="p-3">
+    <h2>Giỏ hàng</h2>
+    <table class="table">
+        <tr style="text-align: center">
+            <th>
+                Ảnh
+            </th>
+            <th>
+                Tên sách
+            </th>
+            <th>Số lượng</th>
+            <th>
+                Đơn giá
+            </th>
+            <th>
+                Thanh toán
+            </th>
+            <th>
+                Xóa
+            </th>
+
+        </tr>
+        @foreach (var cart in Model)
+        {
+            <tr>
+                <td style="text-align: center"><img src="~/Content/Image/@cart.Book.mainImage" style="width: 100px;" /></td>
+                <td>@cart.Book.BookName</td>
+                <td>
+                    <div >
+                        <form action="~/Carts/UpdateQuantity" method="post">
+                            @{
+                                string userId = "";
+                                if (User.Identity.IsAuthenticated)
+                                {
+                                    userId = ViewBag.UserId;
+                                }
+                            }
+
+                            <input type="hidden" name="bookId" id="bookId" value="@cart.BookId" />
+                            <input type="hidden" name="userId" id="userId" value="@userId" />
+                            <div class="d-flex g-3 justify-content-center">
+                                <button data-id="@cart.Quantity" type="submit" class="btn me-2 dec" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 40px; line-height: 20px;">-</button>
+                                <input type="number" id="quantity" name="quantity" min="1" value="@cart.Quantity" style="width: 50px; border: none; text-align: center" />
+                                <button data-id="@cart.Quantity" type="submit" class="btn ms-2 inc" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 40px; line-height: 20px;">+</button>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+                <td style="text-align: center">@cart.Book.Price</td>
+                <td style="text-align: center"><a href="/Paying/Index?bookId=@cart.BookId&&userId=@userId" class="btn btn-success">Thanh toán</a></td>
+                <td style="text-align: center"><button type="button" class="btn btn-danger DeleteCart" data-id="@cart.BookId">Xóa</button></td>
+
+            </tr>
+        }
+        <tr>
+            <th>Tổng:</th>
+            <th style="text-align: center;" colspan="5">@ViewBag.TongTien VNĐ</th>
+        </tr>
+    </table>
+    <div id="modalOverlay"
+         style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.4); z-index:9999; justify-content:center; align-items:center;">
+        <div id="modalDelete" class="" style="padding-top: 50px; width: 400px; height: 250px; background-color: white; border-radius: 10px; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4); text-align: center;
+                                              position: absolute; top: 50%; left: 50%; transform:translate(-50%, -50%);">
+            <div style=""><i style="font-size: 70px; color: #808080;" class="fa-solid fa-xmark"></i></div>
+            <div>
+                <div class="d-flex justify-content-center mt-4">
+                    <a href="/Carts/Index?userId=@ViewBag.UserId" style="text-decoration: none; color: white; text-align: center ">
+                        <div class="bg-secondary" style="width: 150px; line-height: 40px; margin: 20px 5px; border-radius: 5px;">
+                            Hủy
+                        </div>
+                    </a>
+                    <a id="dataLink" href="#" style="text-decoration: none; color: white; text-align: center ">
+                        <div class="bg-danger" style="width: 150px; line-height: 40px; margin: 20px 5px; border-radius: 5px;">
+                            Xóa
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script>
+        document.querySelectorAll('.DeleteCart').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const Link = btn.getAttribute('data-id');
+
+                document.getElementById('modalOverlay').style.display = "block";
+                document.getElementById('dataLink').href = `/Carts/DeleteCart?bookId=${Link}&&userId=@ViewBag.UserId`;
+            });
+        });
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                e.currentTarget.style.display = "none";
+            }
+        })
+    document.querySelectorAll('.dec').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const form = btn.closest("form");
+            let val = form.querySelector("input[name='quantity']");
+            let inval = parseInt(val.value);
+            if (inval <= 1) {
+                val.value = 1;
+            } else {
+                val.value = inval - 1;
+            }
+            form.submit();
+        })
+    })
+    document.querySelectorAll('.inc').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+
+            e.preventDefault();
+            const form = btn.closest("form");
+            let val = form.querySelector("input[name='quantity']");
+            let inval = parseInt(val.value);
+            val.value = inval + 1;
+            form.submit();
+        })
+    })
+
+</script>
+

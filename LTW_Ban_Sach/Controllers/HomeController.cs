@@ -24,7 +24,7 @@ namespace LTW_Ban_Sach.Controllers
             ViewBag.NewList = newb;
 
 
-            List<Books> hotb = db.Books.OrderBy(r => r.LuotMua).Take(10).ToList();
+            List<Books> hotb = db.Books.OrderByDescending(r => r.LuotMua).Take(10).ToList();
             ViewBag.HotList = hotb;
 
 

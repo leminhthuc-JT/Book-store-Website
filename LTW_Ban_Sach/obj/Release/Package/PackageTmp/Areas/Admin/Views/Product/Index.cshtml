@@ -1,0 +1,99 @@
+﻿@model IEnumerable<LTW_Ban_Sach.Models.Books>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<h2><br /> </h2>
+<p>
+    <br />
+    @Html.ActionLink("Create Product", "Create")
+</p>
+
+<button type="button" id="btnGetBooks">Get Books</button>
+<table class="table bookTable">
+    <tr class="table-success" style="text-align:center">
+        <th>
+            Ảnh
+        </th>
+        <th>
+            Thể loại
+        </th>
+        <th>
+            Tên sách
+        </th>
+        <th>
+            Tác giả
+        </th>
+        <th>
+            Giá
+        </th>
+
+        <th></th>
+    </tr>
+
+    @*@foreach (var item in Model)
+        {
+            <tr style="text-align:center">
+                <td style="text-align: center">
+                    <img style="width:100px" src="@Url.Content("~/Content/Image/" + item.mainImage)" />
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categories.CateName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+
+                <td>
+                </td>
+            </tr>
+            @Html.ActionLink("Edit", "Edit", new { id = item.BookId })
+            @Html.ActionLink("Details", "Details", new { id = item.BookId })
+            @Html.ActionLink("Delete", "Delete", new { id = item.BookId })
+        }*@
+
+</table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        console.log("Script loaded OK!");
+
+        $('#btnGetBooks').click(() => {
+            console.log("Button clicked!");
+            $.ajax({
+                type: 'GET',
+                url: '/api/Books',
+                success: (responses) => {
+
+                    for (var i = 0; i < responses.length; i++) {
+
+                        const bookRow = responses[i];
+
+
+                        const strHTML = '<tr><td>' + bookRow.BookName + '</td><td>' + bookRow.Categories.CateName + '</td><td>' + bookRow.BookName + '</td><td>' + bookRow.Author + '</td><td>' + bookRow.Price + '</td></tr>';
+
+                        $('.bookTable').append(strHTML);
+                    }
+                },
+                error: (err) => { console.log(err); }
+            });
+        });
+
+    });
+</script>
+

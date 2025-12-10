@@ -779,3 +779,5 @@ D:\Study\Web\test\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.dll
 D:\Study\Web\test\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.pdb
 D:\Study\Web\test\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.MakeVoucherNullable.resources
 D:\Study\Web\test\Project_LTW_BanSach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.AddPaymentMethod.resources
+D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.MakeVoucherNullable.resources
+D:\Web Design\LTW_Ban_Sach\LTW_Ban_Sach\obj\Debug\LTW_Ban_Sach.Migrations.AddPaymentMethod.resources

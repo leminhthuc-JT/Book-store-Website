@@ -1,0 +1,28 @@
+﻿@model List<LTW_Ban_Sach.Models.Bills>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<br />
+<h2><br />ORDER</h2>
+<table class="table table-striped" style="margin-left: 20px; margin-right: -40px;">
+    <thead>
+        <tr>
+            <th scope="col" style="align-content:center">BILLID</th>
+            <th scope="col" style="align-content:center">CREATEDATE</th>
+            <th scope="col" style="align-content:center">DETAILBILLS</th>
+            <th scope="col" style="align-content:center">VOUCHERS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td scope="col">@b.BillId</td>
+                <td scope="col">@b.CreateDate</td>
+                <td scope="col">@b.DetailBills</td>
+                <td scope="col">@b.Vouchers</td>
+            </tr>
+        }
+    </tbody>
+</table>

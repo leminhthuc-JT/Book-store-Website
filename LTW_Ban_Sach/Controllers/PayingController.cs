@@ -28,6 +28,7 @@ namespace LTW_Ban_Sach.Controllers
             }
 
             ViewBag.Quantity = quantity;
+            ViewBag.TotalPrice = cart.PriceSale * quantity;
             ViewBag.User = user;
             return View(cart);
         }

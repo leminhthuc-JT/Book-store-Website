@@ -3,7 +3,7 @@
     ViewBag.Title = "Thanh toán";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
     var user = ViewBag.User as LTW_Ban_Sach.Identity.AppUser;
-    decimal totalAmount = Model.Price * (int)ViewBag.Quantity;
+    //decimal totalAmount = Model.Price * (int)ViewBag.Quantity;
 }
 
 <style>
@@ -296,7 +296,7 @@
 
                         <div class="summary-row">
                             <span>Tạm tính:</span>
-                            <span>@totalAmount.ToString("N0") đ</span>
+                            <span>@ViewBag.TotalPrice.ToString("N0") đ</span>
                         </div>
                         <div class="summary-row">
                             <span>Phí vận chuyển:</span>
@@ -307,7 +307,7 @@
 
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <span class="total-label">Tổng thanh toán:</span>
-                            <span class="total-amount">@totalAmount.ToString("N0") đ</span>
+                            <span class="total-amount">@ViewBag.TotalPrice.ToString("N0") đ</span>
                         </div>
 
                         <button type="submit" class="btn-confirm shadow">

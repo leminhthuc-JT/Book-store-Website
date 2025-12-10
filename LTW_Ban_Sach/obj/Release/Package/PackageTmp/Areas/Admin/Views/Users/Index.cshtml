@@ -1,0 +1,120 @@
+﻿@model IEnumerable<LTW_Ban_Sach.Identity.AppUser>
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div style="margin-top: 50px; margin-bottom: 20px;" class="p-3">
+    <div class="container-fluid d-flex justify-content-between">
+        <div style="width: calc(100% - 50px)">
+            <hr />
+            <div class="container"><h3>QUẢN LÝ TÀI KHOẢN</h3></div>
+            <hr />
+        </div>
+
+    </div>
+
+</div>
+<div class="container">
+    <p>
+        <a href="/Admin/Users/Create" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm User</a>
+    </p>
+
+    <table class="table ">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Họ tên</th>
+                <th>SĐT</th>
+                <th>Địa chỉ</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in Model)
+            {
+                <tr>
+                    <td>@u.Email</td>
+                    <td>@u.UserName</td>
+                    <td>@u.PhoneNumber</td>
+                    <td>@u.Address</td>
+                    <td>
+                        <a class="btn btn-success"
+                           href="@Url.Action("Edit", "Users", new { id = u.Id })">Sửa</a>
+                        <a class="btn btn-danger"
+                           href="@Url.Action("Delete", "Users", new { id = u.Id })">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <!--Phân trang-->
+
+        <div class="d-flex justify-content-center">
+            @{ int pagepre = ViewBag.Page;
+                if (pagepre <= 1)
+                {
+                    <a style="text-decoration: none; color: white; text-align: center ">
+                        <div style="width: 50px; line-height: 40px; margin: 20px 5px; background-color: rgba(0,77,77,1); border-radius: 10px; ">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </div>
+                    </a>
+
+                }
+                else
+                {
+                    pagepre = pagepre - 1;
+                    <a href="/Admin/Users/Index?page=@pagepre" class="disabled" style="text-decoration: none; color: white; text-align: center ">
+                        <div class="" style="width: 50px; line-height: 40px; margin: 20px 5px; background-image: var(--gradient-tech); border-radius: 10px;">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </div>
+                    </a>
+                }
+            }
+
+            @for (int i = 1; i <= ViewBag.PageNumber; i++)
+            {
+                if (i == ViewBag.Page)
+                {
+                    <a href="/Admin/Users/Index?page=@i" style="text-decoration: none; color: black">
+                        <div class="" style="width: 40px; line-height: 40px; margin: 20px 5px; text-align: center; border: 1px solid rgba(10,25,47,0.9); background-color: rgba(0,77,77,0.3); border-radius: 10px;">
+                            @i
+                        </div>
+                    </a>
+
+                }
+                else
+                {
+                    <a href="/Admin/Users/Index?page=@i" style="text-decoration: none; color: black">
+                        <div class="" style="width: 40px; line-height: 40px; margin: 20px 5px; text-align: center; border: 1px solid rgba(10,25,47,0.9); border-radius: 10px;">
+                            @i
+                        </div>
+                    </a>
+                }
+
+            }
+            @{ int pagenext = ViewBag.Page;
+                if (pagenext >= ViewBag.PageNumber)
+                {
+                    <a style="text-decoration: none; color: white; text-align: center ">
+                        <div style="width: 50px; line-height: 40px; margin: 20px 5px; border-radius: 10px; background-color: rgba(0,77,77,1) ">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </a>
+
+                }
+                else
+                {
+                    pagenext = pagenext + 1;
+                    <a href="/Admin/Users/Index?page=@pagenext" class="disabled" style="text-decoration: none; color: white; text-align: center ">
+                        <div style="width: 50px; line-height: 40px; margin: 20px 5px; background-image: var(--gradient-tech); border-radius: 10px;">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</div>

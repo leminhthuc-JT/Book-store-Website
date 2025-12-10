@@ -1,0 +1,50 @@
+﻿@model LTW_Ban_Sach.ViewModel.LoginModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<div class="login-form-container">
+    <h2>Đăng Nhập</h2>
+    <p class="subtitle">Chào mừng bạn quay trở lại với Book Store!</p>
+
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName, "Tên đăng nhập")
+            <div class="input-wrapper">
+                <i class="fa-solid fa-user"></i>
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Nhập tên đăng nhập của bạn" })
+            </div>
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, "Mật khẩu")
+            <div class="input-wrapper">
+                <i class="fa-solid fa-lock"></i>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Nhập mật khẩu của bạn" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn-login">
+            <i class="fa-solid fa-sign-in-alt"></i> Đăng Nhập
+        </button>
+
+        <div class="form-footer">
+            <a href="#">
+                <i class="fa-solid fa-question-circle"></i> Quên mật khẩu?
+            </a>
+        </div>
+
+        <div class="register-link">
+            Chưa có tài khoản? <a href="/Account/Regester">Đăng ký ngay</a>
+        </div>
+    }
+</div>

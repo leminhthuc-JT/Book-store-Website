@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/Login.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <a href="/Home/Index" class="btn-home">
+        <i class="fa-solid fa-arrow-left"></i>
+        Về Trang Chủ
+    </a>
+    <div class="login-wrapper">
+        <div class="login-left">
+            <div class="logo">
+                <i class="fa-solid fa-book"></i>
+                <h1>BOOK</h1>
+                <p>STORE</p>
+            </div>
+            <div class="features">
+                <div class="feature-item">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Hàng nghìn đầu sách chất lượng</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Giao hàng nhanh chóng toàn quốc</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Ưu đãi độc quyền cho thành viên</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Hỗ trợ 24/7</span>
+                </div>
+            </div>
+        </div>
+        <div class="login-right">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

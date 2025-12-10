@@ -1,0 +1,193 @@
+﻿@using Microsoft.AspNet.Identity;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/Content/Style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <title>@ViewBag.Title</title>
+</head>
+<body style="background-color: var(--bg-color)">
+    <!--NavBar-->
+    <div>
+        <nav class="navbar navbar-expand navbar-dark fixed-top"
+             style="background-image: var(--gradient-tech); height: 70px; ">
+            <div class="container">
+                <a class="navbar-brand"
+                   href="/Home/Index">
+                    <div class="text-light d-flex">
+                        <i class="fa-solid fa-book"
+                           style="font-size: 40px; margin-top: 20px;">
+                        </i>
+                        <div>
+                            <p style="margin-bottom: -10px; font-size: 36px; font-weight: bold">
+                                BOOK
+                            </p>
+                            <p style="font-size: 16px; font-weight: 100;">
+                                STORE
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                <div>
+                    <ul class="navbar-nav">
+                        <li class="nav-item m-3"
+                            style="margin-right: 30px;">
+                            <a class="nav-link"
+                               href="~/Home/Index"
+                               style="font-size: 18px; font-weight: 300;">
+                                HOME
+                            </a>
+                        </li>
+                        <li class="nav-item m-3" style="margin-right: 30px;">
+                            <a class="nav-link"
+                               href="~/Products/Index" style="font-size: 18px; font-weight: 300;">
+                                PRODUCTS
+                            </a>
+                        </li>
+                        <li class="nav-item m-3"
+                            style="margin-right: 30px;">
+                            <a class="nav-link"
+                               href="~/Contact/Index"
+                               style="font-size: 18px; font-weight: 300;">
+                                CONTACT
+                            </a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item m-3 line">
+                                <a class="nav-link" href="/Account/ProFile?userId=@User.Identity.GetUserId()" style="font-size: 18px; font-weight: 300;"> Profile of @User.Identity.Name </a>
+                            </li>
+                            <li class="nav-item m-3 line">
+                                <a class="nav-link" href="/Carts/Index?userId=@User.Identity.GetUserId()"><i class="fa-solid fa-basket-shopping" style="font-size: 18px;"></i></a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item dropdown_list m-3">
+                                <a class="nav-link"
+                                   href="#"
+                                   style="font-size: 18px; font-weight: 300;"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    ACCOUNT
+                                </a>
+                                <ul class="dropdown_menu">
+                                    <li>
+                                        <a class="dropdown_item"
+                                           href="/Account/Regester">
+                                            Register
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown_item"
+                                           href="/Account/Login">
+                                            Login
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+    <!--Content-->
+    <div>
+        @RenderBody()
+    </div>
+    <footer class="footer p-5" style="background-image: var(--gradient-tech-f); color: white">
+        <div class="footer-container row row-cols-4">
+            <!-- Cột 1: Thông tin liên hệ -->
+            <div class="footer-column">
+                <h3>LIÊN HỆ</h3>
+                <p><b>Địa chỉ:</b> 140 Lê Trọng Tấn, phường Sơn Kỳ, quận Tân Phú, TP. HCM</p>
+                <p><b>Hotline:</b> 0907 123 456</p>
+                <p><b>Email:</b> contact@bookstore.vn</p>
+                <p><b>Thời gian làm việc:</b> Thứ 2 - Chủ nhật, 8:00 - 21:00</p>
+                <p>
+                    <b>Chi nhánh khác:</b><br>
+                    - 45 Nguyễn Thị Minh Khai, Q.1, TP.HCM<br>
+                    - 12 Đinh Tiên Hoàng, Q. Bình Thạnh, TP.HCM
+                </p>
+            </div>
+
+            <!-- Cột 2: Liên kết nhanh -->
+            <div class="footer-column">
+                <h3>LIÊN KẾT NHANH</h3>
+                <ul style="list-style-type: none">
+                    <li><a href="#" style="text-decoration: none">Giới thiệu</a></li>
+                    <li><a href="#" style="text-decoration: none">Bài đăng</a></li>
+                    <li><a href="#" style="text-decoration: none">Thông tin đăng ký</a></li>
+                    <li><a href="#" style="text-decoration: none">Hỗ trợ</a></li>
+                    <li><a href="#" style="text-decoration: none">Chính sách bảo mật</a></li>
+                    <li><a href="#" style="text-decoration: none">Điều khoản sử dụng</a></li>
+                    <li><a href="#" style="text-decoration: none">Tuyển dụng</a></li>
+                    <li><a href="#" style="text-decoration: none">Liên hệ hợp tác</a></li>
+                </ul>
+            </div>
+
+            <!-- Cột 3: Theo dõi & Đăng ký -->
+            <div class="footer-column">
+                <h3>THEO DÕI CHÚNG TÔI</h3>
+                <p>
+                    | <a href="#"><i class="fa-brands fa-facebook " style="color: blue "></i></a>
+                    | <a href="#"><i class="fa-brands fa-instagram" style="color: orange "></i></a>
+                    | <a href="#"><i class="fa-brands fa-tiktok" style="color: white "></i></a>
+                    | <a href="#"><i class="fa-brands fa-youtube" style="color: red "></i></a>
+                    | <a href="#"><i class="fa-brands fa-twitter" style="color: #0094ff "></i></a> |
+                </p>
+
+                <h3>ĐĂNG KÝ NHẬN TIN</h3>
+                <form class="subscribe-form">
+                    <div class="d-flex">
+                        <input class="form-control me-3 mb-2" type="email" placeholder="Nhập email của bạn..." required style="width: calc(100% - 200px)">
+                        <button class="btn btn-primary mb-2" type="submit" style="width: 100px;">Đăng ký</button>
+                    </div>
+                </form>
+
+                <p>Nhận ngay các ưu đãi, mã giảm giá và thông tin về sách mới mỗi tuần!</p>
+            </div>
+
+            <!-- Cột 4: Giới thiệu thêm -->
+            <div class="footer-column">
+                <h3>GIỚI THIỆU NHÀ SÁCH</h3>
+                <p>
+                    Book Store là hệ thống nhà sách trực tuyến hàng đầu tại Việt Nam,
+                    cung cấp hàng nghìn đầu sách chất lượng từ trong nước và quốc tế.
+                    Chúng tôi cam kết mang đến cho bạn trải nghiệm đọc phong phú, dịch vụ giao hàng nhanh chóng,
+                    và chương trình ưu đãi hấp dẫn quanh năm.
+                </p>
+                <p>
+                    Ngoài ra, Book Store còn là nơi giao lưu của cộng đồng yêu sách —
+                    nơi bạn có thể chia sẻ cảm nhận, viết đánh giá, và khám phá những cuốn sách ý nghĩa nhất.
+                </p>
+                <p><b>“Đọc sách – Mở ra thế giới”</b></p>
+            </div>
+        </div>
+
+        <hr>
+        <div class="footer-bottom text-center">
+            <p>&copy; 2025 Book Store. Nhà sách Book Store – Mọi quyền được bảo lưu.</p>
+            <p>
+                <a href="#">Chính sách đổi trả</a> |
+                <a href="#">Hướng dẫn mua hàng</a> |
+                <a href="#">Hợp tác xuất bản</a>
+            </p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
