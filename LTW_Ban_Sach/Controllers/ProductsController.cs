@@ -164,6 +164,7 @@ namespace LTW_Ban_Sach.Controllers
         }
         public ActionResult Detail (int id, int cateid)
         {
+            
             Books b = db.Books.Where(x => x.BookId == id).FirstOrDefault();
             List<ImagesBook> imgB = db.ImagesBooks.Where(x=>x.BookId == id).ToList();
             List<Books> books = db.Books.Where(x => x.CateId == cateid && x.BookId != id).ToList();

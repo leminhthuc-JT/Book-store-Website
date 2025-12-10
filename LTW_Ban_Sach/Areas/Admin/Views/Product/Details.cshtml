@@ -1,83 +1,424 @@
 ﻿@model LTW_Ban_Sach.Models.Books
-
 @{
     ViewBag.Title = "Details";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Details</h2>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-<div>
-    <h4><br />Books</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Categories.CateName)
-        </dt>
+<style>
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,25,47,1));
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Categories.CateName)
-        </dd>
+    .details-container {
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.BookName)
-        </dt>
+    .page-header {
+        background: var(--gradient-tech);
+        color: white;
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        box-shadow: 0 5px 20px rgba(0, 77, 77, 0.3);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.BookName)
-        </dd>
+    .page-header h2 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top:35px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
+    .page-header h2 i {
+        font-size: 36px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Author)
-        </dd>
+    .header-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
+    .details-card {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
+    .book-hero {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 40px;
+        padding: 40px;
+        background: linear-gradient(135deg, rgba(0,77,77,0.05) 0%, rgba(0,25,47,0.05) 100%);
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PublicationYear)
-        </dt>
+    .book-image-section {
+        text-align: center;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.PublicationYear)
-        </dd>
+    .book-cover {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        min-height: 400px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        border: 5px solid white;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Publisher)
-        </dt>
+    .book-info-section {
+        padding-top: 20px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Publisher)
-        </dd>
+    .book-title {
+        font-size: 36px;
+        font-weight: 700;
+        color: rgba(0,25,47,1);
+        margin: 0 0 10px 0;
+        line-height: 1.2;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+    .book-author {
+        font-size: 20px;
+        color: rgba(0,77,77,1);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+    .book-category {
+        display: inline-block;
+        padding: 8px 20px;
+        background: rgba(0, 77, 77, 1);
+        color: white;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.mainImage)
-        </dt>
+    .book-price {
+        font-size: 32px;
+        font-weight: 700;
+        color: #e74c3c;
+        margin: 20px 0;
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.mainImage)
-        </dd>
+    .book-price-label {
+        font-size: 14px;
+        color: #999;
+        font-weight: 400;
+        display: block;
+        margin-bottom: 5px;
+    }
 
-    </dl>
+    .details-section {
+        padding: 40px;
+    }
+
+    .section-title {
+        color: rgba(0, 77, 77, 1);
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid rgba(0, 77, 77, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .info-item {
+        background: rgba(0, 77, 77, 0.05);
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 4px solid rgba(0, 77, 77, 1);
+    }
+
+    .info-label {
+        font-size: 13px;
+        color: #666;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-label i {
+        color: rgba(0, 77, 77, 1);
+    }
+
+    .info-value {
+        font-size: 16px;
+        color: rgba(0, 25, 47, 1);
+        font-weight: 500;
+    }
+
+    .description-box {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 12px;
+        border: 2px solid #e0e0e0;
+        line-height: 1.8;
+        color: #333;
+        font-size: 15px;
+        overflow-y: auto;
+        display: block;
+        max-height: 200px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        padding: 30px 40px;
+        background: #f8f9fa;
+        border-top: 2px solid #e0e0e0;
+    }
+
+    .btn-action {
+        padding: 14px 30px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+        background: var(--gradient-tech);
+        color: white;
+    }
+
+    .btn-edit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 77, 77, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-back {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-back:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .stats-bar {
+        display: flex;
+        gap: 30px;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 2px solid rgba(0, 77, 77, 0.1);
+    }
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .stat-icon {
+        width: 45px;
+        height: 45px;
+        background: rgba(0, 77, 77, 0.1);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(0, 77, 77, 1);
+        font-size: 20px;
+    }
+
+    .stat-info {
+        flex: 1;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #999;
+        text-transform: uppercase;
+    }
+
+    .stat-value {
+        font-size: 18px;
+        font-weight: 600;
+        color: rgba(0, 25, 47, 1);
+    }
+
+</style>
+
+<div class="details-container">
+    <div class="page-header">
+        <h2>
+            <i class="fa-solid fa-circle-info"></i>
+            Chi Tiết Sách
+        </h2>
+        <div class="header-badge">
+            <i class="fa-solid fa-hashtag"></i> ID: @Model.BookId
+        </div>
+    </div>
+
+    <div class="details-card">
+        <!-- Hero Section -->
+        <div class="book-hero">
+            <div class="book-image-section">
+                <img class="book-cover" src="@Url.Content("~/Content/Image/" + Model.mainImage)" alt="@Model.BookName" onerror="this.src='/Content/Image/default-book.png'" />
+            </div>
+
+            <div class="book-info-section">
+                <span class="book-category">
+                    <i class="fa-solid fa-tag"></i>
+                    @Html.DisplayFor(model => model.Categories.CateName)
+                </span>
+
+                <h1 class="book-title">@Html.DisplayFor(model => model.BookName)</h1>
+
+                <div class="book-author">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <span>@Html.DisplayFor(model => model.Author)</span>
+                </div>
+
+                <div class="book-price">
+                    <span class="book-price-label">Giá bán</span>
+                    @Html.DisplayFor(model => model.Price) đ
+                </div>
+
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-calendar"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Năm xuất bản</div>
+                            <div class="stat-value">@Html.DisplayFor(model => model.PublicationYear)</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Nhà xuất bản</div>
+                            <div class="stat-value">@Html.DisplayFor(model => model.Publisher)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Section -->
+        <div class="details-section">
+            <div class="section-title">
+                <i class="fa-solid fa-align-left"></i>
+                Mô tả sách
+            </div>
+
+            <div class="description-box">
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    @Html.DisplayFor(model => model.Description)
+                }
+                else
+                {
+                    <em style="color: #999;">Chưa có mô tả cho sách này.</em>
+                }
+            </div>
+
+            <div class="section-title" style="margin-top: 40px;">
+                <i class="fa-solid fa-list"></i>
+                Thông tin chi tiết
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-book"></i>
+                        Tên sách
+                    </div>
+                    <div class="info-value">@Html.DisplayFor(model => model.BookName)</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-user-pen"></i>
+                        Tác giả
+                    </div>
+                    <div class="info-value">@Html.DisplayFor(model => model.Author)</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-building"></i>
+                        Nhà xuất bản
+                    </div>
+                    <div class="info-value">@Html.DisplayFor(model => model.Publisher)</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-calendar"></i>
+                        Năm xuất bản
+                    </div>
+                    <div class="info-value">@Html.DisplayFor(model => model.PublicationYear)</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                        Giá bán
+                    </div>
+                    <div class="info-value">@Html.DisplayFor(model => model.Price) đ</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fa-solid fa-tag"></i>
+                        Thể loại
+                    </div>
+                    <div class="info-value">@Html.DisplayFor(model => model.CateId)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            @Html.ActionLink("Chỉnh sửa", "Edit", new { id = Model.BookId }, new { @class = "btn-action btn-edit" })
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn-action btn-back" })
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.BookId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

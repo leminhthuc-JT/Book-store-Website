@@ -17,6 +17,7 @@ namespace LTW_Ban_Sach.Areas.Admin.Controllers
         // GET: Admin/Product
         public ActionResult Index()
         {
+            
             var books = db.Books.Include(b => b.Categories);
             return View(books.ToList());
         }
@@ -24,6 +25,7 @@ namespace LTW_Ban_Sach.Areas.Admin.Controllers
         // GET: Admin/Product/Details/5
         public ActionResult Details(int? id)
         {
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

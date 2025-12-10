@@ -3,26 +3,366 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
-<br />
-<h2><br />ORDER</h2>
-<table class="table table-striped" style="margin-left: 20px; margin-right: -40px;">
-    <thead>
-        <tr>
-            <th scope="col" style="align-content:center">BILLID</th>
-            <th scope="col" style="align-content:center">CREATEDATE</th>
-            <th scope="col" style="align-content:center">DETAILBILLS</th>
-            <th scope="col" style="align-content:center">VOUCHERS</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var b in Model)
-        {
-            <tr>
-                <td scope="col">@b.BillId</td>
-                <td scope="col">@b.CreateDate</td>
-                <td scope="col">@b.DetailBills</td>
-                <td scope="col">@b.Vouchers</td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,25,47,1));
+        --primary-color: rgba(0,77,77,1);
+        --secondary-color: rgba(0,25,47,1);
+    }
+
+    .orders-container {
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .page-header {
+        background: var(--gradient-tech);
+        color: white;
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        box-shadow: 0 5px 20px rgba(0, 77, 77, 0.3);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top:35px;
+    }
+
+    .page-header h2 i {
+        font-size: 36px;
+    }
+
+    .header-stats {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-top: 35px;
+    }
+
+    .stat-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        
+    }
+
+    .stat-badge i {
+        font-size: 16px;
+    }
+
+    .orders-card {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .table-container {
+        padding: 30px;
+        overflow-x: auto;
+    }
+
+    .modern-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+    }
+
+    .modern-table thead {
+        background: var(--gradient-tech);
+        color: white;
+    }
+
+    .modern-table thead th {
+        padding: 18px 20px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+    }
+
+    .modern-table thead th:first-child {
+        border-radius: 10px 0 0 0;
+    }
+
+    .modern-table thead th:last-child {
+        border-radius: 0 10px 0 0;
+    }
+
+    .modern-table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .modern-table tbody tr:hover {
+        background: rgba(0, 77, 77, 0.05);
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .modern-table tbody td {
+        padding: 20px;
+        font-size: 15px;
+        color: #333;
+        vertical-align: middle;
+    }
+
+    .bill-id {
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .bill-id i {
+        color: var(--primary-color);
+    }
+
+    .date-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #555;
+    }
+
+    .date-cell i {
+        color: var(--primary-color);
+        font-size: 18px;
+    }
+
+    .detail-badge {
+        display: inline-block;
+        padding: 6px 15px;
+        background: rgba(0, 77, 77, 0.1);
+        color: var(--primary-color);
+        border-radius: 15px;
+        font-size: 13px;
+        font-weight: 600;
+        border: 1px solid rgba(0, 77, 77, 0.3);
+    }
+
+    .voucher-badge {
+        display: inline-block;
+        padding: 6px 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+    }
+
+    .voucher-badge i {
+        margin-right: 5px;
+    }
+
+    .no-voucher {
+        color: #999;
+        font-style: italic;
+        font-size: 13px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-action {
+        padding: 8px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-view {
+        background: var(--gradient-tech);
+        color: white;
+    }
+
+    .btn-view:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 77, 77, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-edit {
+        background: #3498db;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-delete {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+    }
+
+    .empty-state i {
+        font-size: 80px;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        color: #666;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .empty-state p {
+        color: #999;
+        font-size: 16px;
+    }
+
+</style>
+
+<div class="orders-container">
+    <div class="page-header">
+        <h2>
+            <i class="fa-solid fa-receipt"></i>
+            Quản Lý Đơn Hàng
+        </h2>
+        <div class="header-stats">
+            <div class="stat-badge">
+                <i class="fa-solid fa-shopping-cart"></i>
+                Tổng: @Model.Count đơn hàng
+            </div>
+        </div>
+    </div>
+
+    <div class="orders-card">
+        <div class="table-container">
+            @if (Model != null && Model.Any())
+            {
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fa-solid fa-hashtag"></i> MÃ ĐƠN HÀNG</th>
+                            <th><i class="fa-solid fa-calendar-days"></i> NGÀY TẠO</th>
+                            <th><i class="fa-solid fa-money-bill-wave"></i> TỔNG TIỀN</th>
+                            <th><i class="fa-solid fa-list-ul"></i> CHI TIẾT</th>
+                            <th><i class="fa-solid fa-ticket"></i> VOUCHER</th>
+                            <th style="text-align: center;"><i class="fa-solid fa-gear"></i> THAO TÁC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var bill in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="bill-id">
+                                        <i class="fa-solid fa-file-invoice"></i>
+                                        #@bill.BillId
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="date-cell">
+                                        <i class="fa-regular fa-calendar"></i>
+                                        @bill.CreateDate.ToString("dd/MM/yyyy HH:mm")
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="bill-id" style="color: #e74c3c;">
+                                        <i class="fa-solid fa-dollar-sign"></i>
+                                        @bill.TotalAmount.ToString("N0") đ
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (bill.DetailBills != null && bill.DetailBills.Count > 0)
+                                    {
+                                        <span class="detail-badge">
+                                            <i class="fa-solid fa-box"></i>
+                                            @bill.DetailBills.Count sản phẩm
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="no-voucher">Không có chi tiết</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (bill.Vouchers != null && !string.IsNullOrEmpty(bill.Vouchers.VoucherName))
+                                    {
+                                        <span class="voucher-badge">
+                                            <i class="fa-solid fa-tag"></i>
+                                            @bill.Vouchers.VoucherName
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="no-voucher">Không áp dụng</span>
+                                    }
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class="action-buttons">
+                                        @Html.ActionLink("", "Details", new { id = bill.BillId }, new { @class = "btn-action btn-view", title = "Xem chi tiết" })
+                                        @Html.ActionLink("", "Edit", new { id = bill.BillId }, new { @class = "btn-action btn-edit", title = "Chỉnh sửa" })
+                                        @Html.ActionLink("", "Delete", new { id = bill.BillId }, new { @class = "btn-action btn-delete", title = "Xóa", onclick = "return confirm('Bạn có chắc muốn xóa đơn hàng này?');" })
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fa-solid fa-inbox"></i>
+                    <h3>Chưa có đơn hàng nào</h3>
+                    <p>Danh sách đơn hàng đang trống. Đơn hàng sẽ xuất hiện ở đây khi có khách hàng đặt hàng.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
