@@ -1,32 +1,262 @@
 ﻿@model LTW_Ban_Sach.Identity.AppUser
-
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Xóa tài khoản";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-<h2>Xóa tài khoản</h2>
+<style>
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,25,47,1));
+        --primary-color: rgba(0,77,77,1);
+        --secondary-color: rgba(0,25,47,1);
+        --danger-color: #dc3545;
+        --danger-hover: #c82333;
+        --gradient-danger: linear-gradient(90deg, #e74c3c, #c0392b);
+    }
 
-<p>Bạn có chắc chắn muốn xóa người dùng sau đây?</p>
+    .delete-user-container {
+        max-width: 800px; 
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+    .page-header {
+        background: var(--gradient-danger);
+        color: white;
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        box-shadow: 0 5px 20px rgba(0, 77, 77, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
 
-<table class="table table-bordered">
-    <tr>
-        <th>ID</th>
-        <td>@Model.Id</td>
-    </tr>
-    <tr>
-        <th>UserName</th>
-        <td>@Model.UserName</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>@Model.Email</td>
-    </tr>
-</table>
+    .back-btn {
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-top:35px;
+    }
 
-@using (Html.BeginForm())
-{
-    <button type="submit" class="btn btn-danger">Xóa</button>
-    <a href="@Url.Action("Index")" class="btn btn-secondary">Hủy</a>
-}
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+            color: white;
+        }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top:35px;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .form-body {
+        padding: 40px;
+    }
+
+    .alert-warning-custom {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: start;
+        gap: 15px;
+    }
+
+        .alert-warning-custom i {
+            font-size: 24px;
+            margin-top: 3px;
+        }
+
+    .form-section label {
+        font-weight: 600;
+        color: var(--secondary-color);
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+        .form-section label i {
+            color: var(--primary-color);
+        }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+        .input-wrapper i.input-icon {
+            position: absolute;
+            left: 15px;
+            color: #999;
+            font-size: 16px;
+            z-index: 1;
+        }
+
+    .form-control-readonly {
+        width: 100%;
+        padding: 14px 15px 14px 45px;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 15px;
+        background: #e9ecef; 
+        color: #495057;
+        pointer-events: none; 
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        padding: 30px 40px;
+        background: #f8f9fa;
+        border-top: 2px solid #e0e0e0;
+        justify-content: flex-end; 
+    }
+
+    .btn-action {
+        padding: 14px 30px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-danger-custom {
+        background: var(--danger-color);
+        color: white;
+    }
+
+        .btn-danger-custom:hover {
+            background: var(--danger-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+        }
+
+    .btn-cancel {
+        background: #6c757d;
+        color: white;
+    }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+
+    .user-avatar-small {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #dee2e6;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="delete-user-container">
+    <div class="page-header">
+        <a href="javascript:history.back()" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h2>
+            <i class="fa-solid fa-user-xmark"></i>
+            Xóa Tài Khoản
+        </h2>
+    </div>
+
+    <div class="form-card">
+        <div class="form-body">
+
+            <div class="alert-warning-custom">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div>
+                    <h4 style="margin: 0 0 5px 0; font-size: 18px;">Bạn có chắc chắn muốn xóa?</h4>
+                    <span style="font-size: 14px;">Hành động này sẽ xóa vĩnh viễn tài khoản người dùng <strong>@Model.UserName</strong> và không thể hoàn tác.</span>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+                @if (!string.IsNullOrEmpty(Model.Avatar))
+                {
+                    <img src="@Model.Avatar" class="user-avatar-small" onerror="this.src='https://via.placeholder.com/80?text=User'" />
+                }
+                else
+                {
+                    <img src="https://via.placeholder.com/80?text=No+Img" class="user-avatar-small" />
+                }
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-section">
+                    <label><i class="fa-solid fa-fingerprint"></i> User ID</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-hashtag input-icon"></i>
+                        <input class="form-control-readonly" value="@Model.Id" readonly />
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label><i class="fa-solid fa-user"></i> Họ tên / Username</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input class="form-control-readonly" value="@Model.UserName" readonly />
+                    </div>
+                </div>
+
+                <div class="form-section" style="grid-column: span 2;">
+                    <label><i class="fa-solid fa-envelope"></i> Email</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input class="form-control-readonly" value="@Model.Email" readonly />
+                    </div>
+                </div>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-actions">
+                    <a href="@Url.Action("Index")" class="btn-action btn-cancel">
+                        <i class="fa-solid fa-xmark"></i> Hủy bỏ
+                    </a>
+                    <button type="submit" class="btn-action btn-danger-custom">
+                        <i class="fa-solid fa-trash-can"></i> Xác nhận xóa
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
