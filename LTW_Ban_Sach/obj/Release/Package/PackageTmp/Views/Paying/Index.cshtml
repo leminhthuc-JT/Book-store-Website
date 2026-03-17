@@ -1,54 +1,325 @@
 ﻿@model LTW_Ban_Sach.Models.Books
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Thanh toán";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    var user = ViewBag.User as LTW_Ban_Sach.Identity.AppUser;
+    //decimal totalAmount = Model.Price * (int)ViewBag.Quantity;
 }
-<div style="margin-top: 50px; margin-bottom: 20px;" class="p-3">
-    <div class="container-fluid d-flex justify-content-between">
-        <div class="" style="width: 50px;">
-            <!--Thẻ này sau này làm thêm môt trang lịch sử mua nữa cho quay về đó-->
-            <a style="line-height: 100px;" href="/Carts/Index?userId=@ViewBag.User.Id"><i class="fa-solid fa-arrow-left" style="font-size: 25px;color: rgb(10,25,47); line-height: 30px;"></i></a>
-        </div>
-        <div style="width: calc(100% - 50px)">
-            <hr />
-            <div class="container"><h3>Paying page</h3></div>
-            <hr />
-        </div>
 
+<style>
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+        --primary-teal: rgba(0,77,77,1);
+        --primary-dark: rgba(10,25,47,1);
+        --bg-light: #f7fafc;
+        --border-color: #e2e8f0;
+    }
+
+    body {
+        background-color: var(--bg-light);
+    }
+
+    .checkout-header {
+        background: white;
+        padding: 20px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        margin-top: 60px;
+        margin-bottom: 30px;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Card Styling */
+    .tech-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        border: 1px solid var(--border-color);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .tech-card-header {
+        background: var(--bg-light);
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 600;
+        color: var(--primary-dark);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tech-card-body {
+        padding: 20px;
+    }
+
+    /* User Info */
+    .user-info-row {
+        display: flex;
+        margin-bottom: 12px;
+        align-items: flex-start;
+    }
+
+    .user-icon {
+        width: 25px;
+        color: var(--primary-teal);
+        margin-top: 3px;
+    }
+
+    .btn-edit {
+        font-size: 14px;
+        color: var(--primary-teal);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .btn-edit:hover {
+            text-decoration: underline;
+        }
+
+    /* Payment Methods - Custom Radio */
+    .payment-option {
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+        .payment-option input {
+            display: none; /* Hide default radio */
+        }
+
+        .payment-option label {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+            .payment-option label:hover {
+                border-color: #cbd5e0;
+            }
+
+        .payment-option input:checked + label {
+            border-color: var(--primary-teal);
+            background-color: #f0fff4;
+            box-shadow: 0 0 0 1px var(--primary-teal);
+        }
+
+    .payment-icon {
+        font-size: 24px;
+        width: 40px;
+        color: var(--primary-dark);
+        margin-right: 15px;
+        text-align: center;
+    }
+
+    .check-mark {
+        margin-left: auto;
+        color: var(--primary-teal);
+        display: none;
+    }
+
+    .payment-option input:checked + label .check-mark {
+        display: block;
+    }
+
+    /* Order Summary (Right Column) */
+    .summary-img {
+        width: 80px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid #edf2f7;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 15px;
+        color: #4a5568;
+    }
+
+    .summary-divider {
+        border-top: 2px dashed var(--border-color);
+        margin: 15px 0;
+    }
+
+    .total-label {
+        font-weight: 700;
+        font-size: 18px;
+        color: var(--primary-dark);
+    }
+
+    .total-amount {
+        font-weight: 800;
+        font-size: 22px;
+        color: #e53e3e; /* Red for emphasis */
+    }
+
+    .btn-confirm {
+        background: var(--gradient-tech);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 15px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 16px;
+        letter-spacing: 1px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,77,77,0.3);
+            color: white;
+        }
+</style>
+
+<div class="checkout-header">
+    <div class="container d-flex align-items-center">
+        <a href="javascript:history.back()" class="text-decoration-none me-3 text-dark">
+            <i class="fa-solid fa-arrow-left fa-lg"></i>
+        </a>
+        <h3 class="page-title"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Xác nhận đơn hàng</h3>
     </div>
 </div>
+
 <div class="container">
-    <table class="table">
-        <tr>
-            <td>
-                <div style="text-align: center">
-                    <img src="~/Content/Image/@Model.mainImage" style="width: 200px;" />
-                </div>
-            </td>
-            <td>
-                <div style="margin-top: 30px;">
-                    <p><strong>Tên sản phẩm: </strong>@Model.BookName</p>
-                    <p><strong>Tác giả: </strong>@Model.Author</p>
-                    <p><strong>Số lượng: </strong>@ViewBag.Quantity</p>
-                    <p><strong>Đơn giá: </strong>@Model.Price VNĐ</p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div class="d-flex justify-content-between p-4">
-                    <div>
-                        <h4>Thông tin khách hàng:</h4>
-                        <p><strong>Tên người nhận: </strong>@ViewBag.User.UserName</p>
-                        <p><strong>Số điện thoại: </strong>@ViewBag.User.PhoneNumber</p>
-                        <p><strong>Địa chỉ: </strong>@ViewBag.User.Address</p>
+    <form action="/Paying/ProcessOrder" method="post">
+        <input type="hidden" name="bookId" value="@Model.BookId" />
+        <input type="hidden" name="userId" value="@user.Id" />
+        <input type="hidden" name="quantity" value="@ViewBag.Quantity" />
+        <input type="hidden" name="price" value="@Model.Price" />
+
+        <div class="row">
+            <div class="col-lg-8">
+
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <i class="fa-solid fa-location-dot"></i> Thông tin giao hàng
                     </div>
-                    <div><a href="/Account/EditProfile?userId=@ViewBag.User.Id" class="btn btn-success" style="line-height: 20px;">Đổi thông tin</a></div>
+                    <div class="tech-card-body position-relative">
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <a href="/Account/EditProfile?userId=@user.Id" class="btn-edit">
+                                <i class="fa-solid fa-pen-to-square"></i> Thay đổi
+                            </a>
+                        </div>
+
+                        <div class="user-info-row">
+                            <div class="user-icon"><i class="fa-solid fa-user"></i></div>
+                            <div>
+                                <div class="text-muted small">Người nhận</div>
+                                <div class="fw-bold">@user.UserName</div>
+                            </div>
+                        </div>
+                        <div class="user-info-row">
+                            <div class="user-icon"><i class="fa-solid fa-phone"></i></div>
+                            <div>
+                                <div class="text-muted small">Số điện thoại</div>
+                                <div class="fw-bold">@user.PhoneNumber</div>
+                            </div>
+                        </div>
+                        <div class="user-info-row">
+                            <div class="user-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                            <div>
+                                <div class="text-muted small">Địa chỉ nhận hàng</div>
+                                <div>@user.Address</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </td>
-            
-        </tr>
-    </table>
 
+                <div class="tech-card">
+                    <div class="tech-card-header">
+                        <i class="fa-solid fa-wallet"></i> Phương thức thanh toán
+                    </div>
+                    <div class="tech-card-body">
+                        <div class="payment-option">
+                            <input type="radio" name="paymentMethod" id="cod" value="COD" checked>
+                            <label for="cod">
+                                <div class="payment-icon"><i class="fa-solid fa-money-bill-wave text-success"></i></div>
+                                <div>
+                                    <div class="fw-bold">Thanh toán khi nhận hàng (COD)</div>
+                                    <small class="text-muted">Thanh toán tiền mặt cho shipper khi nhận được hàng</small>
+                                </div>
+                                <div class="check-mark"><i class="fa-solid fa-circle-check fa-lg"></i></div>
+                            </label>
+                        </div>
 
+                        <div class="payment-option">
+                            <input type="radio" name="paymentMethod" id="banking" value="Banking">
+                            <label for="banking">
+                                <div class="payment-icon"><i class="fa-solid fa-building-columns text-primary"></i></div>
+                                <div>
+                                    <div class="fw-bold">Chuyển khoản ngân hàng</div>
+                                    <small class="text-muted">Quét mã QR hoặc chuyển khoản 24/7</small>
+                                </div>
+                                <div class="check-mark"><i class="fa-solid fa-circle-check fa-lg"></i></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="tech-card position-sticky" style="top: 100px;">
+                    <div class="tech-card-header">
+                        <i class="fa-solid fa-bag-shopping"></i> Đơn hàng của bạn
+                    </div>
+                    <div class="tech-card-body">
+                        <div class="d-flex mb-3">
+                            <img src="~/Content/Image/@Model.mainImage" class="summary-img bg-white" />
+                            <div class="ms-3 flex-grow-1">
+                                <div class="fw-bold text-dark mb-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">@Model.BookName</div>
+                                <div class="text-muted small">Tác giả: @Model.Author</div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <span class="badge bg-light text-dark border">x @ViewBag.Quantity</span>
+                                    <span class="fw-bold text-dark">@Model.Price.ToString("N0") đ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="summary-divider"></div>
+
+                        <div class="summary-row">
+                            <span>Tạm tính:</span>
+                            <span>@ViewBag.TotalPrice.ToString("N0") đ</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Phí vận chuyển:</span>
+                            <span class="text-success fw-bold">Miễn phí</span>
+                        </div>
+
+                        <div class="summary-divider"></div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <span class="total-label">Tổng thanh toán:</span>
+                            <span class="total-amount">@ViewBag.TotalPrice.ToString("N0") đ</span>
+                        </div>
+
+                        <button type="submit" class="btn-confirm shadow">
+                            ĐẶT HÀNG NGAY <i class="fa-solid fa-chevron-right ms-2"></i>
+                        </button>
+
+                        <div class="text-center mt-3 text-muted small">
+                            <i class="fa-solid fa-shield-halved"></i> Thông tin được bảo mật tuyệt đối
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>

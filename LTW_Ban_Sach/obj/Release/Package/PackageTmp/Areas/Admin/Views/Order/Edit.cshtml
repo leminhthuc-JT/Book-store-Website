@@ -1,0 +1,73 @@
+﻿@model LTW_Ban_Sach.Models.Bills
+
+@{
+    ViewBag.Title = "Cập nhật đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container" style="max-width: 800px; margin-top: 40px;">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0"><i class="fa-solid fa-pen-to-square"></i> Cập nhật đơn hàng #@Model.BillId</h4>
+        </div>
+        <div class="card-body p-4">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(model => model.BillId)
+                    @Html.HiddenFor(model => model.Id)         @* Giữ lại ID người dùng *@
+                    @Html.HiddenFor(model => model.CreateDate) @* Giữ lại Ngày tạo *@
+                    @Html.HiddenFor(model => model.VoucherId)  @* Giữ lại Voucher *@
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label fw-bold">Mã User:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control-plaintext" value="@Model.Id" readonly />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label fw-bold">Ngày đặt:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control-plaintext" value="@Model.CreateDate.ToString("dd/MM/yyyy HH:mm")" readonly />
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label fw-bold">Phương thức thanh toán:</label>
+                        <div class="col-sm-9">
+                            <select class="form-select" name="PaymentMethod" id="PaymentMethod">
+                                <option value="COD" @(Model.PaymentMethod == "COD" ? "selected" : "")>Thanh toán khi nhận hàng (COD)</option>
+                                <option value="Banking" @(Model.PaymentMethod == "Banking" ? "selected" : "")>Chuyển khoản ngân hàng</option>
+                                <option value="Other" @(Model.PaymentMethod != "COD" && Model.PaymentMethod != "Banking" ? "selected" : "")>Khác</option>
+                            </select>
+                            @Html.ValidationMessageFor(model => model.PaymentMethod, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label fw-bold">Tổng tiền (VNĐ):</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                            <small class="text-muted">Chỉ sửa khi cần điều chỉnh giá đặc biệt.</small>
+                            @Html.ValidationMessageFor(model => model.TotalAmount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-end gap-2">
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">Hủy bỏ</a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fa-solid fa-save"></i> Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

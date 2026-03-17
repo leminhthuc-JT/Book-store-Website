@@ -4,125 +4,424 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-<link rel="stylesheet" href="~/Content/EditProfile.css" />
+<style>
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,25,47,1));
+        --primary-color: rgba(0,77,77,1);
+        --secondary-color: rgba(0,25,47,1);
+    }
 
-<div class="edit-profile-container">
-    <div class="edit-profile-header">
+    .create-user-container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .page-header {
+        background: var(--gradient-tech);
+        color: white;
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        box-shadow: 0 5px 20px rgba(0, 77, 77, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .back-btn {
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-top: 35px;
+    }
+
+    .back-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateX(-5px);
+        color: white;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top:35px;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .form-body {
+        padding: 40px;
+    }
+
+    .alert {
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 500;
+    }
+
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .alert i {
+        font-size: 20px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .form-grid.two-column {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .form-section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-section label {
+        font-weight: 600;
+        color: var(--secondary-color);
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-section label i {
+        color: var(--primary-color);
+        font-size: 16px;
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        left: 15px;
+        color: #999;
+        font-size: 16px;
+        z-index: 1;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 14px 15px 14px 45px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(0, 77, 77, 0.1);
+    }
+
+    .form-control::placeholder {
+        color: #aaa;
+    }
+
+    .text-danger {
+        color: #e74c3c;
+        font-size: 13px;
+        margin-top: 5px;
+        display: none;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .text-danger:not(:empty) {
+        display: flex;
+    }
+
+    .text-danger::before {
+        content: "⚠";
+        font-size: 14px;
+    }
+
+    .field-validation-error {
+        color: #e74c3c;
+        font-size: 13px;
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .field-validation-error::before {
+        content: "⚠";
+        font-size: 14px;
+    }
+
+    .field-validation-valid {
+        display: none;
+    }
+
+    .validation-summary {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        color: #856404;
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .validation-summary ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        padding: 30px 40px;
+        background: #f8f9fa;
+        border-top: 2px solid #e0e0e0;
+        margin-top: 30px;
+    }
+
+    .btn-submit, .btn-cancel {
+        padding: 14px 30px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-submit {
+        background: var(--gradient-tech);
+        color: white;
+        width: fit-content;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 77, 77, 0.3);
+    }
+
+    .btn-cancel {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-cancel:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .section-divider {
+        margin: 30px 0;
+        border: none;
+        height: 2px;
+        background: linear-gradient(to right, transparent, rgba(0, 77, 77, 0.2), transparent);
+    }
+
+    .section-title {
+        color: var(--primary-color);
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(0, 77, 77, 0.2);
+    }
+
+    .section-title i {
+        font-size: 22px;
+    }
+
+
+</style>
+
+<div class="create-user-container">
+    <div class="page-header">
         <a href="javascript:history.back()" class="back-btn">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
-        <h2>TẠO TÀI KHOẢN</h2>
+        <h2>
+            <i class="fa-solid fa-user-plus"></i>
+            Tạo Tài Khoản Mới
+        </h2>
     </div>
 
-    <div class="edit-profile-body">
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success">
-                <i class="fa-solid fa-check-circle"></i> @TempData["SuccessMessage"]
-            </div>
-        }
-
-
-        @using (Html.BeginForm("Create", "Users", new { area = "Admin" }, FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="userId" value="@ViewBag.UserId" />
-
-            <div class="form-section">
-                <label>
-                    <i class="fa-solid fa-person"></i>
-                    Tên tài khoản:
-                </label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-person"></i>
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Nhập tên tài khoản" })
-
+    <div class="form-card">
+        <div class="form-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    <i class="fa-solid fa-circle-check"></i>
+                    @TempData["SuccessMessage"]
                 </div>
-                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger", style = "font-size: 12px;" })
-            </div>
-            <div class="form-section">
-                <label>
-                    <i class="fa-solid fa-envelope"></i>
-                    Email:
-                </label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-envelope"></i>
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" , @placeholder = "Nhập email" })
+            }
 
+            @using (Html.BeginForm("Create", "Users", new { area = "Admin" }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="userId" value="@ViewBag.UserId" />
+
+                <!-- Account Information Section -->
+                <div class="section-title">
+                    <i class="fa-solid fa-id-card"></i>
+                    Thông tin tài khoản
                 </div>
-                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger", style = "font-size: 12px;" })
-            </div>
-            <div class="form-section">
-                <label>
-                    <i class="fa-solid fa-key"></i>
-                    Mật khẩu:
-                </label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-key"></i>
 
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" , @placeholder = "Nhập mật khẩu"})
+                <div class="form-grid two-column">
+                    <div class="form-section">
+                        <label>
+                            <i class="fa-solid fa-user"></i>
+                            Tên tài khoản
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-user"></i>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Nhập tên tài khoản" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    </div>
 
+                    <div class="form-section">
+                        <label>
+                            <i class="fa-solid fa-envelope"></i>
+                            Email
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope"></i>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Nhập địa chỉ email" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger", style = "font-size: 12px;" })
-            </div>
-            <!---->
-    <div class="form-section">
-        <label>
-            <i class="fa-solid fa-key"></i>
-            Nhập lại mật khẩu:
-        </label>
-        <div class="input-wrapper">
-            <i class="fa-solid fa-key"></i>
 
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Nhập lại mật khẩu" })
+                <hr class="section-divider" />
 
+                <!-- Security Section -->
+                <div class="section-title">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Bảo mật
+                </div>
+
+                <div class="form-grid two-column">
+                    <div class="form-section">
+                        <label>
+                            <i class="fa-solid fa-key"></i>
+                            Mật khẩu
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-key"></i>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Nhập mật khẩu" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-section">
+                        <label>
+                            <i class="fa-solid fa-key"></i>
+                            Xác nhận mật khẩu
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-key"></i>
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Nhập lại mật khẩu" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <hr class="section-divider" />
+
+                <!-- Contact Information Section -->
+                <div class="section-title">
+                    <i class="fa-solid fa-address-book"></i>
+                    Thông tin liên hệ
+                </div>
+
+                <div class="form-grid two-column">
+                    <div class="form-section">
+                        <label>
+                            <i class="fa-solid fa-mobile-screen"></i>
+                            Số điện thoại
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Nhập số điện thoại" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-section">
+                        <label>
+                            <i class="fa-solid fa-location-dot"></i>
+                            Địa chỉ
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-location-dot"></i>
+                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Nhập địa chỉ" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                           Tạo tài khoản
+                    </button>
+                    <a href="javascript:history.back()" class="btn-cancel">
+                        <i class="fa-solid fa-xmark"></i>
+                        Hủy bỏ
+                    </a>
+                </div>
+            }
         </div>
-        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger", style = "font-size: 12px;" })
-
-    </div>
-    <div class="form-section">
-        <label>
-            <i class="fa-solid fa-mobile"></i>
-            Số điện thoại:
-        </label>
-        <div class="input-wrapper">
-            <i class="fa-solid fa-mobile"></i>
-            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Số điện thoại" })
-
-
-        </div>
-        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger", style = "font-size: 12px;" })
-    </div>
-    <div class="form-section">
-        <label>
-            <i class="fa-solid fa-location-crosshairs"></i>
-            Địa chỉ:
-        </label>
-        <div class="input-wrapper">
-            <i class="fa-solid fa-location-crosshairs"></i>
-
-            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" , @placeholder = "Địa chỉ" })
-
-
-        </div>
-        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger", style = "font-size: 12px;" })
-    </div>
-            <div class="form-section">
-
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn-submit">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Lưu thay đổi
-                </button>
-                <a href="javascript:history.back()" class="btn-cancel">
-                    <i class="fa-solid fa-xmark"></i>
-                    Hủy bỏ
-                </a>
-            </div>
-        }
     </div>
 </div>

@@ -1,227 +1,701 @@
 ﻿@model LTW_Ban_Sach.Models.Books
 @{
-    ViewBag.Title = "Detail";
+    ViewBag.Title = "Chi tiết sản phẩm";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 
 <style>
-    .desc {
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+        --primary-teal: rgba(0,77,77,1);
+        --primary-dark: rgba(10,25,47,1);
+        --text-dark: #2d3748;
+        --price-color: #e53e3e;
+        --gold-star: #fbbf24;
+    }
+
+    body {
+        background-color: #f7fafc;
+    }
+
+    /* Breadcrumb & Search Area */
+    .top-bar {
+        background: white;
+        padding: 15px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        margin-top: 60px; /* Adjust based on navbar height */
+        margin-bottom: 30px;
+    }
+
+    .search-input {
+        border-radius: 30px 0 0 30px;
+        border: 2px solid #e2e8f0;
+        border-right: none;
+        padding-left: 20px;
+    }
+
+        .search-input:focus {
+            box-shadow: none;
+            border-color: var(--primary-teal);
+        }
+
+    .search-btn {
+        background: var(--gradient-tech);
+        color: white;
+        border-radius: 0 30px 30px 0;
+        padding: 0 25px;
+        border: none;
+        transition: opacity 0.3s;
+    }
+
+        .search-btn:hover {
+            opacity: 0.9;
+            color: white;
+        }
+
+    /* Product Main Info */
+    .product-container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .main-image-frame {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #edf2f7;
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    .thumbnail-container {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+
+        .thumbnail-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .thumbnail-container::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 10px;
+        }
+
+    .thumb-img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.2s;
+    }
+
+        .thumb-img:hover, .thumb-img.active {
+            border-color: var(--primary-teal);
+            transform: translateY(-2px);
+        }
+
+    /* Product Details Right */
+    .product-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 15px;
+    }
+
+    .product-price {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--price-color);
+        margin-bottom: 20px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .info-item strong {
+        color: var(--primary-teal);
+        display: block;
+        font-size: 0.9rem;
+    }
+
+    /* Quantity & Buttons */
+    .qty-btn {
+        width: 40px;
+        height: 40px;
+        background: #edf2f7;
+        border: none;
+        font-weight: bold;
+        color: var(--primary-dark);
+        transition: 0.2s;
+    }
+
+        .qty-btn:hover {
+            background: #e2e8f0;
+        }
+
+    .qty-input {
+        width: 60px;
+        text-align: center;
+        border: 1px solid #edf2f7;
+        border-left: none;
+        border-right: none;
+        font-weight: 600;
+    }
+
+    .btn-tech-primary {
+        background: var(--gradient-tech);
+        color: white;
+        border: none;
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 8px;
+        transition: transform 0.2s;
+    }
+
+        .btn-tech-primary:hover {
+            transform: translateY(-2px);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,77,77,0.3);
+        }
+
+    .btn-tech-outline {
+        background: white;
+        color: var(--primary-teal);
+        border: 2px solid var(--primary-teal);
+        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+
+        .btn-tech-outline:hover {
+            background: #f0fff4;
+            transform: translateY(-2px);
+        }
+
+    /* Description & Reviews */
+    .section-box {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-weight: 700;
+        color: var(--primary-dark);
+        border-left: 5px solid var(--primary-teal);
+        padding-left: 15px;
+        margin-bottom: 25px;
+    }
+
+    .desc-content {
+        line-height: 1.8;
+        color: var(--text-dark);
+        position: relative;
+    }
+
+    .desc-truncate {
         display: -webkit-box;
         -webkit-line-clamp: 5;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        transition: 0.3s ease;
     }
 
-        .desc.expanded {
-            -webkit-line-clamp: unset;
+    .btn-expand {
+        color: var(--primary-teal);
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    /* Ratings System */
+    .star-display i {
+        color: var(--gold-star);
+    }
+
+    .star-display .fa-regular {
+        color: #cbd5e0;
+    }
+
+    .rating-box {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    /* Star Input Logic */
+    .rate {
+        display: inline-block;
+        border: 0;
+    }
+
+        .rate > input {
+            display: none;
         }
 
-    .xemthem {
-        color: blue;
-        cursor: pointer;
-        user-select: none;
-        display: inline-block;
-        margin-top: 6px;
+        .rate > label {
+            float: right;
+            color: #cbd5e0;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+            .rate > label:before {
+                content: "\f005";
+                font-family: "Font Awesome 6 Free";
+                font-weight: 900;
+                display: inline-block;
+                padding: 0 2px;
+            }
+
+        .rate > input:checked ~ label {
+            color: var(--gold-star);
+        }
+
+            .rate > input:checked + label:hover, .rate > input:checked + label:hover ~ label,
+            .rate > input:checked ~ label:hover, .rate > input:checked ~ label:hover ~ label,
+            .rate > label:hover ~ input:checked ~ label {
+                color: #d97706;
+            }
+
+        .rate > label:hover, .rate > label:hover ~ label {
+            color: var(--gold-star);
+        }
+
+    /* Review Item */
+    .review-item {
+        border-bottom: 1px solid #edf2f7;
+        padding: 20px 0;
+    }
+
+    .review-avatar {
+        width: 50px;
+        height: 50px;
+        background: var(--gradient-tech);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .review-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-top: 10px;
+        cursor: zoom-in;
+        border: 1px solid #e2e8f0;
+    }
+
+    /* Related Products */
+    .card-tech {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+        height: 100%;
+        background: white;
+        overflow: hidden;
+    }
+
+        .card-tech:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-tech img {
+            height: 220px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+    .card-tech-body {
+        padding: 15px;
+    }
+
+    .card-tech-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--primary-dark);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 5px;
+    }
+
+    .card-tech-price {
+        color: var(--price-color);
+        font-weight: 700;
     }
 </style>
-<div style="margin-top: 80px; margin-bottom: 20px;" class="p-3">
-<div class="container-fluid d-flex justify-content-between">
-    <div class="">
-        <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=@ViewBag.Price"><i class="fa-solid fa-arrow-left" style="font-size: 25px;color: rgb(10,25,47); line-height: 30px;"></i></a>
+
+<div class="top-bar">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a href="/Products/Index?page=@ViewBag.Page&&search=@ViewBag.Search&&id=@ViewBag.CateId&&quantity=@ViewBag.Quantity&&date=@ViewBag.Date&&price=@ViewBag.Price" class="btn btn-light rounded-circle shadow-sm" style="width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-arrow-left text-dark"></i>
+        </a>
+
+        <form class="d-flex" action="/Products/Index" method="get">
+            <input type="hidden" id="id" name="id" value="@ViewBag.CateId" />
+            <div class="input-group">
+                <input value="@ViewBag.Search" type="text" name="search" class="form-control search-input" placeholder="Tìm kiếm sách..." style="width: 300px;">
+                <button type="submit" class="btn search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </form>
     </div>
-    <div>
-        <div>
-            <form class="d-flex" action="/Products/Index" method="get">
-                <input type="hidden" id="id" name="id" value="@ViewBag.CateId" />
-                <input value="@ViewBag.Search" type="text" id="search" name="search" class="form-control" placeholder="Search..." style="width: 300px; height: 50px; border-radius: 10px 0 0 10px;" onchange="this.form.submit()" />
-                <button type="submit" style="width: 100px; height: 50px; background-image: var(--gradient-tech); color: white; border: none; border-radius: 0 10px 10px 0;"><i class="fa-solid fa-magnifying-glass"></i></button>
-            </form>
+</div>
+
+<div class="container">
+    <div class="product-container">
+        <div class="row">
+            <div class="col-lg-5 col-md-6 mb-4 mb-md-0">
+                <div class="main-image-frame">
+                    <img id="mainimg" src="~/Content/Image/@Model.mainImage" style="width: 100%; aspect-ratio: 3/4; object-fit: contain;" />
+                </div>
+
+                @if (ViewBag.img != null)
+                {
+                    <div class="thumbnail-container">
+                        <img class="thumb-img" src="~/Content/Image/@Model.mainImage" onclick="change('@Model.mainImage')" />
+                        @foreach (var img in ViewBag.img)
+                        {
+                            <img class="thumb-img" src="~/Content/Image/@img.ImageUrl" onclick="change('@img.ImageUrl')" />
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="col-lg-7 col-md-6">
+                <h1 class="product-title">@Model.BookName</h1>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="star-display me-2" style="font-size: 14px;">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= Math.Floor((double)ViewBag.AvgRating))
+                            {<i class="fa-solid fa-star"></i> }
+                            else if (i - 0.5 <= (double)ViewBag.AvgRating)
+                            { <i class="fa-solid fa-star-half-stroke"></i> }
+                            else
+                            { <i class="fa-regular fa-star"></i>}
+                        }
+                    </div>
+                    <span class="text-muted text-sm">(@ViewBag.ReviewCount đánh giá) | Đã bán: @Model.LuotMua</span>
+                </div>
+
+                <div class="product-price">@Model.Price.ToString("N0") VNĐ</div>
+
+                <div class="info-grid bg-light p-3 rounded mb-4">
+                    <div class="info-item">
+                        <strong>Tác giả:</strong> @Model.Author
+                    </div>
+                    <div class="info-item">
+                        <strong>Thể loại:</strong> @Model.Categories.CateName
+                    </div>
+                    <div class="info-item">
+                        <strong>Nhà xuất bản:</strong> @Model.Publisher
+                    </div>
+                    <div class="info-item">
+                        <strong>Năm xuất bản:</strong> @Model.PublicationYear
+                    </div>
+                </div>
+
+                <form>
+                    @{
+                        string userId = User.Identity.IsAuthenticated ? ViewBag.UserId : "";
+                    }
+                    <input type="hidden" name="bookId" id="bookId" value="@Model.BookId" />
+                    <input type="hidden" name="userId" id="userId" value="@userId" />
+                    <input type="hidden" name="CateId" id="CateId" value="@Model.CateId" />
+
+                    <div class="mb-4">
+                        <label class="fw-bold mb-2 d-block">Số lượng:</label>
+                        <div class="d-flex align-items-center">
+                            <button type="button" class="qty-btn rounded-start" id="dec">-</button>
+                            <input type="number" id="quantity" name="quantity" min="1" value="1" class="qty-input form-control shadow-none" readonly />
+                            <button type="button" class="qty-btn rounded-end" id="inc">+</button>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 flex-wrap">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <button type="submit" formaction="/Carts/Add" formmethod="post" class="btn btn-tech-primary">
+                                <i class="fa-solid fa-cart-plus me-2"></i> Thêm vào giỏ hàng
+                            </button>
+                            <button type="submit" formaction="/Paying/Index" formmethod="post" class="btn btn-tech-outline">
+                                <i class="fa-solid fa-bolt me-2"></i> Mua ngay
+                            </button>
+                        }
+                        else
+                        {
+                            <a href="/Account/Login" class="btn btn-tech-primary">
+                                <i class="fa-solid fa-cart-plus me-2"></i> Thêm vào giỏ hàng
+                            </a>
+                            <a href="/Account/Login" class="btn btn-tech-outline">
+                                <i class="fa-solid fa-bolt me-2"></i> Mua ngay
+                            </a>
+                        }
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
-</div>
-    <hr />
-    <div class="container"><h3>@Model.BookName</h3></div>
-    <hr />
-    <div class="container">
-        <!--Thông tin chi tiết-->
-        <div class="row">
-            <div class="col-4">
-                <img id="mainimg" style="width: 100%; height: 500px; border-radius: 10px; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)" src="~/Content/Image/@Model.mainImage" />
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="section-box">
+                <h4 class="section-title">Mô tả sản phẩm</h4>
+                <div class="desc-content">
+                    <div id="textdis" class="desc-truncate">
+                        @Html.Raw(Model.Description.Replace("\n", "<br>"))
+                    </div>
+                    <div id="btnXem" class="btn-expand text-center w-100 mt-2">
+                        <i class="fa-solid fa-chevron-down"></i> Xem thêm
+                    </div>
+                </div>
+            </div>
 
-                <div id="scroll_auto_box">
-                    <div class="d-flex overflow-auto flex-nowrap scroll-box " style="width: calc(100% - 20px); padding: 20px;" id="scroll-auto-content">
-                        @foreach (var img in ViewBag.img)
+            <div class="section-box">
+                <h4 class="section-title">Đánh giá & Nhận xét</h4>
+
+                <div class="row align-items-center mb-4">
+                    <div class="col-md-4 text-center border-end">
+                        <div class="display-4 fw-bold text-dark">@ViewBag.AvgRating.ToString("0.0")</div>
+                        <div class="star-display fs-5 mb-2">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Math.Floor((double)ViewBag.AvgRating))
+                                {<i class="fa-solid fa-star"></i> }
+                                else if (i - 0.5 <= (double)ViewBag.AvgRating)
+                                { <i class="fa-solid fa-star-half-stroke"></i> }
+                                else
+                                { <i class="fa-regular fa-star"></i>}
+                            }
+                        </div>
+                        <div class="text-muted">@ViewBag.ReviewCount đánh giá</div>
+                    </div>
+                    <div class="col-md-8 px-4">
+                        @if (User.Identity.IsAuthenticated)
                         {
-                            <img style="width: 50px; height: 50px; border-radius: 5px; margin: 5px 10px; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)" src="~/Content/Image/@img.ImageUrl" onclick="change('@img.ImageUrl')" />
+                            if (!ViewBag.HasReviewed)
+                            {
+                                <button class="btn btn-tech-outline w-100" type="button" data-bs-toggle="collapse" data-bs-target="#reviewForm">
+                                    <i class="fa-solid fa-pen"></i> Viết đánh giá của bạn
+                                </button>
+                            }
+                            else
+                            {
+                                <div class="alert alert-success m-0"><i class="fa-solid fa-check"></i> Bạn đã đánh giá sản phẩm này.</div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-light border m-0 text-center">
+                                Vui lòng <a href="/Account/Login" class="fw-bold text-decoration-none" style="color: var(--primary-teal)">đăng nhập</a> để viết đánh giá.
+                            </div>
                         }
                     </div>
                 </div>
-            </div>
 
-            <div class="col-8">
-                <div class="" style="padding: 0px 10px;padding: 20px;
-                                     width: 100%;
-                                     background-color: white;
-                                     border-radius: 10px;
-                                     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
-                    <h2 style="color: red; margin-top: -10px">@Model.Price VND</h2>
+                <div class="collapse mb-4" id="reviewForm">
+                    <div class="card card-body bg-light border-0">
+                        <form method="post" action="/Products/AddReview" enctype="multipart/form-data">
+                            <input type="hidden" name="bookId" value="@Model.BookId" />
+                            <input type="hidden" name="userId" value="@ViewBag.UserId" />
 
-                    <p><strong>Thể loại: </strong>@Model.Categories.CateName</p>
-                    <p><strong>Tác giả: </strong>@Model.Author</p>
-                    <p><strong>Lượt mua: </strong>@Model.LuotMua</p>
-
-                    <p><strong>Nhà xuất bản: </strong>@Model.Publisher</p>
-                    <p><strong>Ngày xuất bản: </strong>@Model.PublicationYear</p>
-
-                    <div>
-                        <form>
-                            @{
-                                string userId = "";
-                                if (User.Identity.IsAuthenticated)
-                                {
-                                    userId = ViewBag.UserId;
-                                }
-                            }
-
-                            <input type="hidden" name="bookId" id="bookId" value="@Model.BookId" />
-                            <input type="hidden" name="userId" id="userId" value="@userId" />
-                            <input type="hidden" name="CateId" id="CateId" value="@Model.CateId" />
-                            <div class="d-flex g-3 justify-content-start">
-                                <button type="button" class="btn me-2" id="dec" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 50px; line-height: 20px;">-</button>
-                                <input type="number" id="quantity" name="quantity" min="1" value="1" style="width: 50px;" />
-                                <button type="button" class="btn ms-2" id="inc" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 50px; line-height: 20px;">+</button>
+                            <div class="mb-3 text-center">
+                                <label class="mb-2 fw-bold">Chọn số sao:</label> <br />
+                                <div class="rate">
+                                    <input type="radio" id="star5" name="rating" value="5" required />
+                                    <label for="star5" title="5 sao"></label>
+                                    <input type="radio" id="star4" name="rating" value="4" />
+                                    <label for="star4" title="4 sao"></label>
+                                    <input type="radio" id="star3" name="rating" value="3" />
+                                    <label for="star3" title="3 sao"></label>
+                                    <input type="radio" id="star2" name="rating" value="2" />
+                                    <label for="star2" title="2 sao"></label>
+                                    <input type="radio" id="star1" name="rating" value="1" />
+                                    <label for="star1" title="1 sao"></label>
+                                </div>
                             </div>
-
-
-                            <div class="d-flex justify-content-center gap-3 mt-3">
-                                @if (User.Identity.IsAuthenticated)
-                                {
-
-
-                                    <button formmethod="post" formaction="/Carts/Add" type="submit" class="btn mt-3" style="border-radius: 5px; border: 1px solid rgba(10,25,47, 1); width: 250px;">Thêm giỏ hàng</button>
-
-
-                                    <button formmethod="get" type="submit" formaction="/Paying/Index" class="btn mt-3" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 250px;">Mua ngay</button>
-                                }
-                                else
-                                {
-                                    <a href="/Account/Login" class="btn mt-3" style="border-radius: 5px; border: 1px solid rgba(10,25,47, 1); width: 250px;">Thêm giỏ hàng</a>
-                                    <a href="/Account/Login" class="btn mt-3" style="border-radius: 5px; background-color: rgba(10,25,47, 1); color: white; width: 250px;">Mua ngay</a>
-                                }
-
-
+                            <div class="mb-3">
+                                <textarea class="form-control" name="comment" rows="3" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..." required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-sm"><i class="fa-solid fa-camera"></i> Thêm ảnh (tùy chọn)</label>
+                                <input type="file" class="form-control form-control-sm" name="imageFile" accept="image/*" />
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-tech-primary btn-sm">Gửi đánh giá</button>
                             </div>
                         </form>
                     </div>
-
-
-
                 </div>
-                <!--Đánh giá-->
-                <div class="mt-4" style="padding: 0px 10px;padding: 20px;
-               width: 100%;
-               background-color: white;
-               border-radius: 10px;
-               box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
-                    <div>
-                        <h4>Đánh giá</h4>
 
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!--Mô tả-->
-        <div class="mt-4" style="padding: 0px 10px;padding: 20px;
-               width: 100%;
-               background-color: white;
-               border-radius: 10px;
-               box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
-            <div>
-                <h4>Mô tả:</h4>
-                <p id="textdis" class="desc">
-                    @Model.Description
-                </p><span id="btnXem" class="xemthem">Xem thêm</span>
-
-            </div>
-
-        </div>
-        <!--Gợi ý liên quan-->
-        <div class="mt-4" style="padding: 0px 10px;padding: 20px;
-                      width: 100%;
-                      background-color: white;
-                      border-radius: 10px;
-                      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
-            <div>
-                <h4>Ấn phẩm liển quan</h4>
-            </div>
-            <div class="row row-cols-5 row-gap-4 align-items-center">
-                @foreach (var b in ViewBag.BookList)
-                {
-                    <a href="/Products/Detail?id=@b.BookId&&cateid=@b.CateId" style="text-decoration:none">
-                        <div class="items">
-                            <div class="position-relative"
-                                 style="width: 100%;
-                             height: 300px;
-                             margin-right: 20px;
-                             background-color: white;
-                             border-radius: 10px;
-                             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
-                                <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="~/Content/Image/@b.mainImage" />
-                                <div style="padding: 0px 10px;">
-                                    <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
-                                        @b.BookName
-                                    </p>
-                                    <p style="color: red; text-align: center; margin-top: -10px">@b.Price VND</p>
+                <div class="review-list">
+                    @if (ViewBag.Reviews != null && ViewBag.Reviews.Count > 0)
+                    {
+                        foreach (var review in ViewBag.Reviews)
+                        {
+                            <div class="review-item">
+                                <div class="d-flex">
+                                    <div class="review-avatar me-3">
+                                        @ViewBag.UserNames[review.Id].Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between">
+                                            <strong class="text-dark">@ViewBag.UserNames[review.Id]</strong>
+                                            <small class="text-muted">@review.ReviewDate.ToString("dd/MM/yyyy")</small>
+                                        </div>
+                                        <div class="star-display text-xs mb-2">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= review.Rating)
+                                                {<i class="fa-solid fa-star"></i> }
+                                                else
+                                                { <i class="fa-regular fa-star"></i>}
+                                            }
+                                        </div>
+                                        <p class="mb-2 text-secondary">@review.Comment</p>
+                                        @if (!string.IsNullOrEmpty(review.ImageUrl))
+                                        {
+                                            <img src="~/Content/Image/@review.ImageUrl" class="review-img" onclick="viewImage(this.src)" />
+                                        }
+                                    </div>
                                 </div>
                             </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 text-muted">
+                            <i class="fa-regular fa-comment-dots fa-2x mb-2"></i>
+                            <p>Chưa có đánh giá nào.</p>
                         </div>
-                    </a>
-                }
-
+                    }
+                </div>
             </div>
         </div>
 
+        <div class="col-lg-4">
+            <div class="section-box h-100">
+                <h4 class="section-title">Có thể bạn thích</h4>
+                <div class="row g-3">
+                    @foreach (var b in ViewBag.BookList)
+                    {
+                        <div class="col-6 col-lg-12">
+                            <a href="/Products/Detail?id=@b.BookId&&cateid=@b.CateId" class="text-decoration-none">
+                                <div class="card card-tech flex-row align-items-center p-2" style="height: auto;">
+                                    <img src="~/Content/Image/@b.mainImage" style="width: 70px; height: 90px; border-radius: 5px; object-fit: cover;" />
+                                    <div class="ms-3 overflow-hidden">
+                                        <h6 class="card-tech-title text-truncate" style="max-width: 100%;">@b.BookName</h6>
+                                        <div class="card-tech-price small">@b.Price.ToString("N0") đ</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-
 </div>
+
+<div class="modal fade" id="imageModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+            <img id="modalImage" src="" class="img-fluid rounded shadow-lg" />
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1100; margin-top: 60px;">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+            <i class="fa-solid fa-check-circle me-2"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow" role="alert">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+</div>
+
 <script>
-    //Đổi ảnh
+    // Đổi ảnh chính
     function change(src) {
         document.getElementById('mainimg').src = '/Content/Image/' + src;
+        // Logic active thumbnail (tùy chọn)
+        document.querySelectorAll('.thumb-img').forEach(img => img.classList.remove('active'));
+        event.target.classList.add('active');
     }
 
-    //Hiển htij xem thêm
-    const text = document.getElementById("textdis");
-    const btn = document.getElementById("btnXem");
+    // Xem thêm mô tả
+    const textDesc = document.getElementById("textdis");
+    const btnExpand = document.getElementById("btnXem");
 
-    btn.onclick = () => {
-        text.classList.toggle("expanded");
+    if (textDesc.scrollHeight <= textDesc.clientHeight) {
+        btnExpand.style.display = 'none'; // Ẩn nếu nội dung ngắn
+    }
 
-        if (text.classList.contains("expanded")) {
-            btn.textContent = "Thu gọn";
+    btnExpand.onclick = () => {
+        textDesc.classList.toggle("desc-truncate");
+        if (!textDesc.classList.contains("desc-truncate")) {
+            btnExpand.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Thu gọn';
         } else {
-            btn.textContent = "Xem thêm";
+            btnExpand.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Xem thêm';
         }
     };
+
+    // Tăng giảm số lượng
     const val = document.getElementById('quantity');
-    
-    const decrease = document.getElementById('dec').addEventListener('click', () => {
+    document.getElementById('dec').addEventListener('click', () => {
         let invalue = parseInt(val.value);
-        if (invalue <= 1) {
-            val.value = 1;
-        } else {
-            val.value = val.value - 1;
-        }
+        if (invalue > 1) val.value = invalue - 1;
     });
-    const increase = document.getElementById('inc').addEventListener('click', () => {
+    document.getElementById('inc').addEventListener('click', () => {
         let invalue = parseInt(val.value);
         val.value = invalue + 1;
     });
 
-</script>
-    
+    // Xem ảnh modal
+    function viewImage(src) {
+        document.getElementById('modalImage').src = src;
+        var modal = new bootstrap.Modal(document.getElementById('imageModal'));
+        modal.show();
+    }
 
+    // Auto hide alert
+    setTimeout(function () {
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function (alert) {
+            var bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 5000);
+</script>

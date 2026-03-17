@@ -278,7 +278,7 @@
                             <i class="fa-solid fa-calendar"></i>
                             Ngày xuất bản
                         </label>
-                        @Html.EditorFor(model => model.PublicationYear, new { htmlAttributes = new { @class = "form-control", placeholder = "2024", type = "number" } })
+                        @Html.EditorFor(model => model.PublicationYear, new { htmlAttributes = new { @class = "form-control", placeholder = "", type = "datetime" } })
                         @Html.ValidationMessageFor(model => model.PublicationYear, "", new { @class = "text-danger" })
                     </div>
                 </div>

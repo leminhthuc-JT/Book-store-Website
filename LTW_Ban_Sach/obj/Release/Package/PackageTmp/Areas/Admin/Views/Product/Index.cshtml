@@ -1,99 +1,592 @@
 ﻿@model IEnumerable<LTW_Ban_Sach.Models.Books>
-
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-<h2><br /> </h2>
-<p>
-    <br />
-    @Html.ActionLink("Create Product", "Create")
-</p>
+<style>
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,25,47,1));
+    }
 
-<button type="button" id="btnGetBooks">Get Books</button>
-<table class="table bookTable">
-    <tr class="table-success" style="text-align:center">
-        <th>
-            Ảnh
-        </th>
-        <th>
-            Thể loại
-        </th>
-        <th>
-            Tên sách
-        </th>
-        <th>
-            Tác giả
-        </th>
-        <th>
-            Giá
-        </th>
+    .books-container {
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
 
-        <th></th>
-    </tr>
+    .page-header {
+        background: var(--gradient-tech);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 77, 77, 0.3);
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-    @*@foreach (var item in Model)
-        {
-            <tr style="text-align:center">
-                <td style="text-align: center">
-                    <img style="width:100px" src="@Url.Content("~/Content/Image/" + item.mainImage)" />
+        .page-header h2 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 35px;
+        }
 
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Categories.CateName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BookName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Author)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
+            .page-header h2 i {
+                font-size: 36px;
+            }
 
-                <td>
-                </td>
-            </tr>
-            @Html.ActionLink("Edit", "Edit", new { id = item.BookId })
-            @Html.ActionLink("Details", "Details", new { id = item.BookId })
-            @Html.ActionLink("Delete", "Delete", new { id = item.BookId })
-        }*@
+    .header-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 35px;
+    }
 
-</table>
+    .btn-create {
+        padding: 12px 25px;
+        background: white;
+        color: rgba(0,77,77,1);
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+            color: rgba(0,77,77,1);
+            text-decoration: none;
+        }
+
+        .btn-create i {
+            font-size: 16px;
+        }
+
+    .btn-refresh {
+        padding: 12px 25px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid white;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+        .btn-refresh:hover:not(:disabled) {
+            background: white;
+            color: rgba(0,77,77,1);
+            transform: translateY(-2px);
+        }
+
+        .btn-refresh:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-refresh.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+    @@keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .table-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .table-header {
+        padding: 20px 30px;
+        background: rgba(0, 77, 77, 0.05);
+        border-bottom: 2px solid rgba(0, 77, 77, 0.1);
+    }
+
+        .table-header h3 {
+            margin: 0;
+            color: rgba(0,77,77,1);
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .bookTable {
+        width: 100%;
+        margin: 0;
+        border-collapse: collapse;
+    }
+
+        .bookTable thead tr {
+            background: var(--gradient-tech);
+            color: white;
+        }
+
+        .bookTable thead th {
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bookTable tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+            .bookTable tbody tr:hover {
+                background: rgba(0, 77, 77, 0.05);
+                transform: scale(1.01);
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            }
+
+        .bookTable tbody td {
+            padding: 15px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+    .book-image {
+        width: 80px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .book-title {
+        font-weight: 600;
+        color: rgba(0,25,47,1);
+    }
+
+    .book-category {
+        display: inline-block;
+        padding: 5px 12px;
+        background: rgba(0, 77, 77, 0.1);
+        color: rgba(0,77,77,1);
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .book-price {
+        color: #e74c3c;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .btn-action {
+        padding: 8px 15px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+        background: rgba(0, 77, 77, 0.1);
+        color: rgba(0,77,77,1);
+    }
+
+        .btn-edit:hover {
+            background: rgba(0, 77, 77, 1);
+            color: white;
+            text-decoration: none;
+        }
+
+    .btn-details {
+        background: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+    }
+
+        .btn-details:hover {
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+        }
+
+    .btn-delete {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+    }
+
+        .btn-delete:hover {
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+        }
+
+    .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+    .loading-spinner {
+        background: white;
+        padding: 30px 50px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+        .loading-spinner i {
+            font-size: 48px;
+            color: rgba(0,77,77,1);
+            animation: spin 1s linear infinite;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .loading-spinner p {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+    }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+    .toast-message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 10000;
+        animation: slideIn 0.3s ease-out;
+        font-weight: 500;
+    }
+
+    .toast-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .toast-error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    @@keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+</style>
+
+<div class="books-container mt-3">
+    
+    <div class="page-header">
+        <h2>
+            <i class="fa-solid fa-book"></i>
+            Quản Lý Sách
+        </h2>
+        <div class="header-actions">
+            @Html.ActionLink("Thêm Sách Mới", "Create", null, new { @class = "btn-create" })
+            <button type="button" id="btnGetBooks" class="btn-refresh">
+                <i class="fa-solid fa-rotate"></i>
+                <span class="btn-text">Lấy danh sách</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="table-card">
+        <div class="table-header">
+            <h3>
+                <i class="fa-solid fa-list"></i>
+                Danh sách sách
+            </h3>
+        </div>
+        <div>
+            <form class="d-flex" action="/Admin/Product/Index" method="get">
+                <input type="hidden" id="id" name="id" value="@ViewBag.CateId" />
+                <div class="input-group">
+                    <input value="@ViewBag.Search" type="text" name="search" class="form-control search-input" placeholder="Tìm kiếm sách..." style="width: 300px;">
+                    <button type="submit" class="btn search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="table-wrapper">
+            <table class="table bookTable">
+                <thead>
+                    <tr>
+                        <th><i class="fa-solid fa-image"></i> Ảnh</th>
+                        <th><i class="fa-solid fa-tags"></i> Thể loại</th>
+                        <th><i class="fa-solid fa-book"></i> Tên sách</th>
+                        <th><i class="fa-solid fa-user-pen"></i> Tác giả</th>
+                        <th><i class="fa-solid fa-dollar-sign"></i> Giá</th>
+                        <th><i class="fa-solid fa-gears"></i> Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="bookTableBody">
+                    @*@foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <img class="book-image" src="@Url.Content("~/Content/Image/" + item.mainImage)" alt="@item.BookName" onerror="this.src='/Content/Image/default-book.png'" />
+                                </td>
+                                <td>
+                                    <span class="book-category">@Html.DisplayFor(modelItem => item.Categories.CateName)</span>
+                                </td>
+                                <td class="book-title">@Html.DisplayFor(modelItem => item.BookName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Author)</td>
+                                <td class="book-price">@Html.DisplayFor(modelItem => item.Price) đ</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        @Html.ActionLink("Sửa", "Edit", new { id = item.BookId }, new { @class = "btn-action btn-edit" })
+                                        @Html.ActionLink("Chi tiết", "Details", new { id = item.BookId }, new { @class = "btn-action btn-details" })
+                                        @Html.ActionLink("Xóa", "Delete", new { id = item.BookId }, new { @class = "btn-action btn-delete" })
+                                    </div>
+                                </td>
+                            </tr>
+                        }*@
+                </tbody>
+            </table>
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fa-solid fa-box-open"></i>
+            <h3>Chưa có sách nào</h3>
+            <p>Nhấn "Thêm Sách Mới" để bắt đầu thêm sách vào hệ thống.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner">
+        <i class="fa-solid fa-spinner"></i>
+        <p>Đang tải dữ liệu...</p>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
     $(document).ready(function () {
+        console.log("Script loaded successfully!");
 
-        console.log("Script loaded OK!");
+        // Kiểm tra empty state khi load trang
+        checkEmptyTable();
 
-        $('#btnGetBooks').click(() => {
-            console.log("Button clicked!");
-            $.ajax({
-                type: 'GET',
-                url: '/api/Books',
-                success: (responses) => {
-
-                    for (var i = 0; i < responses.length; i++) {
-
-                        const bookRow = responses[i];
-
-
-                        const strHTML = '<tr><td>' + bookRow.BookName + '</td><td>' + bookRow.Categories.CateName + '</td><td>' + bookRow.BookName + '</td><td>' + bookRow.Author + '</td><td>' + bookRow.Price + '</td></tr>';
-
-                        $('.bookTable').append(strHTML);
-                    }
-                },
-                error: (err) => { console.log(err); }
-            });
+        // Xử lý sự kiện click nút Làm mới
+        $('#btnGetBooks').click(function () {
+            refreshBooks();
         });
 
+        function refreshBooks() {
+            var $btn = $('#btnGetBooks');
+            var $btnText = $btn.find('.btn-text');
+
+            console.log("Refreshing books...");
+
+            // Disable button và thêm loading class
+            $btn.prop('disabled', true).addClass('loading');
+            $btnText.text('Đang tải...');
+
+            // Hiển thị loading overlay
+            $('#loadingOverlay').addClass('active');
+
+            // AJAX Call
+            $.ajax({
+                type: 'GET',
+                url: '/api/Books', 
+                dataType: 'json',
+                timeout: 10000, 
+                success: function (response) {
+                    console.log("Data received:", response);
+                   
+
+                    $('#loadingOverlay').removeClass('active');
+                    $btn.prop('disabled', false).removeClass('loading');
+                    $btnText.text('Làm mới');
+
+                    if (response && response.length > 0) {
+                        // Clear current table
+                        $('#bookTableBody').empty();
+
+                        // Add new rows
+                        response.forEach(function (book) {
+                            var imageUrl = book.mainImage
+                                ? '/Content/Image/' + book.mainImage
+                                : '/Content/Image/default-book.png';
+
+                            var categoryName = book.CateName || book.Categories?.CateName || 'N/A';
+                            var bookName = book.BookName || 'N/A';
+                            var author = book.Author || 'N/A';
+                            var price = book.Price ? book.Price.toLocaleString('vi-VN') : '0';
+
+                            var row = `
+                                <tr>
+                                    <td>
+                                        <img class="book-image"
+                                             src="${imageUrl}"
+                                             alt="${bookName}"
+                                             onerror="this.src='/Content/Image/default-book.png'" />
+                                    </td>
+                                    <td>
+                                        <span class="book-category">${categoryName}</span>
+                                    </td>
+                                    <td class="book-title">${bookName}</td>
+                                    <td>${author}</td>
+                                    <td class="book-price">${price} đ</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="/Admin/Books/Edit/${book.BookId}" class="btn-action btn-edit">Sửa</a>
+                                            <a href="/Admin/Books/Details/${book.BookId}" class="btn-action btn-details">Chi tiết</a>
+                                            <a href="/Admin/Books/Delete/${book.BookId}" class="btn-action btn-delete">Xóa</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+
+                            $('#bookTableBody').append(row);
+                        });
+
+                        checkEmptyTable();
+                        showToast('success', 'Đã làm mới danh sách sách thành công!');
+                    } else {
+                        $('#bookTableBody').empty();
+                        checkEmptyTable();
+                        showToast('success', 'Không có dữ liệu!');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", {
+                        status: status,
+                        error: error,
+                        response: xhr.responseText
+                    });
+
+                    // Ẩn loading
+                    $('#loadingOverlay').removeClass('active');
+                    $btn.prop('disabled', false).removeClass('loading');
+                    $btnText.text('Làm mới');
+
+                    // Hiển thị thông báo lỗi chi tiết
+                    var errorMessage = 'Có lỗi xảy ra khi tải dữ liệu!';
+
+                    if (status === 'timeout') {
+                        errorMessage = 'Quá thời gian chờ. Vui lòng thử lại!';
+                    } else if (xhr.status === 404) {
+                        errorMessage = 'Không tìm thấy API endpoint. Vui lòng kiểm tra URL!';
+                    } else if (xhr.status === 500) {
+                        errorMessage = 'Lỗi server. Vui lòng liên hệ quản trị viên!';
+                    }
+
+                    showToast('error', errorMessage);
+                }
+            });
+        }
+
+        function checkEmptyTable() {
+            var rowCount = $('#bookTableBody tr').length;
+            if (rowCount === 0) {
+                $('.table-wrapper').hide();
+                $('#emptyState').show();
+            } else {
+                $('.table-wrapper').show();
+                $('#emptyState').hide();
+            }
+        }
+
+        function showToast(type, message) {
+            var toastClass = type === 'success' ? 'toast-success' : 'toast-error';
+            var icon = type === 'success'
+                ? '<i class="fa-solid fa-circle-check" style="font-size: 20px;"></i>'
+                : '<i class="fa-solid fa-circle-exclamation" style="font-size: 20px;"></i>';
+
+            var $toast = $('<div class="toast-message ' + toastClass + '">' + icon + '<span>' + message + '</span></div>');
+
+            $('body').append($toast);
+
+            setTimeout(function () {
+                $toast.fadeOut(300, function () {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
     });
 </script>
-

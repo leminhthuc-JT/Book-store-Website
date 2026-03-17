@@ -4,117 +4,463 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-<div style="margin-top: 50px; margin-bottom: 20px;" class="p-3">
-    <div class="container-fluid d-flex justify-content-between">
-        <div style="width: calc(100% - 50px)">
-            <hr />
-            <div class="container"><h3>QUẢN LÝ TÀI KHOẢN</h3></div>
-            <hr />
+<style>
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,25,47,1));
+        --primary-color: rgba(0,77,77,1);
+        --secondary-color: rgba(0,25,47,1);
+    }
+
+    .users-container {
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .page-header {
+        background: var(--gradient-tech);
+        color: white;
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        box-shadow: 0 5px 20px rgba(0, 77, 77, 0.3);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top:35px;
+    }
+
+    .page-header h2 i {
+        font-size: 36px;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        margin-top: 35px;
+    }
+
+    .stat-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .users-card {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .toolbar {
+        padding: 25px 30px;
+        background: #f8f9fa;
+        border-bottom: 2px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn-add-user {
+        background: var(--gradient-tech);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .btn-add-user:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 77, 77, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .table-container {
+        padding: 30px;
+        overflow-x: auto;
+    }
+
+    .modern-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+    }
+
+    .modern-table thead {
+        background: var(--gradient-tech);
+        color: white;
+    }
+
+    .modern-table thead th {
+        padding: 18px 20px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+    }
+
+    .modern-table thead th:first-child {
+        border-radius: 10px 0 0 0;
+    }
+
+    .modern-table thead th:last-child {
+        border-radius: 0 10px 0 0;
+        text-align: center;
+    }
+
+    .modern-table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .modern-table tbody tr:hover {
+        background: rgba(0, 77, 77, 0.05);
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .modern-table tbody td {
+        padding: 20px;
+        font-size: 15px;
+        color: #333;
+        vertical-align: middle;
+    }
+
+    .user-email {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    .user-email i {
+        color: var(--primary-color);
+        font-size: 18px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-info i {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .btn-action {
+        padding: 8px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-edit {
+        background: #3498db;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-delete {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Pagination Styles */
+    .pagination-container {
+        padding: 30px;
+        background: #f8f9fa;
+        border-top: 2px solid #e0e0e0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .page-link {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(0, 77, 77, 0.2);
+        color: #333;
+        background: white;
+    }
+
+    .page-link:hover {
+        background: rgba(0, 77, 77, 0.1);
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+        color: #333;
+    }
+
+    .page-link.active {
+        background: var(--gradient-tech);
+        color: white;
+        border-color: var(--primary-color);
+        box-shadow: 0 5px 15px rgba(0, 77, 77, 0.3);
+    }
+
+    .page-arrow {
+        width: 50px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        text-decoration: none;
+        background: var(--gradient-tech);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .page-arrow:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 77, 77, 0.3);
+        color: white;
+    }
+
+    .page-arrow.disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+    }
+
+    .empty-state i {
+        font-size: 80px;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        color: #666;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    /* Responsive */
+</style>
+
+<div class="users-container">
+    <div class="page-header">
+        <h2>
+            <i class="fa-solid fa-users"></i>
+            Quản Lý Tài Khoản
+        </h2>
+        <div class="header-actions">
+            <div class="stat-badge">
+                <i class="fa-solid fa-user-check"></i>
+                Tổng: @Model.Count() người dùng
+            </div>
         </div>
-
     </div>
 
-</div>
-<div class="container">
-    <p>
-        <a href="/Admin/Users/Create" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm User</a>
-    </p>
+    <div class="users-card">
+        <div class="toolbar">
+            <a href="/Admin/Users/Create" class="btn-add-user">
+                <i class="fa-solid fa-user-plus"></i>
+                Thêm người dùng mới
+            </a>
+        </div>
 
-    <table class="table ">
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>Họ tên</th>
-                <th>SĐT</th>
-                <th>Địa chỉ</th>
-                <th>Chức năng</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var u in Model)
+        <div class="table-container">
+            @if (Model != null && Model.Any())
             {
-                <tr>
-                    <td>@u.Email</td>
-                    <td>@u.UserName</td>
-                    <td>@u.PhoneNumber</td>
-                    <td>@u.Address</td>
-                    <td>
-                        <a class="btn btn-success"
-                           href="@Url.Action("Edit", "Users", new { id = u.Id })">Sửa</a>
-                        <a class="btn btn-danger"
-                           href="@Url.Action("Delete", "Users", new { id = u.Id })">Xóa</a>
-                    </td>
-                </tr>
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fa-solid fa-envelope"></i> Email</th>
+                            <th><i class="fa-solid fa-user"></i> Họ tên</th>
+                            <th><i class="fa-solid fa-phone"></i> Số điện thoại</th>
+                            <th><i class="fa-solid fa-location-dot"></i> Địa chỉ</th>
+                            <th><i class="fa-solid fa-gear"></i> Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="user-email">
+                                        <i class="fa-solid fa-at"></i>
+                                        @user.Email
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-info">
+                                        <i class="fa-solid fa-id-card"></i>
+                                        @user.UserName
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-info">
+                                        <i class="fa-solid fa-mobile-screen"></i>
+                                        @(string.IsNullOrEmpty(user.PhoneNumber) ? "Chưa cập nhật" : user.PhoneNumber)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="user-info">
+                                        <i class="fa-solid fa-map-marker-alt"></i>
+                                        @(string.IsNullOrEmpty(user.Address) ? "Chưa cập nhật" : user.Address)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="@Url.Action("Edit", "Users", new { id = user.Id })" class="btn-action btn-edit" title="Chỉnh sửa">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            Sửa
+                                        </a>
+                                        <a href="@Url.Action("Delete", "Users", new { id = user.Id })" class="btn-action btn-delete" title="Xóa" onclick="return confirm('Bạn có chắc muốn xóa người dùng này?');">
+                                            <i class="fa-solid fa-trash"></i>
+                                            Xóa
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
-        </tbody>
-    </table>
-    <div>
-        <!--Phân trang-->
-
-        <div class="d-flex justify-content-center">
-            @{ int pagepre = ViewBag.Page;
-                if (pagepre <= 1)
-                {
-                    <a style="text-decoration: none; color: white; text-align: center ">
-                        <div style="width: 50px; line-height: 40px; margin: 20px 5px; background-color: rgba(0,77,77,1); border-radius: 10px; ">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </div>
-                    </a>
-
-                }
-                else
-                {
-                    pagepre = pagepre - 1;
-                    <a href="/Admin/Users/Index?page=@pagepre" class="disabled" style="text-decoration: none; color: white; text-align: center ">
-                        <div class="" style="width: 50px; line-height: 40px; margin: 20px 5px; background-image: var(--gradient-tech); border-radius: 10px;">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </div>
-                    </a>
-                }
-            }
-
-            @for (int i = 1; i <= ViewBag.PageNumber; i++)
+            else
             {
-                if (i == ViewBag.Page)
-                {
-                    <a href="/Admin/Users/Index?page=@i" style="text-decoration: none; color: black">
-                        <div class="" style="width: 40px; line-height: 40px; margin: 20px 5px; text-align: center; border: 1px solid rgba(10,25,47,0.9); background-color: rgba(0,77,77,0.3); border-radius: 10px;">
-                            @i
-                        </div>
-                    </a>
-
-                }
-                else
-                {
-                    <a href="/Admin/Users/Index?page=@i" style="text-decoration: none; color: black">
-                        <div class="" style="width: 40px; line-height: 40px; margin: 20px 5px; text-align: center; border: 1px solid rgba(10,25,47,0.9); border-radius: 10px;">
-                            @i
-                        </div>
-                    </a>
-                }
-
-            }
-            @{ int pagenext = ViewBag.Page;
-                if (pagenext >= ViewBag.PageNumber)
-                {
-                    <a style="text-decoration: none; color: white; text-align: center ">
-                        <div style="width: 50px; line-height: 40px; margin: 20px 5px; border-radius: 10px; background-color: rgba(0,77,77,1) ">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </div>
-                    </a>
-
-                }
-                else
-                {
-                    pagenext = pagenext + 1;
-                    <a href="/Admin/Users/Index?page=@pagenext" class="disabled" style="text-decoration: none; color: white; text-align: center ">
-                        <div style="width: 50px; line-height: 40px; margin: 20px 5px; background-image: var(--gradient-tech); border-radius: 10px;">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </div>
-                    </a>
-                }
+                <div class="empty-state">
+                    <i class="fa-solid fa-users-slash"></i>
+                    <h3>Chưa có người dùng nào</h3>
+                    <p>Danh sách người dùng đang trống.</p>
+                </div>
             }
         </div>
+
+        @if (ViewBag.PageNumber != null && ViewBag.PageNumber > 1)
+        {
+            <div class="pagination-container">
+                <div class="pagination">
+                    @{
+                        int currentPage = ViewBag.Page ?? 1;
+                        int totalPages = ViewBag.PageNumber;
+                        int previousPage = currentPage - 1;
+                        int nextPage = currentPage + 1;
+                    }
+
+                    <!-- Previous Button -->
+                    @if (currentPage <= 1)
+                    {
+                        <span class="page-arrow disabled">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </span>
+                    }
+                    else
+                    {
+                        <a href="/Admin/Users/Index?page=@previousPage" class="page-arrow">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                    }
+
+                    <!-- Page Numbers -->
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        if (i == currentPage)
+                        {
+                            <a href="/Admin/Users/Index?page=@i" class="page-link active">
+                                @i
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/Admin/Users/Index?page=@i" class="page-link">
+                                @i
+                            </a>
+                        }
+                    }
+
+                    <!-- Next Button -->
+                    @if (currentPage >= totalPages)
+                    {
+                        <span class="page-arrow disabled">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                    }
+                    else
+                    {
+                        <a href="/Admin/Users/Index?page=@nextPage" class="page-arrow">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
     </div>
 </div>

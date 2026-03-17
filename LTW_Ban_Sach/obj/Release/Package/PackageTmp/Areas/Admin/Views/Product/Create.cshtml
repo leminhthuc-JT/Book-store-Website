@@ -5,88 +5,340 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Create</h2>
+<style>
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1), rgba(0,25,47,1));
+    }
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+    .create-book-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
 
-    <div class="form-horizontal">
-        <h4><br />Books</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.BookName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BookName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BookName, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    .page-header {
+        background: var(--gradient-tech);
+        color: white;
+        padding: 20px;
+        border-radius: 15px 15px 0 0;
+        box-shadow: 0 5px 20px rgba(0, 77, 77, 0.3);
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        .page-header h2 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 35px;
+        }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    .page-header h2 i {
+        font-size: 36px;
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PublicationYear, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PublicationYear, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PublicationYear, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    .form-card {
+        background: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Publisher, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Publisher, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Publisher, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    .form-section {
+        margin-bottom: 30px;
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    .section-title {
+        color: rgba(0, 77, 77, 1);
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(0, 77, 77, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CateId, "CateId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CateId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CateId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    .section-title i {
+        font-size: 22px;
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.mainImage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.mainImage, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.mainImage, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    .form-group-custom {
+        margin-bottom: 25px;
+    }
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+    .form-group-custom label {
+        display: block;
+        color: rgba(0, 25, 47, 1);
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+
+    .form-group-custom label i {
+        color: rgba(0, 77, 77, 1);
+        margin-right: 8px;
+        width: 20px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: rgba(0, 77, 77, 1);
+        box-shadow: 0 0 0 3px rgba(0, 77, 77, 0.1);
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .text-danger {
+        color: #e74c3c;
+        font-size: 13px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .validation-summary-errors {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        border-left: 4px solid #e74c3c;
+    }
+
+    .validation-summary-errors ul {
+        margin: 10px 0 0 0;
+        padding-left: 20px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    .btn-submit {
+        padding: 14px 40px;
+        background: var(--gradient-tech);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 77, 77, 0.3);
+    }
+
+    .btn-back {
+        padding: 14px 40px;
+        background: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .file-input-wrapper {
+        position: relative;
+    }
+
+    .file-input-label {
+        display: inline-block;
+        padding: 10px 20px;
+        background: rgba(0, 77, 77, 0.1);
+        color: rgba(0, 77, 77, 1);
+        border: 2px dashed rgba(0, 77, 77, 0.3);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .file-input-label:hover {
+        background: rgba(0, 77, 77, 0.2);
+        border-color: rgba(0, 77, 77, 1);
+    }
+
+    .file-input-label i {
+        margin-right: 8px;
+    }
+
+</style>
+
+<div class="create-book-container">
+    <div class="page-header">
+        <h2>
+            <i class="fa-solid fa-book-medical"></i>
+            Thêm Sách Mới
+        </h2>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <div class="form-card">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger validation-summary-errors" })
+
+            <!-- Thông tin cơ bản -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-info-circle"></i>
+                    Thông tin cơ bản
+                </div>
+
+                <div class="form-group-custom">
+                    <label>
+                        <i class="fa-solid fa-book"></i>
+                        Tên Sách
+                    </label>
+                    @Html.EditorFor(model => model.BookName, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên sách..." } })
+                    @Html.ValidationMessageFor(model => model.BookName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-custom">
+                        <label>
+                            <i class="fa-solid fa-user-pen"></i>
+                            Tác giả
+                        </label>
+                        @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên tác giả..." } })
+                        @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label>
+                            <i class="fa-solid fa-building"></i>
+                            Nhà xuất bản
+                        </label>
+                        @Html.EditorFor(model => model.Publisher, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập nhà xuất bản..." } })
+                        @Html.ValidationMessageFor(model => model.Publisher, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-custom">
+                        <label>
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            Giá bán
+                        </label>
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", placeholder = "0", type = "number", step = "0.01" } })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label>
+                            <i class="fa-solid fa-calendar"></i>
+                            Ngày xuất bản
+                        </label>
+                        @Html.EditorFor(model => model.PublicationYear, new { htmlAttributes = new { @class = "form-control", placeholder = "2024", type = "number" } })
+                        @Html.ValidationMessageFor(model => model.PublicationYear, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group-custom">
+                    <label>
+                        <i class="fa-solid fa-tags"></i>
+                        Thể loại
+                    </label>
+                    @Html.DropDownList("CateId", null, "-- Chọn thể loại --", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CateId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- Mô tả -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-align-left"></i>
+                    Mô tả sách
+                </div>
+
+                <div class="form-group-custom">
+                    <label>
+                        <i class="fa-solid fa-file-lines"></i>
+                        Thêm mô tả
+                    </label>
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "Nhập mô tả chi tiết về sách...", rows = 5 })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- Hình ảnh -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fa-solid fa-image"></i>
+                    Hình ảnh
+                </div>
+
+                <div class="form-group-custom">
+                    <label>
+                        <i class="fa-solid fa-camera"></i>
+                        Thêm hình ảnh
+                    </label>
+                    <div class="file-input-wrapper">
+                        @Html.EditorFor(model => model.mainImage, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập URL hình ảnh hoặc tải lên..." } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.mainImage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="form-actions">
+                @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn-back" })
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Tạo mới
+                </button>
+            </div>
+        }
+    </div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />

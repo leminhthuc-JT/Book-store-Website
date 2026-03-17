@@ -109,12 +109,13 @@
         </div>
         <div id="scroll_auto_box">
             <div class="d-flex overflow-auto flex-nowrap scroll-box " style="width: calc(100% - 20px); height: 340px;padding: 20px;" id="scroll-auto-content">
-                @foreach(var b in ViewBag.SaleList)
+                @foreach (var b in ViewBag.SaleList)
                 {
                     <!--1: Kình ngư-->
-                    <div class="d-flex items">
-                        <div class="position-relative"
-                             style="width: 200px;
+                    <a href="/Products/Detail?id=@b.BookId&&cateid=@b.CateId" style="text-decoration:none">
+                        <div class="d-flex items">
+                            <div class="position-relative"
+                                 style="width: 200px;
                                     height: 300px;
                                     background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(10,25,47,0.7), rgba(10,25,47,0.9), rgba(10,25,47,1)), url('/Content/Image/@b.mainImage');
                                     border-radius: 10px;
@@ -122,20 +123,21 @@
                                     background-size: contain;
                                     background-repeat: no-repeat;
                                     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
-                            <div class="position-absolute" style="width: 50px; line-height:30px; background-color: var(--red-color); border-radius: 10px 0 10px 0; color: white; text-align: center">
-                                @b.Discount%
+                                <div class="position-absolute" style="width: 50px; line-height:30px; background-color: var(--red-color); border-radius: 10px 0 10px 0; color: white; text-align: center">
+                                    @b.Discount%
+                                </div>
+                                <div style="width:100%; padding: 5px;">
+                                    <p style="color: white; text-align: center; font-weight: 500; margin-top: 200px; font-size: 16px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                                        @b.BookName
+                                    </p>
+                                </div>
+                                <p style="color: grey; text-align: center; margin-top: -15px; font-size: 10px; text-decoration: line-through">@b.Price VND</p>
+                                <p style="color: red; text-align: center; margin-top: -20px">@b.PriceSale VND</p>
                             </div>
-                            <div style="width:100%; padding: 5px;">
-                                <p style="color: white; text-align: center; font-weight: 500; margin-top: 200px; font-size: 16px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
-                                    @b.BookName
-                                </p>
-                            </div>
-                            <p style="color: grey; text-align: center; margin-top: -15px; font-size: 10px; text-decoration: line-through">@b.Price VND</p>
-                            <p style="color: red; text-align: center; margin-top: -20px">@b.PriceSale VND</p>
                         </div>
-                    </div>
-                }
-            </div>
+                        </a>
+                        }
+                </div>
         </div>
     </div>
     <!--Sản phầm mới-->
@@ -154,52 +156,53 @@
         <div class="row row-cols-5 row-gap-4 mt-4 align-items-center">
             @foreach (var b in ViewBag.NewList)
             {
-
-                <!--Kình ngư-->
-                <div class="items">
-                    <div class="position-relative"
-                         style="width: 100%;
+                <a href="/Products/Detail?id=@b.BookId&&cateid=@b.CateId" style="text-decoration:none">
+                    <!--Kình ngư-->
+                    <div class="items">
+                        <div class="position-relative"
+                             style="width: 100%;
                         height: 300px;
                         margin-right: 20px;
                         background-color: white;
                         border-radius: 10px;
                         box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
 
-                        <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="/Content/Image/@b.mainImage" />
-                        @if (@b.Discount != 0)
-                        {
+                            <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="/Content/Image/@b.mainImage" />
+                            @if (@b.Discount != 0)
+                            {
 
-                            <div style="width: 100%; padding: 5px;">
-                                <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
-                                    @b.BookName
-                                </p>
-                            </div>
-                            <div class="d-flex justify-content-center" style="margin-top: -15px;">
-
-                                <div>
-                                    <p style="color: grey; text-align: center; font-size: 10px; text-decoration: line-through">@b.Price VND</p>
+                                <div style="width: 100%; padding: 5px;">
+                                    <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                                        @b.BookName
+                                    </p>
                                 </div>
-                                <div style="width: 30px; height: 15px; background-color: var(--red-color); color: white; text-align: center; font-size: 10px; ">
-                                    @b.Discount%
-                                </div>
-                            </div>
-                            <p style="color: red; text-align: center; margin-top: -20px">@b.PriceSale VND</p>
-                        }
-                        else
-                        {
-                            <div style="width: 100%; padding: 5px;">
-                                <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
-                                    @b.BookName
-                                </p>
-                            </div>
-                            <p style="color: red; text-align: center; margin-top: -10px">100.000 VND</p>
-                        }
+                                <div class="d-flex justify-content-center" style="margin-top: -15px;">
 
+                                    <div>
+                                        <p style="color: grey; text-align: center; font-size: 10px; text-decoration: line-through">@b.Price VND</p>
+                                    </div>
+                                    <div style="width: 30px; height: 15px; background-color: var(--red-color); color: white; text-align: center; font-size: 10px; ">
+                                        @b.Discount%
+                                    </div>
+                                </div>
+                                <p style="color: red; text-align: center; margin-top: -20px">@b.PriceSale VND</p>
+                            }
+                            else
+                            {
+                                <div style="width: 100%; padding: 5px;">
+                                    <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                                        @b.BookName
+                                    </p>
+                                </div>
+                                <p style="color: red; text-align: center; margin-top: -10px">100.000 VND</p>
+                            }
+
+                        </div>
                     </div>
-                </div>
-            }
+                    </a>
+                    }
 
-        </div>
+            </div>
     </div>
     <div style="padding: 20px;
                 width: 100%;
@@ -218,51 +221,52 @@
         <div class="row row-cols-5 row-gap-4 mt-4 align-items-center">
             @foreach (var b in ViewBag.HotList)
             {
-
-                <!--Kình ngư-->
-                <div class="items">
-                    <div class="position-relative"
-                         style="width: 100%;
+<a href="/Products/Detail?id=@b.BookId&&cateid=@b.CateId" style="text-decoration:none">
+    <!--Kình ngư-->
+    <div class="items">
+        <div class="position-relative"
+             style="width: 100%;
             height: 300px;
             margin-right: 20px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4)">
 
-                        <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="/Content/Image/@b.mainImage" />
-                        @if (@b.Discount != 0)
-                        {
+            <img style="width: 100%; height: 200px; border-radius: 10px 10px 0 0;" src="/Content/Image/@b.mainImage" />
+            @if (@b.Discount != 0)
+            {
 
-                            <div style="width: 100%; padding: 5px;">
-                                <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
-                                    @b.BookName
-                                </p>
-                            </div>
-                            <div class="d-flex justify-content-center" style="margin-top: -15px;">
+                <div style="width: 100%; padding: 5px;">
+                    <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                        @b.BookName
+                    </p>
+                </div>
+                <div class="d-flex justify-content-center" style="margin-top: -15px;">
 
-                                <div>
-                                    <p style="color: grey; text-align: center; font-size: 10px; text-decoration: line-through">@b.Price VND</p>
-                                </div>
-                                <div style="width: 30px; height: 15px; background-color: var(--red-color); color: white; text-align: center; font-size: 10px; ">
-                                    @b.Discount%
-                                </div>
-                            </div>
-                            <p style="color: red; text-align: center; margin-top: -20px">@b.PriceSale VND</p>
-                        }
-                        else
-                        {
-                            <div style="width: 100%; padding: 5px;">
-                                <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
-                                    @b.BookName
-                                </p>
-                            </div>
-                            <p style="color: red; text-align: center; margin-top: -10px">100.000 VND</p>
-                        }
-
+                    <div>
+                        <p style="color: grey; text-align: center; font-size: 10px; text-decoration: line-through">@b.Price VND</p>
+                    </div>
+                    <div style="width: 30px; height: 15px; background-color: var(--red-color); color: white; text-align: center; font-size: 10px; ">
+                        @b.Discount%
                     </div>
                 </div>
+                <p style="color: red; text-align: center; margin-top: -20px">@b.PriceSale VND</p>
             }
+            else
+            {
+                <div style="width: 100%; padding: 5px;">
+                    <p style="color: rgba(10,25,47,0.9); text-align:center; font-weight: 500; font-size: 18px; margin-top: 10px;white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer" title="@b.BookName">
+                        @b.BookName
+                    </p>
+                </div>
+                <p style="color: red; text-align: center; margin-top: -10px">100.000 VND</p>
+            }
+
         </div>
+    </div>
+    </a>
+    }
+</div>
     </div>
     
     <!--Sự kiện-->

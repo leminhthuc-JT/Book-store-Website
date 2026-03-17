@@ -1,0 +1,261 @@
+﻿@model LTW_Ban_Sach.Models.Bills
+@{
+    ViewBag.Title = "Xóa đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    /* Định nghĩa biến màu để dễ quản lý (tùy chọn, ở dưới tôi đã hardcode vào từng class) */
+    :root {
+        --gradient-tech: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+    }
+
+    .delete-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .delete-header {
+        /* SỬA MÀU: Gradient Tech */
+        background: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        /* SỬA MÀU: Shadow chuyển sang tông xanh đậm */
+        box-shadow: 0 10px 30px rgba(0, 77, 77, 0.4);
+        margin-bottom: 30px;
+    }
+
+    .delete-header h3 {
+        color: white;
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .delete-header .warning-icon {
+        font-size: 60px;
+        color: #ffd700;
+        margin-bottom: 15px;
+        animation: pulse 2s infinite;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+
+    .info-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        border: 2px solid transparent;
+        /* SỬA MÀU: Viền gradient */
+        background-image:
+            linear-gradient(white, white),
+            linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+    }
+
+    .info-card-header {
+        /* SỬA MÀU: Header card */
+        background: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 20px;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(0, 25, 47, 0.2);
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        font-weight: 700;
+        /* SỬA MÀU: Chữ tiêu đề con chuyển sang màu xanh đậm (Teal) */
+        color: rgba(0,77,77,1);
+        font-size: 16px;
+    }
+
+    .info-value {
+        color: #333;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .total-amount {
+        /* SỬA MÀU: Chữ tổng tiền */
+        background: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 24px;
+        font-weight: 800;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn-delete {
+        /* Giữ nguyên màu đỏ cảnh báo hoặc chỉnh tối hơn một chút cho hợp theme Dark */
+        background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+    }
+
+    .btn-delete:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 75, 43, 0.6);
+    }
+
+    .btn-back {
+        /* SỬA MÀU: Nút quay lại theo theme mới */
+        background: linear-gradient(90deg, rgba(0,77,77,1),rgba(0,77,77,1), rgba(0,25,47, 1),rgba(0,25,47, 1), rgba(10,25,47,1));
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        /* Shadow tối hơn */
+        box-shadow: 0 4px 15px rgba(0, 25, 47, 0.4);
+    }
+
+    .btn-back:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 25, 47, 0.6);
+        color: white;
+        text-decoration: none;
+    }
+
+    .warning-message {
+        background: linear-gradient(135deg, #fff5e6 0%, #ffe6e6 100%);
+        border-left: 4px solid #ff4b2b;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        color: #d9534f;
+        font-weight: 500;
+    }
+
+    .warning-message i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="delete-container">
+        <div class="delete-header">
+            <div class="warning-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3>Xác nhận xóa đơn hàng</h3>
+        </div>
+
+        <div class="warning-message">
+            <i class="fa-solid fa-info-circle"></i>
+            <strong>Lưu ý:</strong> Hành động này không thể hoàn tác. Tất cả thông tin liên quan đến đơn hàng sẽ bị xóa vĩnh viễn!
+        </div>
+
+        <div class="info-card">
+            <div class="info-card-header">
+                <i class="fa-solid fa-file-invoice"></i> Thông tin đơn hàng #@Model.BillId
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <i class="fa-solid fa-calendar"></i> Ngày tạo:
+                </div>
+                <div class="info-value">
+                    @Model.CreateDate.ToString("dd/MM/yyyy HH:mm")
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <i class="fa-solid fa-user"></i> Người mua (ID):
+                </div>
+                <div class="info-value">
+                    @Model.Id
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <i class="fa-solid fa-credit-card"></i> Phương thức thanh toán:
+                </div>
+                <div class="info-value">
+                    @if (Model.PaymentMethod == "COD")
+                    {
+                        <span><i class="fa-solid fa-money-bill"></i> Thanh toán khi nhận hàng</span>
+                    }
+                    else if (Model.PaymentMethod == "Banking")
+                    {
+                        <span><i class="fa-solid fa-building-columns"></i> Chuyển khoản ngân hàng</span>
+                    }
+                    else
+                    {
+                        <span>@Model.PaymentMethod</span>
+                    }
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">
+                    <i class="fa-solid fa-coins"></i> Tổng tiền:
+                </div>
+                <div class="info-value">
+                    <span class="total-amount">@Model.TotalAmount.ToString("N0") VNĐ</span>
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="action-buttons">
+                @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn-back" })
+                <button type="submit" class="btn-delete" onclick="return confirm('Bạn có CHẮC CHẮN muốn xóa đơn hàng này? Hành động này không thể hoàn tác!')">
+                    <i class="fa-solid fa-trash-can"></i> Xác nhận xóa
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    // Hiệu ứng khi hover vào card
+    document.querySelector('.info-card').addEventListener('mouseenter', function () {
+        this.style.transform = 'translateY(-5px)';
+        this.style.transition = 'transform 0.3s ease';
+    });
+    document.querySelector('.info-card').addEventListener('mouseleave', function () {
+        this.style.transform = 'translateY(0)';
+    });
+</script>
